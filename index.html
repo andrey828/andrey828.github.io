@@ -3,416 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andrey Mihai | Personal Space</title>
+    <title>Andrey Mihai | Digital Space</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@200;400;600;800&family=JetBrains+Mono:wght@300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@300;600;800&display=swap');
 
-        /* --- VARIABLES DE DISEÑO --- */
         :root {
-            --primary: #a18cd1;
-            --secondary: #fbc2eb;
-            --accent: #ff9a9e;
-            --bg-dark: #010101;
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.07);
+            --p: #a18cd1;
+            --a: #ff9a9e;
+            --cyan: #8cf1ff;
+            --bg: #000000;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body, html {
-            height: 100%;
-            background-color: var(--bg-dark);
+        body {
+            background-color: var(--bg);
             color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow: hidden; /* Evitamos scroll feo */
-        }
-
-        /* --- PANTALLA DE ENTRADA (OBLIGATORIA PARA EL AUDIO) --- */
-        #enter-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            cursor: pointer;
-            transition: opacity 1s ease;
-        }
-
-        #enter-screen h2 {
-            font-family: 'Permanent Marker', cursive;
-            font-size: 2rem;
-            letter-spacing: 5px;
-            animation: pulse 2s infinite;
-        }
-
-        #enter-screen p {
-            font-size: 0.7rem;
-            margin-top: 15px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: rgba(255,255,255,0.4);
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-
-        /* --- FONDO AVANZADO --- */
-        .bg-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at center, #0a0a1a 0%, #000 100%);
-        }
-
-        #particle-canvas { position: absolute; top: 0; left: 0; }
-
-        .aurora {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at 10% 20%, rgba(161,140,209,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 90% 80%, rgba(255,154,158,0.1) 0%, transparent 50%);
-            filter: blur(100px);
-            animation: auroraFloat 20s infinite alternate;
-        }
-
-        @keyframes auroraFloat {
-            from { transform: translate(0,0); }
-            to { transform: translate(5%, 5%); }
-        }
-
-        /* --- CONTENEDOR PRINCIPAL --- */
-        .main-wrapper {
-            opacity: 0; /* Empieza oculto hasta que se haga click */
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            transition: opacity 1.5s ease;
+        }
+
+        /* PANTALLA DE ENTRADA CON BORDES REDONDEADOS EN EL TEXTO */
+        #splash {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: 1s ease-in-out;
+        }
+
+        #splash h1 {
+            font-family: 'Permanent Marker', cursive; font-size: 3.5rem;
+            background: linear-gradient(90deg, #fff, var(--p), var(--a));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite alternate;
+        }
+
+        /* FONDO DE LUCES Y NEBULOSA */
+        .neon-glow {
+            position: fixed; inset: 0; z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(161, 140, 209, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 154, 158, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(140, 241, 255, 0.1) 0%, transparent 60%);
+            animation: glowMove 15s infinite alternate;
+        }
+
+        @keyframes glowMove {
+            0% { filter: hue-rotate(0deg) scale(1); }
+            100% { filter: hue-rotate(90deg) scale(1.2); }
+        }
+
+        #bg-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
+
+        /* TARJETA ULTRA TRANSPARENTE Y SÚPER REDONDEADA */
+        #content {
+            opacity: 0; transform: translateY(50px);
+            transition: 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            width: 90%; max-width: 460px;
         }
 
         .card {
-            background: var(--glass);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            width: 100%;
-            max-width: 500px;
-            padding: 50px 30px;
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* BORDES MUCHO MÁS REDONDEADOS */
+            border-radius: 70px;
+            padding: 60px 40px;
             text-align: center;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
-            transform-style: preserve-3d;
-            position: relative;
+            box-shadow: 0 0 80px rgba(0,0,0,0.5), inset 0 0 30px rgba(255,255,255,0.05);
+            animation: float 6s infinite ease-in-out;
         }
 
-        /* --- CABECERA --- */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
         .name {
-            font-family: 'Permanent Marker', cursive;
-            font-size: clamp(2.5rem, 8vw, 3.5rem);
-            margin-bottom: 5px;
-            background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(161, 140, 209, 0.4));
+            font-family: 'Permanent Marker', cursive; font-size: 3.2rem;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+            margin-bottom: 20px;
         }
 
-        .view-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+        /* REPRODUCTOR MULTI-TRACK REDONDEADO */
+        .player {
             background: rgba(0,0,0,0.5);
-            padding: 8px 18px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
-            margin-bottom: 25px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--primary);
+            /* BORDES MUCHO MÁS REDONDEADOS */
+            border-radius: 40px;
+            padding: 30px;
+            margin: 30px 0; border: 1px solid rgba(255,255,255,0.08);
         }
 
-        /* --- PLAYER GUNS.LOL --- */
-        .audio-player {
+        .track-info { font-size: 0.6rem; letter-spacing: 2px; color: var(--p); margin-bottom: 20px; text-transform: uppercase; }
+
+        .controls { display: flex; align-items: center; justify-content: center; gap: 25px; }
+
+        .nav-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 1.2rem; opacity: 0.5; transition: 0.3s; }
+        .nav-btn:hover { opacity: 1; transform: scale(1.2); }
+
+        .play-btn {
+            width: 70px; height: 70px;
+            /* BOTÓN PERFECTAMENTE REDONDO */
+            border-radius: 50%;
+            background: #fff; border: none; cursor: pointer;
+            font-size: 1.4rem; transition: 0.3s; box-shadow: 0 0 25px rgba(255,255,255,0.3);
+        }
+        .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 40px var(--p); }
+
+        /* BARRAS DE MÚSICA CON PUNTAS REDONDEADAS */
+        .bars { display: flex; justify-content: center; gap: 5px; height: 25px; margin-top: 20px; }
+        .bar { width: 4px; height: 100%; background: var(--cyan); /* PUNTAS REDONDEADAS */ border-radius: 10px; opacity: 0.2; transition: 0.3s; }
+        .active .bar { animation: bounce 0.5s infinite alternate; }
+        @keyframes bounce { from { height: 5px; opacity: 0.3; } to { height: 25px; opacity: 1; } }
+
+        /* INFO BOXES SÚPER REDONDEADOS */
+        .box {
             background: rgba(255,255,255,0.02);
-            border-radius: 25px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 1px solid var(--border);
+            padding: 25px;
+            /* BORDES MUCHO MÁS REDONDEADOS */
+            border-radius: 35px;
+            margin-bottom: 20px; text-align: left; border: 1px solid rgba(255,255,255,0.05);
             transition: 0.3s;
         }
+        .box:hover { background: rgba(255,255,255,0.05); border-color: var(--p); transform: translateX(5px); }
+        .box h4 { color: var(--p); font-size: 0.95rem; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .box p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
 
-        .audio-player:hover { border-color: var(--primary); }
-
-        .track-name {
-            font-size: 0.6rem;
-            letter-spacing: 3px;
-            color: rgba(255,255,255,0.3);
-            text-transform: uppercase;
-            margin-bottom: 15px;
-        }
-
-        .visualizer {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 3px;
-            height: 20px;
-            margin-bottom: 15px;
-        }
-
-        .bar {
-            width: 3px;
-            height: 5px;
-            background: var(--primary);
-            border-radius: 2px;
-            transition: 0.2s;
-        }
-
-        .bar.animating { animation: barMove 0.8s infinite alternate; }
-        @keyframes barMove { 0% { height: 5px; } 100% { height: 20px; } }
-
-        .play-button {
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            background: #fff;
-            border: none;
-            cursor: pointer;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .play-button i { color: #000; font-size: 1.2rem; }
-        .play-button:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--primary); }
-
-        /* --- SECCIONES --- */
-        .content-stack { margin-top: 30px; text-align: left; }
-
-        .label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            color: rgba(255,255,255,0.2);
-            margin: 20px 0 10px 5px;
-            display: block;
-        }
-
-        .box {
-            background: rgba(255,255,255,0.01);
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 15px;
-            transition: 0.4s;
-        }
-
-        .box:hover {
-            background: rgba(255,255,255,0.03);
-            transform: translateX(10px);
-            border-color: var(--primary);
-        }
-
-        .box h4 { color: var(--primary); font-size: 0.95rem; margin-bottom: 8px; }
-        .box p { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
-
-        /* --- SOCIAL --- */
-        .social-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
+        .links { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .btn {
             background: rgba(255,255,255,0.05);
-            padding: 18px;
-            border-radius: 18px;
-            text-decoration: none;
-            color: #fff;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border: 1px solid var(--border);
-            transition: 0.3s;
+            padding: 20px;
+            /* BORDES MUCHO MÁS REDONDEADOS */
+            border-radius: 30px;
+            text-decoration: none; color: #fff; font-size: 0.85rem; font-weight: 800;
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
         }
+        .btn:hover { background: #fff; color: #000; box-shadow: 0 0 25px #fff; }
 
-        .btn:hover { background: #fff; color: #000; transform: translateY(-5px); }
+        footer { margin-top: 50px; font-size: 0.65rem; color: rgba(255,255,255,0.2); letter-spacing: 3px; }
 
-        .footer-text {
-            margin-top: 40px;
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.15);
-            letter-spacing: 2px;
-        }
-
+        @keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="enter-screen" onclick="startApp()">
-        <h2>ANDREY</h2>
-        <p>Click to Enter</p>
+    <div id="splash" onclick="entry()">
+        <h1>ANDREY</h1>
+        <p style="letter-spacing: 5px; font-size: 0.7rem; color: #888;">TAP TO EXPLORE</p>
     </div>
 
-    <div class="bg-container">
-        <div class="aurora"></div>
-        <canvas id="particle-canvas"></canvas>
-    </div>
+    <div class="neon-glow"></div>
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="main-wrapper" id="app">
-        <div class="card" id="tilt-card">
+    <div id="content">
+        <div class="card">
+            <h1 class="name">Andrey Mihai</h1>
             
-            <header>
-                <h1 class="name">Andrey Mihai</h1>
-                <div class="view-pill">
-                    <i class="fa-solid fa-bolt"></i>
-                    <img src="https://count.getloli.com/get/@andrey828?theme=rule73" alt="Views" style="height: 18px; filter: invert(1) brightness(2);">
-                </div>
-            </header>
-
-            <div class="audio-player">
-                <div class="track-name" id="song-title">Vibe: Lost in Digital</div>
-                <div class="visualizer">
-                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                </div>
-                <button class="play-button" id="btn-audio">
-                    <i class="fa-solid fa-play" id="p-icon"></i>
-                </button>
-                <audio id="main-track" loop>
-                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-                </audio>
+            <div style="margin-bottom: 25px;">
+                <img src="https://count.getloli.com/get/@andrey828?theme=rule73" alt="Views" style="height: 22px; filter: invert(1) brightness(2) hue-rotate(180deg);">
             </div>
 
-            <div class="content-stack">
-                <span class="label">Primary focus</span>
-                <div class="box">
-                    <h4>xA Addon</h4>
-                    <p>Optimización extrema de scripts y módulos dinámicos. Rendimiento sin concesiones.</p>
+            <div class="player">
+                <div class="track-info" id="track-name">Track 01 - Loading...</div>
+                <div class="controls">
+                    <button class="nav-btn" onclick="prevTrack()"><i class="fa-solid fa-backward-step"></i></button>
+                    <button class="play-btn" id="pBtn"><i class="fa-solid fa-play" id="icon"></i></button>
+                    <button class="nav-btn" onclick="nextTrack()"><i class="fa-solid fa-forward-step"></i></button>
                 </div>
-
-                <span class="label">Identity</span>
-                <div class="box">
-                    <h4>Digital Architect</h4>
-                    <p>Minimalismo aplicado al desarrollo. Entusiasta de las interfaces limpias y el código eficiente.</p>
-                </div>
-
-                <div class="social-row">
-                    <a href="https://github.com/andrey828" target="_blank" class="btn"><i class="fa-brands fa-github"></i> GitHub</a>
-                    <a href="https://discord.gg/8ezp4sthqG" target="_blank" class="btn"><i class="fa-brands fa-discord"></i> Discord</a>
+                <div id="visuals" class="bars">
+                    <div class="bar" style="animation-delay: 0.1s"></div>
+                    <div class="bar" style="animation-delay: 0.3s"></div>
+                    <div class="bar" style="animation-delay: 0.2s"></div>
+                    <div class="bar" style="animation-delay: 0.4s"></div>
+                    <div class="bar" style="animation-delay: 0.5s"></div>
                 </div>
             </div>
 
-            <p class="footer-text">© 2026 ANDREY MIHAI • EST. CASTELLÓN</p>
+            <div class="box">
+                <h4><i class="fa-solid fa-microchip"></i> xA Addon</h4>
+                <p>Expert en optimització i sistemes digitals.</p>
+            </div>
+
+            <div class="links">
+                <a href="https://github.com/andrey828" target="_blank" class="btn">GITHUB</a>
+                <a href="https://discord.gg/8ezp4sthqG" target="_blank" class="btn">DISCORD</a>
+            </div>
+
+            <footer>© 2026 DIGITAL EXPERIENCE</footer>
         </div>
     </div>
 
     <script>
-        // --- INICIALIZACIÓN ---
-        const audio = document.getElementById('main-track');
-        const playBtn = document.getElementById('btn-audio');
-        const pIcon = document.getElementById('p-icon');
-        const bars = document.querySelectorAll('.bar');
-        const enterScreen = document.getElementById('enter-screen');
-        const app = document.getElementById('app');
+        // LISTA DE CANCIONES
+        const tracks = [
+            { name: "Lofi Study - Chill", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { name: "Night Drive - Synth", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { name: "Deep Focus - Ambient", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+        ];
 
-        // Función para entrar a la web y sonar la música
-        function startApp() {
-            enterScreen.style.opacity = '0';
-            setTimeout(() => {
-                enterScreen.style.display = 'none';
-                app.style.opacity = '1';
-                
-                // Intentamos reproducir automáticamente tras el primer click
-                audio.play().then(() => {
-                    updatePlayerStatus(true);
-                }).catch(err => console.log("Manual play required"));
-            }, 1000);
+        let currentTrack = 0;
+        const audio = new Audio(tracks[currentTrack].url);
+        const trackTitle = document.getElementById('track-name');
+        const pBtn = document.getElementById('pBtn');
+        const icon = document.getElementById('icon');
+        const visuals = document.getElementById('visuals');
+
+        function loadTrack(index) {
+            currentTrack = index;
+            audio.src = tracks[currentTrack].url;
+            trackTitle.innerText = tracks[currentTrack].name;
+            if (!audio.paused) audio.play();
         }
 
-        function updatePlayerStatus(isPlaying) {
-            if(isPlaying) {
-                pIcon.classList.replace('fa-play', 'fa-pause');
-                bars.forEach((bar, i) => {
-                    bar.classList.add('animating');
-                    bar.style.animationDelay = `${i * 0.1}s`;
-                });
-                document.getElementById('song-title').style.color = '#a18cd1';
+        function nextTrack() {
+            currentTrack = (currentTrack + 1) % tracks.length;
+            loadTrack(currentTrack);
+            audio.play();
+            updateUI(true);
+        }
+
+        function prevTrack() {
+            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+            loadTrack(currentTrack);
+            audio.play();
+            updateUI(true);
+        }
+
+        function updateUI(playing) {
+            if(playing) {
+                icon.classList.replace('fa-play', 'fa-pause');
+                visuals.classList.add('active');
             } else {
-                pIcon.classList.replace('fa-pause', 'fa-play');
-                bars.forEach(bar => bar.classList.remove('animating'));
-                document.getElementById('song-title').style.color = 'rgba(255,255,255,0.3)';
+                icon.classList.replace('fa-pause', 'fa-play');
+                visuals.classList.remove('active');
             }
         }
 
-        playBtn.addEventListener('click', () => {
+        function entry() {
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('content').style.opacity = '1';
+                document.getElementById('content').style.transform = 'translateY(0)';
+                loadTrack(0);
+                audio.play().then(() => updateUI(true)).catch(() => {});
+            }, 800);
+        }
+
+        pBtn.onclick = () => {
             if (audio.paused) {
                 audio.play();
-                updatePlayerStatus(true);
+                updateUI(true);
             } else {
                 audio.pause();
-                updatePlayerStatus(false);
+                updateUI(false);
             }
-        });
+        };
 
-        // --- EFECTO 3D CARD ---
-        const card = document.getElementById('tilt-card');
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.pageX) / 30;
-            const y = (window.innerHeight / 2 - e.pageY) / 30;
-            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-        });
+        // CANVAS PARTICULAS FLOTANTES
+        const cvs = document.getElementById('bg-canvas');
+        const ctx = cvs.getContext('2d');
+        let pts = [];
 
-        // --- CANVAS DE RED NEURONAL ---
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        function resize() {
+            cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+        }
 
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            for(let i=0; i<100; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5
+        function create() {
+            pts = [];
+            for(let i=0; i<50; i++) {
+                pts.push({ 
+                    x: Math.random()*cvs.width, 
+                    y: Math.random()*cvs.height, 
+                    v: Math.random()*0.2 + 0.1,
+                    s: Math.random()*2
                 });
             }
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, i) => {
-                p.x += p.vx; p.y += p.vy;
-                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-                ctx.fillStyle = 'rgba(161, 140, 209, 0.4)';
+        function anim() {
+            ctx.clearRect(0,0,cvs.width,cvs.height);
+            ctx.fillStyle = "rgba(255,255,255,0.3)";
+            pts.forEach(p => {
+                p.y -= p.v;
+                if(p.y < 0) p.y = cvs.height;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 1.2, 0, Math.PI*2);
+                ctx.arc(p.x, p.y, p.s, 0, Math.PI*2);
                 ctx.fill();
-
-                // Líneas de conexión
-                for(let j=i+1; j<particles.length; j++) {
-                    const p2 = particles[j];
-                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if(dist < 100) {
-                        ctx.strokeStyle = `rgba(161, 140, 209, ${1 - dist/100})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                }
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(anim);
         }
 
-        window.onresize = init;
-        init(); animate();
+        window.onresize = resize;
+        resize(); create(); anim();
+        trackTitle.innerText = tracks[0].name;
     </script>
 </body>
 </html>
