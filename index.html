@@ -28,7 +28,7 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* FONDO */
+        /* FONDO DINÁMICO */
         .neon-bg {
             position: fixed; inset: -50%; z-index: -2;
             background: radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.1) 0%, transparent 40%);
@@ -37,7 +37,7 @@
         @keyframes moveBg { from { transform: translate(-5%, -5%); } to { transform: translate(5%, 5%); } }
         #star-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
 
-        /* NAV */
+        /* NAVEGACIÓN */
         nav {
             position: fixed; top: 0; width: 100%; height: 75px;
             background: rgba(0,0,0,0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -50,7 +50,7 @@
         }
         nav a.active { background: var(--btn-p); color: #fff; opacity: 1; box-shadow: 0 0 20px var(--accent-glow); }
 
-        /* CONTENEDOR */
+        /* CONTENEDOR PRINCIPAL */
         .main-container {
             flex: 1; width: 100%; display: flex; align-items: center; justify-content: center;
             perspective: 1000px; padding-top: 75px;
@@ -64,15 +64,17 @@
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* TARJETA CRISTAL */
         .content-card {
             background: var(--card-glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
             border: 1px solid var(--border); border-radius: 60px; padding: 60px 30px;
-            text-align: center; width: 100%; box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            text-align: center; width: 100%;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
             animation: float 5s infinite ease-in-out;
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* TEXTOS */
+        /* ESTILOS INICIO */
         .tag { display: inline-block; padding: 6px 14px; background: rgba(79, 172, 254, 0.1); color: var(--accent); border-radius: 50px; font-size: 0.6rem; font-weight: 800; border: 1px solid var(--border); margin-bottom: 20px; }
         .creator { font-size: 0.8rem; opacity: 0.6; margin-bottom: 10px; }
         .creator span { color: var(--accent); font-weight: 800; }
@@ -80,7 +82,7 @@
         .name span { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
         .desc { font-size: 0.95rem; opacity: 0.5; line-height: 1.6; margin-bottom: 40px; }
 
-        /* BOTÓN */
+        /* BOTÓN DESCARGA */
         .main-btn { 
             display: block; width: 100%; background: var(--btn-p); color: #fff; text-align: center; 
             padding: 22px; border-radius: 100px; text-decoration: none; font-weight: 800; 
@@ -88,26 +90,35 @@
         }
         .main-btn:hover { transform: scale(1.03); filter: brightness(1.1); }
 
-        /* MÓDULOS */
-        .scroll-area { width: 100%; max-height: 55vh; overflow-y: auto; scrollbar-width: none; }
+        /* ESTILOS MÓDULOS */
+        .scroll-area { 
+            width: 100%; max-height: 55vh; overflow-y: auto; scrollbar-width: none;
+        }
         .scroll-area::-webkit-scrollbar { display: none; }
-        .module-item { display: flex; align-items: flex-start; gap: 15px; text-align: left; margin-bottom: 25px; padding: 15px; border-radius: 25px; }
+
+        .module-item { 
+            display: flex; align-items: flex-start; gap: 15px; text-align: left; 
+            margin-bottom: 25px; padding: 15px; border-radius: 25px;
+        }
         .module-info h4 { font-size: 0.95rem; color: var(--accent); font-weight: 800; margin-bottom: 4px; }
         .module-info p { font-size: 0.75rem; opacity: 0.4; line-height: 1.4; }
 
-        /* CONTADOR DE VISITAS */
+        /* CONTADOR DE VISITAS MEJORADO */
         .visitor-counter {
-            position: fixed; bottom: 80px; 
-            background: rgba(255,255,255,0.03);
+            position: fixed; bottom: 85px; 
+            background: rgba(255,255,255,0.02);
             border: 1px solid var(--border);
-            padding: 8px 15px; border-radius: 50px;
+            padding: 10px 20px; border-radius: 50px;
             display: flex; align-items: center; gap: 10px;
-            backdrop-filter: blur(10px); font-size: 0.7rem;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            font-size: 0.75rem;
             color: rgba(255,255,255,0.5); font-weight: 600;
         }
-        .visitor-counter i { color: var(--accent); }
+        .visitor-counter i { color: var(--accent); margin-right: -2px; }
+        .visitor-counter span { margin-right: -2px; }
+        .visitor-counter img { height: 16px; width: auto; filter: grayscale(1) invert(1) brightness(1.5) hue-rotate(180deg); } /* Forzar el número a celeste y limpio */
 
-        footer { position: fixed; bottom: 30px; font-size: 0.6rem; opacity: 0.2; letter-spacing: 2px; }
+        footer { position: fixed; bottom: 30px; font-size: 0.6rem; opacity: 0.2; letter-spacing: 2px; text-align: center; }
     </style>
 </head>
 <body>
@@ -124,7 +135,7 @@
     <div class="main-container">
         <div id="inicio" class="page-content active">
             <div class="content-card">
-                <div class="tag">xA Web</div>
+                <div class="tag">xA WebSite</div>
                 <div class="creator">Creado por <span>Mihai</span></div>
                 <h1 class="name">xA <span>Addon</span></h1>
                 <p class="desc">La suite definitiva de optimización y combate. Experimenta un rendimiento sin precedentes con tecnología de nueva generación.</p>
@@ -150,7 +161,7 @@
     <div class="visitor-counter">
         <i class="fa-solid fa-eye"></i>
         <span>Vistas:</span>
-        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fxa-addon.github.io&count_bg=%2379C83D00&title_bg=%2355555500&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=true" alt="Vistas" style="height: 14px; margin-left: -35px; filter: brightness(1.5);">
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fandrey828.github.io&count_bg=%2379C83D00&title_bg=%2355555500&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=true" alt="Hits">
     </div>
 
     <footer>© 2026 xA ADDON • DESARROLLADO POR MIHAI</footer>
@@ -162,7 +173,8 @@
             tabs.forEach(tab => tab.classList.remove('active'));
             btns.forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            document.getElementById('btn-' + tabId).classList.add('active');
+            const targetBtn = document.getElementById('btn-' + tabId);
+            if(targetBtn) targetBtn.classList.add('active');
         }
 
         const cvs = document.getElementById('star-canvas');
