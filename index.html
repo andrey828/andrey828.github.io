@@ -28,7 +28,7 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* EFECTOS DE FONDO */
+        /* FONDO */
         .neon-bg {
             position: fixed; inset: -50%; z-index: -2;
             background: radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.1) 0%, transparent 40%);
@@ -37,7 +37,7 @@
         @keyframes moveBg { from { transform: translate(-5%, -5%); } to { transform: translate(5%, 5%); } }
         #star-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
 
-        /* NAVEGACIÓN */
+        /* NAV */
         nav {
             position: fixed; top: 0; width: 100%; height: 75px;
             background: rgba(0,0,0,0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -46,11 +46,11 @@
         }
         nav a {
             color: var(--text); text-decoration: none; font-size: 0.75rem; font-weight: 800;
-            padding: 10px 22px; border-radius: 50px; opacity: 0.4; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;
+            padding: 10px 22px; border-radius: 50px; opacity: 0.4; transition: 0.4s; cursor: pointer;
         }
-        nav a.active { background: var(--btn-p); color: #fff; opacity: 1; transform: scale(1.05); box-shadow: 0 0 20px var(--accent-glow); }
+        nav a.active { background: var(--btn-p); color: #fff; opacity: 1; box-shadow: 0 0 20px var(--accent-glow); }
 
-        /* CONTENEDOR PRINCIPAL */
+        /* CONTENEDOR */
         .main-container {
             flex: 1; width: 100%; display: flex; align-items: center; justify-content: center;
             perspective: 1000px; padding-top: 75px;
@@ -62,62 +62,52 @@
         }
         .page-content.active { display: flex; flex-direction: column; align-items: center; }
 
-        @keyframes slideIn { 
-            from { opacity: 0; transform: translateY(30px) rotateX(-10deg); } 
-            to { opacity: 1; transform: translateY(0) rotateX(0deg); } 
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TARJETA CRISTAL */
         .content-card {
             background: var(--card-glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
-            border: 1px solid var(--border); border-radius: 60px; padding: 50px 30px;
-            text-align: center; width: 100%;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            border: 1px solid var(--border); border-radius: 60px; padding: 60px 30px;
+            text-align: center; width: 100%; box-shadow: 0 40px 100px rgba(0,0,0,0.5);
             animation: float 5s infinite ease-in-out;
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* ESTILOS INICIO */
+        /* TEXTOS */
         .tag { display: inline-block; padding: 6px 14px; background: rgba(79, 172, 254, 0.1); color: var(--accent); border-radius: 50px; font-size: 0.6rem; font-weight: 800; border: 1px solid var(--border); margin-bottom: 20px; }
         .creator { font-size: 0.8rem; opacity: 0.6; margin-bottom: 10px; }
         .creator span { color: var(--accent); font-weight: 800; }
-        .name { font-family: 'Permanent Marker', cursive; font-size: 3.2rem; line-height: 1; margin-bottom: 20px; }
+        .name { font-family: 'Permanent Marker', cursive; font-size: 3.5rem; line-height: 1; margin-bottom: 20px; }
         .name span { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
-        .desc { font-size: 0.9rem; opacity: 0.5; line-height: 1.6; margin-bottom: 30px; }
+        .desc { font-size: 0.95rem; opacity: 0.5; line-height: 1.6; margin-bottom: 40px; }
 
-        /* BOTONES */
+        /* BOTÓN */
         .main-btn { 
             display: block; width: 100%; background: var(--btn-p); color: #fff; text-align: center; 
-            padding: 20px; border-radius: 100px; text-decoration: none; font-weight: 800; 
-            font-size: 0.9rem; box-shadow: 0 10px 30px var(--accent-glow); transition: 0.3s;
+            padding: 22px; border-radius: 100px; text-decoration: none; font-weight: 800; 
+            font-size: 1rem; box-shadow: 0 10px 30px var(--accent-glow); transition: 0.3s;
         }
-        .main-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .main-btn:hover { transform: scale(1.03); filter: brightness(1.1); }
 
-        .socials { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; width: 100%; }
-        .social-btn { 
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; 
-            padding: 15px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; 
-            font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s;
-        }
-        .social-btn:hover { background: rgba(255,255,255,0.08); }
-
-        /* ESTILOS MÓDULOS */
-        .scroll-area { 
-            width: 100%; max-height: 60vh; overflow-y: auto; padding-right: 5px; 
-            scrollbar-width: none; -ms-overflow-style: none;
-        }
+        /* MÓDULOS */
+        .scroll-area { width: 100%; max-height: 55vh; overflow-y: auto; scrollbar-width: none; }
         .scroll-area::-webkit-scrollbar { display: none; }
-
-        .module-item { 
-            display: flex; align-items: flex-start; gap: 15px; text-align: left; 
-            margin-bottom: 25px; padding: 15px; border-radius: 25px; transition: 0.3s;
-        }
-        .module-item:hover { background: rgba(79, 172, 254, 0.05); }
-        .module-item span { font-size: 1.2rem; }
+        .module-item { display: flex; align-items: flex-start; gap: 15px; text-align: left; margin-bottom: 25px; padding: 15px; border-radius: 25px; }
         .module-info h4 { font-size: 0.95rem; color: var(--accent); font-weight: 800; margin-bottom: 4px; }
         .module-info p { font-size: 0.75rem; opacity: 0.4; line-height: 1.4; }
 
-        footer { position: fixed; bottom: 30px; font-size: 0.6rem; opacity: 0.2; letter-spacing: 2px; text-align: center; }
+        /* CONTADOR DE VISITAS */
+        .visitor-counter {
+            position: fixed; bottom: 80px; 
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 8px 15px; border-radius: 50px;
+            display: flex; align-items: center; gap: 10px;
+            backdrop-filter: blur(10px); font-size: 0.7rem;
+            color: rgba(255,255,255,0.5); font-weight: 600;
+        }
+        .visitor-counter i { color: var(--accent); }
+
+        footer { position: fixed; bottom: 30px; font-size: 0.6rem; opacity: 0.2; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -134,15 +124,11 @@
     <div class="main-container">
         <div id="inicio" class="page-content active">
             <div class="content-card">
-                <div class="tag">Dev Mihai</div>
+                <div class="tag">xA Web</div>
                 <div class="creator">Creado por <span>Mihai</span></div>
                 <h1 class="name">xA <span>Addon</span></h1>
                 <p class="desc">La suite definitiva de optimización y combate. Experimenta un rendimiento sin precedentes con tecnología de nueva generación.</p>
                 <a href="#" class="main-btn">DESCARGAR AHORA</a>
-                <div class="socials">
-                    <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i> YouTube</a>
-                    <a href="#" class="social-btn"><i class="fa-brands fa-tiktok"></i> TikTok</a>
-                </div>
             </div>
         </div>
 
@@ -150,70 +136,35 @@
             <div class="content-card" style="padding: 40px 20px;">
                 <h2 style="margin-bottom: 25px; font-family: 'Permanent Marker'; font-size: 1.8rem; color: var(--accent);">Combat Suite</h2>
                 <div class="scroll-area">
-                    <div class="module-item">
-                        <span>🛡️</span>
-                        <div class="module-info">
-                            <h4>xArmor</h4>
-                            <p>Defensa inteligente. Anti-Break automático para Netherite y gestión de encantamientos premium.</p>
-                        </div>
-                    </div>
-                    <div class="module-item">
-                        <span>🔨</span>
-                        <div class="module-info">
-                            <h4>xMace</h4>
-                            <p>Impacto devastador. Simulación de altura mediante paquetes para daño máximo instantáneo.</p>
-                        </div>
-                    </div>
-                    <div class="module-item">
-                        <span>💎</span>
-                        <div class="module-info">
-                            <h4>xTotem</h4>
-                            <p>Inmortalidad. Reposición de tótems ultra veloz para evitar fallos en situaciones críticas.</p>
-                        </div>
-                    </div>
-                    <div class="module-item">
-                        <span>🚫</span>
-                        <div class="module-info">
-                            <h4>xNoPoP</h4>
-                            <p>Gestión inteligente. Evita el gasto de tótems innecesario optimizando tu inventario.</p>
-                        </div>
-                    </div>
-                    <div class="module-item">
-                        <span>⚔️</span>
-                        <div class="module-info">
-                            <h4>xAura</h4>
-                            <p>Dominación. KillAura optimizado para críticos y máximo alcance de ataque.</p>
-                        </div>
-                    </div>
-                    <div class="module-item">
-                        <span>🔄</span>
-                        <div class="module-info">
-                            <h4>xSwap</h4>
-                            <p>Movilidad. Intercambio automático entre Elytras y armadura según el entorno.</p>
-                        </div>
-                    </div>
+                    <div class="module-item"><span>🛡️</span><div class="module-info"><h4>xArmor</h4><p>Defensa inteligente. Anti-Break automático.</p></div></div>
+                    <div class="module-item"><span>🔨</span><div class="module-info"><h4>xMace</h4><p>Impacto devastador mediante paquetes.</p></div></div>
+                    <div class="module-item"><span>💎</span><div class="module-info"><h4>xTotem</h4><p>Inmortalidad automatizada veloz.</p></div></div>
+                    <div class="module-item"><span>🚫</span><div class="module-info"><h4>xNoPoP</h4><p>Gestión eficiente de recursos vitales.</p></div></div>
+                    <div class="module-item"><span>⚔️</span><div class="module-info"><h4>xAura</h4><p>KillAura optimizado para críticos.</p></div></div>
+                    <div class="module-item"><span>🔄</span><div class="module-info"><h4>xSwap</h4><p>Cambio automático Elytra/Pechera.</p></div></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="visitor-counter">
+        <i class="fa-solid fa-eye"></i>
+        <span>Vistas:</span>
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fxa-addon.github.io&count_bg=%2379C83D00&title_bg=%2355555500&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=true" alt="Vistas" style="height: 14px; margin-left: -35px; filter: brightness(1.5);">
+    </div>
+
     <footer>© 2026 xA ADDON • DESARROLLADO POR MIHAI</footer>
 
     <script>
-        // Lógica de pestañas
         function showTab(tabId) {
             const tabs = document.querySelectorAll('.page-content');
             const btns = document.querySelectorAll('nav a');
-            
             tabs.forEach(tab => tab.classList.remove('active'));
             btns.forEach(btn => btn.classList.remove('active'));
-            
             document.getElementById(tabId).classList.add('active');
-            const targetBtn = document.getElementById('btn-' + tabId);
-            if(targetBtn) targetBtn.classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
         }
 
-        // Sistema de estrellas
         const cvs = document.getElementById('star-canvas');
         const ctx = cvs.getContext('2d');
         let pts = [];
