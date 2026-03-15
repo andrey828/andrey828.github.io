@@ -9,24 +9,29 @@
         @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@300;600;800&display=swap');
 
         :root {
-            --bg: #0b0d11;
+            /* MODO OSCURO (Amethyst Style) */
+            --bg: #000000;
             --text: #ffffff;
-            --accent: #4facfe;
-            --accent-glow: rgba(79, 172, 254, 0.3);
-            --border: rgba(79, 172, 254, 0.15);
-            --item-bg: rgba(79, 172, 254, 0.05);
-            --card-glass: rgba(255, 255, 255, 0.01);
+            --accent: #4facfe; 
+            --accent-glow: rgba(79, 172, 254, 0.4);
+            --nebula: rgba(241, 196, 15, 0.15);
+            --border: rgba(255, 255, 255, 0.1);
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --blur: blur(50px);
             --btn-p: #4facfe;
-            --blur: blur(40px);
         }
 
         [data-theme="light"] {
-            --bg: #f4f9ff;
+            /* MODO CLARO CORREGIDO (Transparencias Visibles) */
+            --bg: #e0e6ed; /* Fondo gris-azulado suave, NO blanco puro */
             --text: #1a2a3a;
             --accent: #00a8ff;
-            --card-glass: rgba(255, 255, 255, 0.4);
-            --border: rgba(0, 168, 255, 0.1);
-            --item-bg: rgba(0, 168, 255, 0.05);
+            --accent-glow: rgba(0, 168, 255, 0.3);
+            --nebula: rgba(255, 118, 117, 0.2);
+            --border: rgba(255, 255, 255, 0.5); /* Borde blanco para el cristal claro */
+            --card-glass: rgba(255, 255, 255, 0.3); /* Menos opacidad para ver el fondo */
+            --blur: blur(35px);
+            --btn-p: #00a8ff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -36,119 +41,198 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden; min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            transition: 0.4s ease;
+            transition: 0.5s ease;
         }
 
-        .neon-bg { position: fixed; inset: 0; z-index: -2; background: radial-gradient(circle at 15% 15%, rgba(79, 172, 254, 0.15) 0%, transparent 40%); }
-        #star-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.5; }
+        /* LUCES DINÁMICAS Y NEBULOSA */
+        .neon-bg {
+            position: fixed; inset: -50%; z-index: -2;
+            background: radial-gradient(circle at 30% 30%, var(--nebula) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(114, 137, 218, 0.15) 0%, transparent 50%);
+            animation: move 20s infinite linear;
+        }
+        @keyframes move { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        #star-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
+
+        /* NAVEGACIÓN AMETHYST */
         nav {
             position: sticky; top: 0; width: 100%; height: 75px;
             background: rgba(0,0,0,0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             display: flex; align-items: center; justify-content: center; gap: 8px;
             border-bottom: 1px solid var(--border); z-index: 1000;
         }
-        nav a { color: var(--text); text-decoration: none; font-size: 0.75rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; opacity: 0.5; transition: 0.3s; }
+        nav a {
+            color: var(--text); text-decoration: none; font-size: 0.75rem; font-weight: 800;
+            padding: 10px 22px; border-radius: 50px; opacity: 0.5; transition: 0.3s; cursor: pointer;
+        }
         nav a.active { background: var(--btn-p); color: #fff; opacity: 1; box-shadow: 0 0 15px var(--accent-glow); }
 
-        .hero { width: 90%; max-width: 480px; padding: 80px 0 40px; text-align: center; }
-        .status-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        /* TEMA TOGGLE */
+        .theme-btn {
+            position: fixed; bottom: 25px; right: 25px; z-index: 2000;
+            background: var(--card-glass); border: 1px solid var(--border);
+            color: var(--text); padding: 15px; border-radius: 50%; cursor: pointer;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* SECCIONES Y SPA */
+        .page-content {
+            width: 92%; max-width: 440px; padding: 70px 0;
+            display: none; animation: fadeIn 0.6s ease forwards;
+            z-index: 10;
+        }
+        .page-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* TARJETA CRISTAL PREMIUM */
+        .content-card {
+            background: var(--card-glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+            border: 1px solid var(--border); border-radius: 70px; padding: 60px 30px;
+            text-align: center; box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+            animation: card-float 6s infinite ease-in-out;
+        }
+        @keyframes card-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        /* INICIO */
+        .status-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 25px; }
         .tag { padding: 6px 14px; background: rgba(79, 172, 254, 0.1); color: var(--accent); border-radius: 50px; font-size: 0.65rem; font-weight: 800; border: 1px solid var(--border); }
         .creator { font-size: 0.8rem; opacity: 0.7; font-weight: 600; }
         .creator span { color: var(--accent); }
 
-        .hero h1 { font-size: 3.5rem; line-height: 1; margin-bottom: 20px; font-weight: 800; }
-        .hero h1 span { color: var(--accent); background: linear-gradient(to right, #4facfe, #00f2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .main-btn { display: block; width: 100%; background: var(--btn-p); color: #fff; text-align: center; padding: 22px; border-radius: 20px; text-decoration: none; font-weight: 800; font-size: 1rem; box-shadow: 0 10px 30px var(--accent-glow); margin-bottom: 40px; }
+        .name { font-family: 'Permanent Marker', cursive; font-size: 3.5rem; line-height: 1; margin-bottom: 25px; }
+        .name span { color: var(--accent); }
 
-        /* SECCIÓN DE MÓDULOS EXCLUSIVOS */
-        .modules-grid { width: 90%; max-width: 480px; display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
-        .module-card {
+        .desc { font-size: 0.95rem; opacity: 0.6; line-height: 1.6; margin-bottom: 35px; }
+
+        .main-btn { display: block; width: 100%; background: var(--btn-p); color: #fff; text-align: center; padding: 22px; border-radius: 100px; text-decoration: none; font-weight: 800; font-size: 1rem; box-shadow: 0 10px 30px var(--accent-glow); margin-bottom: 15px; }
+        .main-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px var(--accent-glow); }
+
+        .socials { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .social-btn { background: rgba(0,0,0,0.05); border: 1px solid var(--border); color: var(--text); padding: 18px; border-radius: 25px; text-decoration: none; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .social-btn:hover { background: var(--text); color: var(--bg); }
+
+        /* MÓDULOS (Tarjeta de cristal) */
+        .modules-grid {
             background: var(--card-glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
-            border: 1px solid var(--border); border-radius: 30px; padding: 25px;
-            transition: 0.3s ease; text-align: left;
+            border: 1px solid var(--border); border-radius: 70px; padding: 60px 30px;
+            display: flex; flex-direction: column; gap: 20px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.15);
         }
-        .module-card:hover { border-color: var(--accent); transform: translateX(5px); background: rgba(79, 172, 254, 0.02); }
-        .module-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .module-header span { font-size: 1.3rem; }
-        .module-header h3 { font-size: 1.1rem; color: var(--accent); font-weight: 800; }
-        .module-card h4 { font-size: 0.85rem; margin-bottom: 8px; color: #fff; opacity: 0.9; }
-        .module-card p { font-size: 0.8rem; opacity: 0.5; line-height: 1.5; }
 
-        .theme-btn { position: fixed; bottom: 25px; right: 25px; background: var(--item-bg); border: 1px solid var(--border); color: var(--text); padding: 15px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px); z-index: 2000; }
+        .module-item { display: flex; align-items: flex-start; gap: 18px; text-align: left; }
+        .module-item span { font-size: 1.3rem; margin-top: 3px; }
+        .module-info h4 { font-size: 1rem; color: var(--accent); font-weight: 800; margin-bottom: 5px; }
+        .module-info h5 { font-size: 0.8rem; font-weight: 600; color: var(--text); opacity: 0.9; margin-bottom: 5px; }
+        .module-info p { font-size: 0.75rem; opacity: 0.5; line-height: 1.5; }
 
-        footer { padding: 40px 0; font-size: 0.7rem; opacity: 0.4; text-align: center; width: 90%; }
+        /* FOOTER */
+        footer { margin-top: auto; padding: 60px 0 40px; font-size: 0.65rem; opacity: 0.3; text-spacing: 2px; text-align: center; width: 90%; }
+
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="#" class="active">Inicio</a>
-        <a href="#modulos">Módulos</a>
-        <a href="https://discord.gg/8ezp4sthqG">Discord</a>
+        <a onclick="showTab('inicio')" id="btn-inicio" class="active">Inicio</a>
+        <a onclick="showTab('modulos')" id="btn-modulos">Módulos</a>
+        <a href="https://discord.gg/8ezp4sthqG" target="_blank">Discord</a>
     </nav>
 
     <div class="theme-btn" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i></div>
     <div class="neon-bg"></div>
     <canvas id="star-canvas"></canvas>
 
-    <div class="hero">
-        <div class="status-container">
-            <div class="tag">PREMIUM</div>
-            <div class="creator">Creado por <span>Mihai</span></div>
+    <div id="inicio" class="page-content active">
+        <div class="content-card">
+            <div class="status-container">
+                <div class="tag">DEV • PREMIUM ACCESS</div>
+                <div class="creator">Creado por <span>Mihai</span></div>
+            </div>
+            <h1 class="name">xA <span>Addon</span></h1>
+            <p class="desc">Domina el campo de batalla con la suite de combate y optimización más avanzada. Diseñado para ofrecer la máxima eficiencia y dominación visual de nueva generación.</p>
+            
+            <a href="#" class="main-btn">DESCARGAR AHORA</a>
+
+            <div class="socials">
+                <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i> YouTube</a>
+                <a href="#" class="social-btn"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+            </div>
         </div>
-        <h1>xA <span>Addon</span></h1>
-        <p style="margin-bottom: 30px; opacity: 0.6;">Domina el campo de batalla con la suite de combate más avanzada del mercado.</p>
-        <a href="#" class="main-btn">DESCARGAR AHORA</a>
     </div>
 
-    <div class="modules-grid" id="modulos">
-        
-        <div class="module-card">
-            <div class="module-header"><span>🛡️</span> <h3>xArmor</h3></div>
-            <h4>Defensa inteligente en tiempo real.</h4>
-            <p>Gestiona tu armadura automáticamente. Incluye Anti-Break para salvar tus piezas de Netherite antes de que se rompan y prioriza equipamiento con mejores encantamientos.</p>
+    <div id="modulos" class="page-content">
+        <div class="modules-grid">
+            <h2 style="text-align: center; margin-bottom: 25px; font-family: 'Permanent Marker', cursive; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));">Combat Modules</h2>
+            
+            <div class="module-item">
+                <span>🛡️</span>
+                <div class="module-info">
+                    <h4>xArmor</h4>
+                    <h5>Defensa inteligente en tiempo real.</h5>
+                    <p>Gestiona tu armadura automáticamente. Incluye Anti-Break para salvar tus piezas de Netherite antes de que se rompan.</p>
+                </div>
+            </div>
+            <div class="module-item">
+                <span>🔨</span>
+                <div class="module-info">
+                    <h4>xMace</h4>
+                    <h5>Poder de impacto devastador.</h5>
+                    <p>Exploit exclusivo para la Maza. Simula caídas de altura extrema mediante manipulación de paquetes para daño máximo sin saltar.</p>
+                </div>
+            </div>
+            <div class="module-item">
+                <span>💎</span>
+                <div class="module-info">
+                    <h4>xTotem</h4>
+                    <h5>Inmortalidad automatizada.</h5>
+                    <p>Repone tótems a la velocidad del rayo. Optimizado para evitar el "totem fail" y asegurar vida extra constante.</p>
+                </div>
+            </div>
+            <div class="module-item">
+                <span>🚫</span>
+                <div class="module-info">
+                    <h4>xNoPoP</h4>
+                    <h5>Gestión de tótems avanzada.</h5>
+                    <p>Evita que tus tótems se activen por daño innecesario. Controla tu inventario para gastar recursos solo cuando sea vital.</p>
+                </div>
+            </div>
+            <div class="module-item">
+                <span>⚔️</span>
+                <div class="module-info">
+                    <h4>xAura</h4>
+                    <h5>Dominación total del combate.</h5>
+                    <p>KillAura con selección inteligente. Asegura críticos constantes y maximiza el alcance ignorando obstáculos y aliados.</p>
+                </div>
+            </div>
+            <div class="module-item">
+                <span>🔄</span>
+                <div class="module-info">
+                    <h4>xSwap</h4>
+                    <h5>Movilidad aérea instantánea.</h5>
+                    <p>Intercambio automático entre Elytras y Pechera. Vuela para posicionarte y equipa tu armadura al instante al tocar el suelo.</p>
+                </div>
+            </div>
         </div>
-
-        <div class="module-card">
-            <div class="module-header"><span>🔨</span> <h3>xMace</h3></div>
-            <h4>Poder de impacto devastador.</h4>
-            <p>Exploit exclusivo para la Maza. Simula caídas de altura extrema mediante manipulación de paquetes para aplicar daño máximo de un solo golpe sin saltar.</p>
-        </div>
-
-        <div class="module-card">
-            <div class="module-header"><span>💎</span> <h3>xTotem</h3></div>
-            <h4>Inmortalidad automatizada.</h4>
-            <p>Repone tótems a la velocidad del rayo. Optimizado para evitar el "totem fail" y asegurar vida extra constante en situaciones de riesgo.</p>
-        </div>
-
-        <div class="module-card">
-            <div class="module-header"><span>🚫</span> <h3>xNoPoP</h3></div>
-            <h4>Gestión de tótems avanzada.</h4>
-            <p>Evita que tus tótems se activen por daño innecesario. Controla tu inventario para gastar recursos solo cuando sea cuestión de vida o muerte.</p>
-        </div>
-
-        <div class="module-card">
-            <div class="module-header"><span>⚔️</span> <h3>xAura</h3></div>
-            <h4>Dominación total del combate.</h4>
-            <p>KillAura con selección inteligente. Asegura críticos constantes y maximiza el alcance ignorando obstáculos y aliados.</p>
-        </div>
-
-        <div class="module-card">
-            <div class="module-header"><span>🔄</span> <h3>xSwap</h3></div>
-            <h4>Movilidad aérea instantánea.</h4>
-            <p>Intercambio automático entre Elytras y Pechera. Vuela para posicionarte y equipa tu armadura de combate al tocar el suelo al instante.</p>
-        </div>
-
     </div>
 
     <footer>
-        © 2026 xA Addon. Todos los derechos reservados.<br>
-        Desarrollado con precisión por Mihai.
+        © 2026 xA ADDON. TODOS LOS DERECHOS RESERVADOS.<br>
+        DESARROLLADO CON PRECISIÓN POR MIHAI.
     </footer>
 
     <script>
+        // Lógica SPA (Single Page Application)
+        function showTab(tabId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // Fondo dinámico y sistema de estrellas
         const cvs = document.getElementById('star-canvas');
         const ctx = cvs.getContext('2d');
         let pts = [];
