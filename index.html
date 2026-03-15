@@ -3,38 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Personal de Andrey Mihai</title>
+    <title>Andrey Mihai | Dev</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 0; color: #333; background: linear-gradient(135deg, #fce4ec 0%, #e0f2f1 100%); }
-        header { padding: 3rem; text-align: center; color: #616161; }
-        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; border-radius: 12px; backdrop-filter: blur(5px) saturate(180%); -webkit-backdrop-filter: blur(5px) saturate(180%); background-color: rgba(255, 255, 255, 0.7); box-shadow: 0 8px 16px rgba(0,0,0,0.1); padding-bottom: 2rem; }
-        h1 { margin: 0; font-weight: 300; letter-spacing: 2px; }
-        h1 strong { font-weight: 700; color: #757575; }
-        .content { padding: 20px; color: #757575; }
-        .pastel-line { width: 100px; height: 3px; background-color: #ffe082; margin: 20px auto; border-radius: 5px; }
-        footer { text-align: center; padding: 2rem; font-size: 0.8rem; color: #bdbdbd; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #a8edea, #fed6e3, #c3cfe2, #f5f7fa);
+            background-size: 400% 400%;
+            animation: gradientAnimation 12s ease infinite;
+            color: #444;
+            padding: 20px;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 550px;
+            padding: 50px 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .status-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #636e72;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .content h2 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #2d3436;
+        }
+
+        .content p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #636e72;
+            margin-bottom: 25px;
+        }
+
+        .project-box {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.5);
+            margin-bottom: 25px;
+        }
+
+        .project-box h3 {
+            font-size: 1rem;
+            color: #e91e63; /* Un toque de color pastel fuerte */
+            margin-bottom: 5px;
+        }
+
+        .skills {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .skill-dot {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.75rem;
+            color: #95a5a6;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Web Personal de <strong>Andrey Mihai</strong></h1>
-        <div class="pastel-line"></div>
-        <p>Mi rincón digital en construcción</p>
-    </header>
-
-    <div class="container">
+    <div class="glass-card">
+        <h1>Andrey Mihai</h1>
+        <div class="status-tag">Developer & Enthusiast</div>
+        
         <div class="content">
-            <h2>Un poco sobre mí</h2>
-            <p>Este es el comienzo de algo grande. Estoy experimentando con el diseño web y creando este espacio único para compartir mis ideas y proyectos.</p>
+            <div class="project-box">
+                <h3>Actualmente:</h3>
+                <p style="margin-bottom: 0;">Trabajando en <strong>xA Addon</strong>, optimizando funcionalidades y mejorando la experiencia de usuario.</p>
+            </div>
+
+            <h2>Sobre mis proyectos</h2>
+            <p>Apasionado por crear soluciones digitales limpias y eficientes. Mi enfoque está en el código bien estructurado y la estética minimalista.</p>
             
-            <h2>Explorando</h2>
-            <p>Por ahora, estoy aprendiendo y diseñando en el camino. ¡Vuelve pronto para ver más novedades!</p>
+            <div class="skills">
+                <span class="skill-dot">Development</span>
+                <span class="skill-dot">xA Addon</span>
+                <span class="skill-dot">UI/UX</span>
+                <span class="skill-dot">GitHub</span>
+            </div>
         </div>
     </div>
 
     <footer>
-        &copy; 2024 Creado por <strong>Andrey Mihai</strong> - Publicado en GitHub Pages
+        &copy; 2026 Andrey Mihai | Hecho con magia digital
     </footer>
 
 </body>
