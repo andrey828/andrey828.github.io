@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andrey Mihai | Dev</title>
+    <title>Andrey Mihai | Digital Graffiti</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&display=swap');
+        /* IMPORTAR FUENTES: UNA TIPO GRAFITI MINIMALISTA Y OTRA LIMPIA */
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -16,69 +17,70 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #fdfcfb;
-            overflow-x: hidden;
+            /* FONDO PASTEL DINÁMICO PASO 1 */
+            background: linear-gradient(-45deg, #fdfcfb, #e2d1c3, #a8edea, #fed6e3);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
             color: #2d3436;
             padding: 20px;
+            overflow-x: hidden;
         }
 
-        /* LUCES FLOTANTES DE FONDO */
-        .bg-glow {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            background: rgba(226, 209, 195, 0.4);
-            filter: blur(80px);
-            border-radius: 50%;
-            z-index: -1;
-            animation: float 10s infinite alternate;
+        /* ANIMACIÓN DEL FONDO PASTEL */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        @keyframes float {
-            0% { transform: translate(-50%, -50%); }
-            100% { transform: translate(50%, 50%); }
-        }
-
-        /* ANIMACIÓN DE ENTRADA (FADE IN UP) */
+        /* ANIMACIÓN DE ENTRADA CON FADE IN Y SUBIDA */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* CONTENEDOR EFECTO CRISTAL AHUMADO (GLASSMORPHISM AVANZADO) */
         .glass-card {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 35px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.15); /* Más transparente */
+            border-radius: 40px;
+            backdrop-filter: blur(25px); /* Desenfoque potente */
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil */
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 550px;
-            padding: 45px;
-            animation: fadeInUp 1s ease-out; /* Animación de carga */
+            max-width: 580px;
+            padding: 50px;
+            animation: fadeInUp 1.2s ease-out; /* Animación de carga */
+            position: relative;
         }
 
-        .header-section { text-align: center; margin-bottom: 30px; }
+        .header-section { text-align: center; margin-bottom: 40px; }
 
+        /* NOMBRE CON FUENTE GRAFITI Y EFECTO PASTEL/TRANSPARENTE */
         h1 {
-            font-size: 2.8rem;
-            font-weight: 600;
-            letter-spacing: -1.5px;
-            background: linear-gradient(90deg, #2d3436, #d63031);
+            font-family: 'Permanent Marker', cursive; /* Fuente Grafiti */
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: -2px;
+            /* DEGRADADO PASTEL EN EL TEXTO */
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 10px rgba(255,255,255,0.5); /* Brillo sutil */
         }
 
         .tag {
             display: inline-block;
-            background: #fff;
-            padding: 6px 18px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px 20px;
             border-radius: 50px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #636e72;
+            transition: 0.4s;
         }
         
         .tag:hover { transform: scale(1.1); background: #2d3436; color: #fff; }
@@ -86,77 +88,78 @@
         .section-title {
             font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
             color: #b2bec3;
-            margin: 30px 0 15px 0;
+            margin: 40px 0 20px 0;
             font-weight: 600;
         }
 
+        /* CAJAS DE INFORMACIÓN INTERACTIVAS */
         .info-box {
-            background: rgba(255, 255, 255, 0.5);
-            padding: 25px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            margin-bottom: 15px;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.3); /* Muy transparente */
+            padding: 30px;
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .info-box:hover {
-            transform: scale(1.02);
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transform: scale(1.03) rotate(-1deg); /* Gira un poco */
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
         }
 
+        /* CONTENEDOR DE REDES SOCIALES */
         .social-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 20px;
         }
 
+        /* ENLACES SOCIALES ESTILO CRISTAL */
         .social-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.6);
-            padding: 15px;
-            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 18px;
+            border-radius: 22px;
             text-decoration: none;
             color: #2d3436;
             font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
             transition: 0.3s;
         }
 
         .social-link:hover {
             background: #2d3436;
             color: #fff;
-            transform: translateY(-5px);
+            transform: translateY(-8px);
         }
 
         footer {
-            margin-top: 40px;
-            font-size: 0.8rem;
+            margin-top: 50px;
+            font-size: 0.85rem;
             color: #b2bec3;
             opacity: 0;
-            animation: fadeInUp 1s ease-out 0.5s forwards; /* Aparece con retraso */
+            animation: fadeInUp 1.2s ease-out 0.6s forwards; /* Aparece con retraso */
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow" style="top: 20%; left: 20%; background: rgba(254, 214, 227, 0.5);"></div>
-    <div class="bg-glow" style="bottom: 20%; right: 20%; background: rgba(168, 237, 234, 0.5);"></div>
-
     <div class="glass-card">
         <div class="header-section">
             <h1>Andrey Mihai</h1>
-            <span class="tag">Digital Creator</span>
+            <span class="tag">Developer</span>
         </div>
 
         <p class="section-title">En qué estoy</p>
         <div class="info-box">
-            <h3 style="color: #d63031; margin-bottom: 8px;">xA Addon</h3>
-            <p style="font-size: 0.95rem; color: #636e72;">Optimización y desarrollo de módulos personalizados. Enfocado en la eficiencia extrema del código.</p>
+            <h3 style="color: #e91e63; font-size: 1.1rem; margin-bottom: 10px;">xA Addon</h3>
+            <p style="font-size: 1rem; color: #636e72; line-height: 1.7;">Optimización y desarrollo de módulos personalizados. Mi enfoque está en la eficiencia extrema y el rendimiento absoluto del código.</p>
         </div>
 
         <p class="section-title">Contacto</p>
@@ -166,10 +169,11 @@
         </div>
 
         <p class="section-title">Stack</p>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
             <span class="tag">Development</span>
             <span class="tag">xA Addon</span>
             <span class="tag">Optimization</span>
+            <span class="tag">UI Design</span>
         </div>
     </div>
 
