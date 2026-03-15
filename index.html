@@ -3,405 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andrey Mihai | Official Space</title>
+    <title>Andrey Mihai | Personal Space</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@200;400;600;800&family=JetBrains+Mono:wght@300&display=swap');
 
+        /* --- VARIABLES DE DISEÑO --- */
         :root {
             --primary: #a18cd1;
             --secondary: #fbc2eb;
             --accent: #ff9a9e;
-            --bg: #020202;
+            --bg-dark: #010101;
             --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.07);
         }
 
-        /* RESET MÁXIMO */
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg);
+        body, html {
+            height: 100%;
+            background-color: var(--bg-dark);
             color: #fff;
-            min-height: 100vh;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden; /* Evitamos scroll feo */
+        }
+
+        /* --- PANTALLA DE ENTRADA (OBLIGATORIA PARA EL AUDIO) --- */
+        #enter-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            cursor: pointer;
+            transition: opacity 1s ease;
+        }
+
+        #enter-screen h2 {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 2rem;
+            letter-spacing: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        #enter-screen p {
+            font-size: 0.7rem;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* --- FONDO AVANZADO --- */
+        .bg-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #0a0a1a 0%, #000 100%);
+        }
+
+        #particle-canvas { position: absolute; top: 0; left: 0; }
+
+        .aurora {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(161,140,209,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 90% 80%, rgba(255,154,158,0.1) 0%, transparent 50%);
+            filter: blur(100px);
+            animation: auroraFloat 20s infinite alternate;
+        }
+
+        @keyframes auroraFloat {
+            from { transform: translate(0,0); }
+            to { transform: translate(5%, 5%); }
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .main-wrapper {
+            opacity: 0; /* Empieza oculto hasta que se haga click */
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            perspective: 1200px;
-        }
-
-        /* FONDO DINÁMICO AVANZADO */
-        .bg-layer {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-            background: radial-gradient(circle at 50% 50%, #0d0d0d 0%, #000 100%);
-        }
-
-        .aurora-glow {
-            position: absolute;
-            width: 150%; height: 150%;
-            top: -25%; left: -25%;
-            background: radial-gradient(circle at 20% 30%, rgba(161, 140, 209, 0.15) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, rgba(255, 154, 158, 0.1) 0%, transparent 40%);
-            animation: rotateBG 30s infinite linear;
-        }
-
-        @keyframes rotateBG { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; }
-
-        /* CONTENEDOR PRINCIPAL */
-        .wrapper {
-            width: 100%;
-            max-width: 520px;
+            min-height: 100vh;
             padding: 20px;
-            z-index: 5;
-            animation: slideUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: opacity 1.5s ease;
         }
 
-        @keyframes slideUp {
-            0% { opacity: 0; transform: translateY(80px) scale(0.9); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .main-card {
+        .card {
             background: var(--glass);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             border: 1px solid var(--border);
-            border-radius: 45px;
-            padding: 55px 40px;
-            box-shadow: 0 40px 120px rgba(0,0,0,0.9);
+            border-radius: 40px;
+            width: 100%;
+            max-width: 500px;
+            padding: 50px 30px;
             text-align: center;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
             transform-style: preserve-3d;
             position: relative;
         }
 
-        /* DISEÑO DE CABECERA */
-        .title-glitch {
+        /* --- CABECERA --- */
+        .name {
             font-family: 'Permanent Marker', cursive;
-            font-size: clamp(2.8rem, 10vw, 3.5rem);
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, var(--primary), var(--accent));
+            font-size: clamp(2.5rem, 8vw, 3.5rem);
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 15px rgba(161, 140, 209, 0.4));
         }
 
-        .counter-pill {
+        .view-pill {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            background: rgba(255,255,255,0.02);
-            padding: 10px 22px;
-            border-radius: 100px;
+            gap: 10px;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 18px;
+            border-radius: 50px;
             border: 1px solid var(--border);
+            margin-bottom: 25px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
             color: var(--primary);
-            margin-bottom: 30px;
         }
 
-        /* REPRODUCTOR DE MÚSICA FIX */
-        .music-system {
-            background: rgba(0,0,0,0.4);
-            border-radius: 30px;
-            padding: 25px;
-            margin: 25px 0;
-            border: 1px solid rgba(255,255,255,0.05);
+        /* --- PLAYER GUNS.LOL --- */
+        .audio-player {
+            background: rgba(255,255,255,0.02);
+            border-radius: 25px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            transition: 0.3s;
         }
 
-        .song-name {
-            font-size: 0.65rem;
-            text-transform: uppercase;
+        .audio-player:hover { border-color: var(--primary); }
+
+        .track-name {
+            font-size: 0.6rem;
             letter-spacing: 3px;
             color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
             margin-bottom: 15px;
-            display: block;
         }
 
-        .music-btns {
+        .visualizer {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 25px;
+            align-items: flex-end;
+            gap: 3px;
+            height: 20px;
+            margin-bottom: 15px;
         }
 
-        .main-play-btn {
-            width: 65px; height: 65px;
+        .bar {
+            width: 3px;
+            height: 5px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: 0.2s;
+        }
+
+        .bar.animating { animation: barMove 0.8s infinite alternate; }
+        @keyframes barMove { 0% { height: 5px; } 100% { height: 20px; } }
+
+        .play-button {
+            width: 60px; height: 60px;
             border-radius: 50%;
             background: #fff;
             border: none;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
         }
 
-        .main-play-btn i { color: #000; font-size: 1.5rem; margin-left: 3px; }
-        .main-play-btn:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 0 40px var(--primary); }
-        .main-play-btn.playing i { margin-left: 0; }
+        .play-button i { color: #000; font-size: 1.2rem; }
+        .play-button:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--primary); }
 
-        .vol-bar {
-            -webkit-appearance: none;
-            width: 100px;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-        }
+        /* --- SECCIONES --- */
+        .content-stack { margin-top: 30px; text-align: left; }
 
-        .vol-bar::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px; height: 14px;
-            background: #fff; border-radius: 50%; cursor: pointer;
-        }
-
-        /* SECCIONES DE CONTENIDO */
-        .box-grid { margin-top: 40px; text-align: left; }
-
-        .label-tag {
+        .label {
             font-size: 0.65rem;
-            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 4px;
-            color: rgba(255,255,255,0.15);
-            margin-bottom: 15px;
+            color: rgba(255,255,255,0.2);
+            margin: 20px 0 10px 5px;
             display: block;
         }
 
-        .card-info {
+        .box {
             background: rgba(255,255,255,0.01);
-            border: 1px solid var(--border);
-            border-radius: 25px;
-            padding: 25px;
-            margin-bottom: 20px;
-            transition: 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-info:hover {
-            background: rgba(255,255,255,0.03);
-            transform: scale(1.02);
-            border-color: var(--primary);
-        }
-
-        .card-info h3 {
-            color: var(--primary);
-            font-size: 1rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .card-info p {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.5);
-            line-height: 1.7;
-        }
-
-        /* BOTONES SOCIALES */
-        .social-flex {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .btn-link {
-            background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
             padding: 20px;
             border-radius: 20px;
+            margin-bottom: 15px;
+            transition: 0.4s;
+        }
+
+        .box:hover {
+            background: rgba(255,255,255,0.03);
+            transform: translateX(10px);
+            border-color: var(--primary);
+        }
+
+        .box h4 { color: var(--primary); font-size: 0.95rem; margin-bottom: 8px; }
+        .box p { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+        /* --- SOCIAL --- */
+        .social-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .btn {
+            background: rgba(255,255,255,0.05);
+            padding: 18px;
+            border-radius: 18px;
             text-decoration: none;
             color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            text-align: center;
             font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
             transition: 0.3s;
         }
 
-        .btn-link:hover {
-            background: #fff;
-            color: #000;
-            transform: translateY(-5px);
-        }
+        .btn:hover { background: #fff; color: #000; transform: translateY(-5px); }
 
-        .tags-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .tag-item {
-            background: rgba(161, 140, 209, 0.05);
-            color: var(--primary);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.7rem;
-            border: 1px solid rgba(161, 140, 209, 0.15);
-        }
-
-        footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 0.7rem;
+        .footer-text {
+            margin-top: 40px;
+            font-size: 0.65rem;
             color: rgba(255,255,255,0.15);
             letter-spacing: 2px;
         }
 
-        /* --- SCRIPT ASSETS --- */
     </style>
 </head>
 <body>
 
-    <div class="bg-layer">
-        <div class="aurora-glow"></div>
-        <canvas id="nebula-canvas"></canvas>
+    <div id="enter-screen" onclick="startApp()">
+        <h2>ANDREY</h2>
+        <p>Click to Enter</p>
     </div>
 
-    <div class="wrapper">
-        <main class="main-card" id="tilt-card">
+    <div class="bg-container">
+        <div class="aurora"></div>
+        <canvas id="particle-canvas"></canvas>
+    </div>
+
+    <div class="main-wrapper" id="app">
+        <div class="card" id="tilt-card">
             
             <header>
-                <h1 class="title-glitch">Andrey Mihai</h1>
-                <div class="counter-pill">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <img src="https://count.getloli.com/get/@andrey828?theme=rule73" alt="Views" style="height: 22px; filter: invert(1) brightness(2);">
+                <h1 class="name">Andrey Mihai</h1>
+                <div class="view-pill">
+                    <i class="fa-solid fa-bolt"></i>
+                    <img src="https://count.getloli.com/get/@andrey828?theme=rule73" alt="Views" style="height: 18px; filter: invert(1) brightness(2);">
                 </div>
             </header>
 
-            <div class="music-system">
-                <span class="song-name" id="track-status">Deep Vibe • Active</span>
-                <div class="music-btns">
-                    <button class="main-play-btn" id="playTrigger">
-                        <i class="fa-solid fa-play" id="icon"></i>
-                    </button>
-                    <input type="range" class="vol-bar" id="vol" min="0" max="1" step="0.01" value="0.5">
+            <div class="audio-player">
+                <div class="track-name" id="song-title">Vibe: Lost in Digital</div>
+                <div class="visualizer">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
                 </div>
-                <audio id="main-audio" loop>
-                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3" type="audio/mpeg">
+                <button class="play-button" id="btn-audio">
+                    <i class="fa-solid fa-play" id="p-icon"></i>
+                </button>
+                <audio id="main-track" loop>
+                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
                 </audio>
             </div>
 
-            <div class="box-grid">
-                <span class="label-tag">Engineering</span>
-                <div class="card-info">
-                    <h3><i class="fa-solid fa-code-merge"></i> xA Addon</h3>
-                    <p>Foco absoluto en la modularidad y el rendimiento técnico. Desarrollando herramientas que transforman la interacción del usuario con el software.</p>
+            <div class="content-stack">
+                <span class="label">Primary focus</span>
+                <div class="box">
+                    <h4>xA Addon</h4>
+                    <p>Optimización extrema de scripts y módulos dinámicos. Rendimiento sin concesiones.</p>
                 </div>
 
-                <span class="label-tag">Profile</span>
-                <div class="card-info">
-                    <h3><i class="fa-solid fa-shield-halved"></i> Digital Concept</h3>
-                    <p>Arquitectura minimalista aplicada al desarrollo. Cada proyecto es una búsqueda de la eficiencia pura y la estética funcional.</p>
-                </div>
-                
-                <span class="label-tag">Social</span>
-                <div class="social-flex">
-                    <a href="https://github.com/andrey828" target="_blank" class="btn-link">
-                        <i class="fa-brands fa-github"></i> GitHub
-                    </a>
-                    <a href="https://discord.gg/8ezp4sthqG" target="_blank" class="btn-link">
-                        <i class="fa-brands fa-discord"></i> Discord
-                    </a>
+                <span class="label">Identity</span>
+                <div class="box">
+                    <h4>Digital Architect</h4>
+                    <p>Minimalismo aplicado al desarrollo. Entusiasta de las interfaces limpias y el código eficiente.</p>
                 </div>
 
-                <div class="tags-wrap">
-                    <span class="tag-item">Optimization Expert</span>
-                    <span class="tag-item">xA Framework</span>
-                    <span class="tag-item">Performance</span>
-                    <span class="tag-item">Clean UI</span>
+                <div class="social-row">
+                    <a href="https://github.com/andrey828" target="_blank" class="btn"><i class="fa-brands fa-github"></i> GitHub</a>
+                    <a href="https://discord.gg/8ezp4sthqG" target="_blank" class="btn"><i class="fa-brands fa-discord"></i> Discord</a>
                 </div>
             </div>
 
-        </main>
-
-        <footer>
-            &copy; 2026 ANDREY MIHAI • DIGITAL ARCHITECT
-        </footer>
+            <p class="footer-text">© 2026 ANDREY MIHAI • EST. CASTELLÓN</p>
+        </div>
     </div>
 
     <script>
-        // --- MOTOR DE AUDIO ---
-        const audio = document.getElementById('main-audio');
-        const playBtn = document.getElementById('playTrigger');
-        const icon = document.getElementById('icon');
-        const vol = document.getElementById('vol');
-        const status = document.getElementById('track-status');
+        // --- INICIALIZACIÓN ---
+        const audio = document.getElementById('main-track');
+        const playBtn = document.getElementById('btn-audio');
+        const pIcon = document.getElementById('p-icon');
+        const bars = document.querySelectorAll('.bar');
+        const enterScreen = document.getElementById('enter-screen');
+        const app = document.getElementById('app');
 
-        audio.volume = vol.value;
+        // Función para entrar a la web y sonar la música
+        function startApp() {
+            enterScreen.style.opacity = '0';
+            setTimeout(() => {
+                enterScreen.style.display = 'none';
+                app.style.opacity = '1';
+                
+                // Intentamos reproducir automáticamente tras el primer click
+                audio.play().then(() => {
+                    updatePlayerStatus(true);
+                }).catch(err => console.log("Manual play required"));
+            }, 1000);
+        }
+
+        function updatePlayerStatus(isPlaying) {
+            if(isPlaying) {
+                pIcon.classList.replace('fa-play', 'fa-pause');
+                bars.forEach((bar, i) => {
+                    bar.classList.add('animating');
+                    bar.style.animationDelay = `${i * 0.1}s`;
+                });
+                document.getElementById('song-title').style.color = '#a18cd1';
+            } else {
+                pIcon.classList.replace('fa-pause', 'fa-play');
+                bars.forEach(bar => bar.classList.remove('animating'));
+                document.getElementById('song-title').style.color = 'rgba(255,255,255,0.3)';
+            }
+        }
 
         playBtn.addEventListener('click', () => {
             if (audio.paused) {
-                // El navegador requiere esta promesa para activar el sonido
-                audio.play().then(() => {
-                    icon.classList.replace('fa-play', 'fa-pause');
-                    playBtn.classList.add('playing');
-                    status.innerText = "Now Playing • Audio Stream";
-                    status.style.color = "#a18cd1";
-                }).catch(err => {
-                    console.log("Error de reproducción: ", err);
-                    alert("Haz clic de nuevo para activar la música.");
-                });
+                audio.play();
+                updatePlayerStatus(true);
             } else {
                 audio.pause();
-                icon.classList.replace('fa-pause', 'fa-play');
-                playBtn.classList.remove('playing');
-                status.innerText = "Paused";
-                status.style.color = "rgba(255,255,255,0.3)";
+                updatePlayerStatus(false);
             }
         });
-
-        vol.oninput = (e) => { audio.volume = e.target.value; };
 
         // --- EFECTO 3D CARD ---
         const card = document.getElementById('tilt-card');
         document.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 30;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            const x = (window.innerWidth / 2 - e.pageX) / 30;
+            const y = (window.innerHeight / 2 - e.pageY) / 30;
+            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
         });
 
-        // --- CANVAS DE FONDO ---
-        const canvas = document.getElementById('nebula-canvas');
+        // --- CANVAS DE RED NEURONAL ---
+        const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-        let dots = [];
+        let particles = [];
 
         function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            dots = [];
-            for(let i=0; i<80; i++) {
-                dots.push({
+            particles = [];
+            for(let i=0; i<100; i++) {
+                particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.4,
-                    vy: (Math.random() - 0.5) * 0.4,
-                    size: Math.random() * 2
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
                 });
             }
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            dots.forEach(d => {
-                d.x += d.vx; d.y += d.vy;
-                if(d.x < 0 || d.x > canvas.width) d.vx *= -1;
-                if(d.y < 0 || d.y > canvas.height) d.vy *= -1;
+            particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.fillStyle = 'rgba(161, 140, 209, 0.4)';
                 ctx.beginPath();
-                ctx.arc(d.x, d.y, d.size, 0, Math.PI*2);
-                ctx.fillStyle = 'rgba(161, 140, 209, 0.3)';
+                ctx.arc(p.x, p.y, 1.2, 0, Math.PI*2);
                 ctx.fill();
+
+                // Líneas de conexión
+                for(let j=i+1; j<particles.length; j++) {
+                    const p2 = particles[j];
+                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if(dist < 100) {
+                        ctx.strokeStyle = `rgba(161, 140, 209, ${1 - dist/100})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
             });
             requestAnimationFrame(animate);
         }
