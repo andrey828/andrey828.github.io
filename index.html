@@ -9,12 +9,10 @@
         @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@300;600;800&display=swap');
 
         :root {
-            /* PALETA CELESTE / CIAN */
             --bg: #000000;
             --text: #ffffff;
-            --accent: #4facfe; /* Celeste brillante */
+            --accent: #4facfe;
             --accent-glow: rgba(79, 172, 254, 0.4);
-            --card-glass: rgba(255, 255, 255, 0.01);
             --item-bg: rgba(79, 172, 254, 0.05);
             --border: rgba(79, 172, 254, 0.2);
             --btn-p: #4facfe;
@@ -25,7 +23,6 @@
             --bg: #f0faff;
             --text: #1a2a3a;
             --accent: #00a8ff;
-            --card-glass: rgba(255, 255, 255, 0.4);
             --item-bg: rgba(0, 168, 255, 0.05);
             --border: rgba(0, 168, 255, 0.1);
             --btn-p: #00a8ff;
@@ -41,15 +38,12 @@
             transition: 0.5s ease;
         }
 
-        /* FONDO DE LUCES CELESTES */
         .neon-bg {
             position: fixed; inset: 0; z-index: -2;
             background: 
                 radial-gradient(circle at 15% 15%, rgba(79, 172, 254, 0.2) 0%, transparent 40%),
                 radial-gradient(circle at 85% 85%, rgba(0, 242, 254, 0.15) 0%, transparent 40%);
-            animation: pulseGlow 10s infinite alternate ease-in-out;
         }
-        @keyframes pulseGlow { from { opacity: 0.7; } to { opacity: 1; } }
 
         #star-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
 
@@ -60,82 +54,114 @@
             display: flex; align-items: center; justify-content: center; gap: 8px;
             border-bottom: 1px solid var(--border); z-index: 1000;
         }
-        nav a {
-            color: var(--text); text-decoration: none; font-size: 0.75rem; font-weight: 800;
+        nav button {
+            background: none; border: none; color: var(--text); 
+            font-size: 0.75rem; font-weight: 800; cursor: pointer;
             padding: 10px 22px; border-radius: 50px; opacity: 0.5; transition: 0.3s;
         }
-        nav a.active { background: var(--btn-p); color: #fff; opacity: 1; box-shadow: 0 0 15px var(--accent-glow); }
+        nav button.active { background: var(--btn-p); color: #fff; opacity: 1; box-shadow: 0 0 15px var(--accent-glow); }
 
-        /* TEMA TOGGLE */
-        .theme-btn { position: fixed; bottom: 25px; right: 25px; z-index: 1000; background: var(--item-bg); border: 1px solid var(--border); color: var(--text); padding: 15px; border-radius: 50%; cursor: pointer; backdrop-filter: var(--blur); }
+        .theme-btn { position: fixed; bottom: 25px; right: 25px; z-index: 1000; background: var(--item-bg); border: 1px solid var(--border); color: var(--text); padding: 15px; border-radius: 50%; cursor: pointer; }
 
-        /* HERO SECTION */
-        .hero { width: 90%; max-width: 450px; padding: 100px 0 40px; text-align: center; }
-        
-        .status-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 25px; }
-        .tag { padding: 6px 14px; background: rgba(79, 172, 254, 0.1); color: var(--accent); border-radius: 50px; font-size: 0.65rem; font-weight: 800; border: 1px solid var(--border); }
-        .creator { font-size: 0.8rem; opacity: 0.7; font-weight: 600; }
-        .creator span { color: var(--accent); }
+        /* CONTENEDOR DE SECCIONES */
+        .section { 
+            display: none; width: 90%; max-width: 450px; padding: 60px 0; 
+            text-align: center; animation: fadeIn 0.5s ease forwards;
+        }
+        .section.active { display: block; }
 
-        .hero h1 { font-size: 3.5rem; line-height: 1; margin-bottom: 20px; font-weight: 800; }
-        .hero h1 span { color: var(--accent); background: linear-gradient(to right, #4facfe, #00f2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { font-size: 0.95rem; opacity: 0.6; line-height: 1.6; margin-bottom: 35px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* BOTONES */
-        .main-btn { display: block; width: 100%; background: var(--btn-p); color: #fff; text-align: center; padding: 22px; border-radius: 20px; text-decoration: none; font-weight: 800; font-size: 1rem; box-shadow: 0 10px 30px var(--accent-glow); transition: 0.3s; }
-        .main-btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
+        /* HEADER INFO */
+        .dev-tag { margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; background: rgba(79, 172, 254, 0.1); padding: 8px 16px; border-radius: 50px; border: 1px solid var(--border); }
+        .dev-tag span { font-size: 0.7rem; font-weight: 800; color: var(--accent); }
 
-        .socials { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; width: 100%; }
-        .social-btn { background: var(--item-bg); border: 1px solid var(--border); color: var(--text); text-align: center; padding: 18px; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .social-btn:hover { background: rgba(79, 172, 254, 0.15); }
+        h1 { font-size: 3.5rem; line-height: 1; margin-bottom: 20px; }
+        h1 span { color: var(--accent); }
+        p { font-size: 0.95rem; opacity: 0.6; line-height: 1.6; margin-bottom: 35px; }
 
-        /* FOOTER */
-        footer { margin-top: auto; padding: 60px 0 40px; font-size: 0.7rem; opacity: 0.4; letter-spacing: 1px; text-align: center; width: 90%; line-height: 1.8; }
+        .main-btn { display: block; width: 100%; background: var(--btn-p); color: #fff; text-align: center; padding: 22px; border-radius: 20px; text-decoration: none; font-weight: 800; font-size: 1rem; box-shadow: 0 10px 30px var(--accent-glow); margin-bottom: 15px; }
+        .social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: var(--item-bg); border: 1px solid var(--border); color: var(--text); padding: 18px; border-radius: 20px; text-decoration: none; font-weight: 600; }
 
+        /* ESTILO LISTAS (FEATURES/MÓDULOS) */
+        .list-item { background: var(--item-bg); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 15px; text-align: left; }
+        .list-item h4 { color: var(--accent); margin-bottom: 5px; }
+        .list-item p { margin-bottom: 0; font-size: 0.85rem; }
+
+        footer { margin-top: auto; padding: 40px 0; font-size: 0.7rem; opacity: 0.4; text-align: center; width: 90%; }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="#" class="active">Inicio</a>
-        <a href="#">Features</a>
-        <a href="#">Módulos</a>
+        <button onclick="showSection('inicio')" id="btn-inicio" class="active">Inicio</button>
+        <button onclick="showSection('features')" id="btn-features">Features</button>
+        <button onclick="showSection('modulos')" id="btn-modulos">Módulos</button>
     </nav>
 
     <div class="theme-btn" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i></div>
-
     <div class="neon-bg"></div>
     <canvas id="star-canvas"></canvas>
 
-    <div class="hero">
-        <div class="status-container">
-            <div class="tag">SYSTEM</div>
-            <div class="creator">Creado por <span>Mihai</span></div>
-        </div>
-
+    <div id="inicio" class="section active">
+        <div class="dev-tag"><span>DEV MIHAI</span></div>
         <h1>xA <span>Addon</span></h1>
-        
         <p>Addon for optimization and script development with exclusive modules for xA Addon. Focus on efficiency and performance.</p>
-        
         <a href="#" class="main-btn">DESCARGAR AHORA</a>
+        <a href="https://discord.gg/8ezp4sthqG" class="social-btn"><i class="fa-brands fa-discord"></i> Discord Oficial</a>
+    </div>
 
-        <div class="socials">
-            <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i> YouTube</a>
-            <a href="#" class="social-btn"><i class="fa-brands fa-tiktok"></i> TikTok</a>
-            <a href="https://discord.gg/8ezp4sthqG" class="social-btn" style="grid-column: span 2;"><i class="fa-brands fa-discord"></i> Discord</a>
+    <div id="features" class="section">
+        <h2 style="margin-bottom: 30px; font-family: 'Permanent Marker'; font-size: 2.5rem;">Features</h2>
+        <div class="list-item">
+            <h4>Optimización Core</h4>
+            <p>Aumenta los FPS y reduce el uso de memoria RAM del sistema de forma inteligente.</p>
+        </div>
+        <div class="list-item">
+            <h4>Interface Crystal</h4>
+            <p>Diseño basado en transparencias modernas que no afectan el rendimiento visual.</p>
+        </div>
+        <div class="list-item">
+            <h4>Auto-Scripting</h4>
+            <p>Herramientas integradas para facilitar el desarrollo de scripts personalizados.</p>
+        </div>
+    </div>
+
+    <div id="modulos" class="section">
+        <h2 style="margin-bottom: 30px; font-family: 'Permanent Marker'; font-size: 2.5rem;">Módulos</h2>
+        <div class="list-item">
+            <h4>xA-Visuals</h4>
+            <p>Módulo premium para texturas y efectos de luz optimizados.</p>
+        </div>
+        <div class="list-item">
+            <h4>xA-Booster</h4>
+            <p>Acelera la velocidad de procesamiento de datos en tiempo real.</p>
+        </div>
+        <div class="list-item">
+            <h4>xA-Cripto</h4>
+            <p>Sistema de seguridad para proteger tus configuraciones y scripts.</p>
         </div>
     </div>
 
     <footer>
-        © 2026 xA Addon. Todos los derechos reservados.<br>
-        15 módulos exclusivos | Versión 2.0 Stable
+        ©️ 2026 xA Addon. Todos los derechos reservados.<br>
+        Hecho con ❤️ por Dev Mihai
     </footer>
 
     <script>
+        // Lógica de cambio de secciones
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            document.getElementById('btn-' + sectionId).classList.add('active');
+        }
+
+        // Estrellas de fondo
         const cvs = document.getElementById('star-canvas');
         const ctx = cvs.getContext('2d');
         let pts = [];
-
         function resize() { cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
         function create() {
             pts = [];
@@ -145,8 +171,7 @@
         }
         function anim() {
             ctx.clearRect(0,0,cvs.width,cvs.height);
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            ctx.fillStyle = isDark ? "rgba(255,255,255,0.4)" : "rgba(0,168,255,0.2)";
+            ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? "rgba(255,255,255,0.4)" : "rgba(0,168,255,0.2)";
             pts.forEach(p => {
                 p.y -= p.v; if(p.y < 0) p.y = cvs.height;
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
