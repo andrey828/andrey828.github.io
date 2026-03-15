@@ -3,33 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Andrey Mihai | Premium</title>
+    <title>Andrey Mihai</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@300;800&display=swap');
 
         :root {
-            /* TEMA OSCURO */
-            --bg: #010101;
+            /* MODO OSCURO */
+            --bg: #000000;
             --card-bg: rgba(255, 255, 255, 0.04);
             --text: #ffffff;
             --accent: #f1c40f; 
-            --nebula-1: rgba(241, 196, 15, 0.2);
-            --nebula-2: rgba(114, 137, 218, 0.2);
+            --nebula: rgba(241, 196, 15, 0.15);
             --border: rgba(255, 255, 255, 0.1);
-            --glass: blur(55px);
+            --glass: blur(40px);
         }
 
         [data-theme="light"] {
-            /* TEMA CLARO CON LUCES Y TRANSPARENCIAS */
-            --bg: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.4);
-            --text: #4a4a4a;
-            --accent: #ff7eb3; 
-            --nebula-1: rgba(255, 126, 179, 0.2);
-            --nebula-2: rgba(114, 137, 218, 0.2);
-            --border: rgba(0, 0, 0, 0.05);
-            --glass: blur(40px);
+            /* MODO CLARO CORREGIDO */
+            --bg: #f0f2f5; /* Fondo grisáceo para que resalte el blanco transparente */
+            --card-bg: rgba(255, 255, 255, 0.3); /* Menos opacidad para ver el fondo */
+            --text: #2d3436;
+            --accent: #ff7675; 
+            --nebula: rgba(255, 118, 117, 0.2);
+            --border: rgba(255, 255, 255, 0.5);
+            --glass: blur(30px);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -39,76 +37,60 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow: hidden; height: 100vh;
             display: flex; align-items: center; justify-content: center;
-            transition: background 0.5s ease;
+            transition: 0.5s ease;
         }
 
-        /* LUCES DINÁMICAS (Nebulosa) */
+        /* LUCES DINÁMICAS */
         .nebula {
             position: fixed; inset: -50%; z-index: -1;
-            background: radial-gradient(circle at 30% 30%, var(--nebula-1) 0%, transparent 40%),
-                        radial-gradient(circle at 70% 70%, var(--nebula-2) 0%, transparent 40%);
-            filter: blur(80px); animation: nebula-spin 25s infinite linear;
+            background: radial-gradient(circle at 30% 30%, var(--nebula) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(114, 137, 218, 0.15) 0%, transparent 50%);
+            animation: move 20s infinite linear;
         }
-        @keyframes nebula-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes move { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* BOTÓN DE TEMA */
+        /* BOTÓN TEMA */
         .theme-switch {
             position: fixed; top: 25px; right: 25px; z-index: 1000;
             background: var(--card-bg); border: 1px solid var(--border);
-            padding: 15px; border-radius: 50%; cursor: pointer;
-            backdrop-filter: blur(10px); color: var(--text);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 15px; border-radius: 50%; cursor: pointer; backdrop-filter: var(--glass);
         }
 
-        /* SPLASH SCREEN */
+        /* SPLASH */
         #splash {
             position: fixed; inset: 0; background: var(--bg); z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
-        #splash h1 { font-family: 'Permanent Marker'; font-size: 4rem; color: var(--accent); text-shadow: 0 0 25px var(--accent); }
+        #splash h1 { font-family: 'Permanent Marker'; font-size: 4rem; color: var(--accent); }
 
-        /* TARJETA CRISTAL PREMIUM */
-        #content { opacity: 0; transform: scale(0.9); width: 92%; max-width: 420px; z-index: 10; transition: 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        
+        /* TARJETA */
+        #content { opacity: 0; transform: scale(0.9); width: 90%; max-width: 400px; z-index: 10; transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .card {
-            background: var(--card-bg); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-            border: 1px solid var(--border); border-radius: 75px; padding: 55px 35px; 
-            text-align: center; box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+            background: var(--card-bg); 
+            backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+            border: 1px solid var(--border); border-radius: 70px; padding: 60px 30px; 
+            text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.1);
         }
 
-        .name { font-family: 'Permanent Marker'; font-size: 3rem; margin-bottom: 25px; }
+        .name { font-family: 'Permanent Marker'; font-size: 3rem; margin-bottom: 30px; }
 
-        /* CONTADOR DE NÚMEROS */
-        .vistas {
-            display: inline-flex; align-items: center; gap: 10px;
-            background: rgba(0,0,0,0.05); padding: 10px 22px; border-radius: 100px;
-            border: 1px solid var(--border); margin-bottom: 30px;
-        }
-        .vistas img { height: 18px; filter: grayscale(1) contrast(1.2); }
-        [data-theme="dark"] .vistas img { filter: invert(1) brightness(2); }
-
-        /* PLAYER */
         .player {
-            background: rgba(0,0,0,0.03); border-radius: 45px; padding: 30px;
+            background: rgba(0,0,0,0.05); border-radius: 40px; padding: 30px;
             margin-bottom: 30px; border: 1px solid var(--border);
         }
         .play-btn {
-            width: 75px; height: 75px; border-radius: 50%; background: var(--text);
-            color: var(--bg); border: none; cursor: pointer; font-size: 1.5rem; transition: 0.3s;
+            width: 70px; height: 70px; border-radius: 50%; background: var(--text);
+            color: var(--bg); border: none; cursor: pointer; font-size: 1.5rem;
         }
-        .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px var(--accent); }
 
-        /* GRUPO DE BOTONES */
-        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 20px; border-radius: 35px; text-decoration: none; font-weight: 800;
-            font-size: 0.8rem; border: 1px solid var(--border); transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 18px; border-radius: 30px; text-decoration: none; font-weight: 800;
+            font-size: 0.8rem; border: 1px solid var(--border);
         }
         .github { background: var(--text); color: var(--bg); }
-        .discord { background: #5865F2; color: white; border: none; }
-        .btn:hover { transform: translateY(-5px); filter: brightness(1.1); }
-
+        .discord { background: #5865F2; color: white; }
     </style>
 </head>
 <body>
@@ -117,7 +99,7 @@
 
     <div id="splash" onclick="start()">
         <h1>ANDREY</h1>
-        <p style="opacity: 0.5; letter-spacing: 5px; margin-top: 15px;">TAP TO UNLOCK</p>
+        <p style="opacity: 0.5; letter-spacing: 5px; margin-top: 15px;">TAP TO START</p>
     </div>
 
     <div class="nebula"></div>
@@ -126,28 +108,25 @@
         <div class="card">
             <h1 class="name">Andrey Mihai</h1>
             
-            <div class="vistas">
-                <span style="font-size: 0.6rem; opacity: 0.5; font-weight: 800; letter-spacing: 1px;">VIEWS</span>
-                <img src="https://count.getloli.com/get/@andrey828?theme=moebooru">
-            </div>
-
             <div class="player">
-                <p style="color: var(--accent); font-size: 0.75rem; font-weight: 800; margin-bottom: 20px; letter-spacing: 2px;">COLDPLAY - YELLOW</p>
-                <button class="play-btn" onclick="playMusic()"><i class="fa-solid fa-play" id="icon"></i></button>
+                <p style="color: var(--accent); font-size: 0.7rem; font-weight: 800; margin-bottom: 15px; letter-spacing: 2px;">COLDPLAY - YELLOW</p>
+                <button class="play-btn" onclick="togglePlay()"><i class="fa-solid fa-play" id="icon"></i></button>
             </div>
 
             <div class="btn-group">
                 <a href="https://github.com/andrey828" target="_blank" class="btn github"><i class="fa-brands fa-github"></i> GITHUB</a>
-                <a href="https://discord.com/users/TU_ID_AQUI" target="_blank" class="btn discord"><i class="fa-brands fa-discord"></i> DISCORD</a>
+                <a href="https://discord.com/users/ANDREY_ID" target="_blank" class="btn discord"><i class="fa-brands fa-discord"></i> DISCORD</a>
             </div>
         </div>
     </div>
 
-    <audio id="musica" loop src="https://files.catbox.moe/0v2z88.mp3"></audio>
+    <audio id="musica" loop></audio>
 
     <script>
         const m = document.getElementById('musica');
         const icon = document.getElementById('icon');
+        // Nuevo link de Dropbox configurado para sonar directo
+        m.src = "https://www.dropbox.com/scl/fi/o256p3m1x6v567dovnd7b/Coldplay-Yellow.mp3?rlkey=v1u7i9tzk6n7v0o40k4yq5e5i&st=0v2z88&dl=1";
 
         function start() {
             document.getElementById('splash').style.opacity = '0';
@@ -155,24 +134,18 @@
                 document.getElementById('splash').style.display = 'none';
                 document.getElementById('content').style.opacity = '1';
                 document.getElementById('content').style.transform = 'scale(1)';
-                // Reproducción con manejo de errores
-                const playPromise = m.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(_ => { icon.className = 'fa-solid fa-pause'; })
-                    .catch(error => { console.log("Auto-play prevenido por el navegador"); });
-                }
+                m.play().then(() => icon.className = 'fa-solid fa-pause');
             }, 600);
         }
 
-        function playMusic() {
+        function togglePlay() {
             if (m.paused) { m.play(); icon.className = 'fa-solid fa-pause'; }
             else { m.pause(); icon.className = 'fa-solid fa-play'; }
         }
 
         function toggleTheme() {
             const h = document.documentElement;
-            const isDark = h.getAttribute('data-theme') === 'dark';
-            h.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
         }
     </script>
 </body>
