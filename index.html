@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -13,36 +13,54 @@
             --a: #ff9a9e;
             --cyan: #8cf1ff;
             --bg: #000000;
+            --text: #ffffff;
+            --card-glass: rgba(255, 255, 255, 0.01);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="light"] {
+            --bg: #f5f7fa;
+            --text: #2d3436;
+            --card-glass: rgba(255, 255, 255, 0.3);
+            --border: rgba(0, 0, 0, 0.05);
+            --p: #6c5ce7;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg);
-            color: #fff;
+            color: var(--text);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow: hidden;
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.5s ease;
         }
 
-        /* PANTALLA DE ENTRADA */
+        /* BOTÓN DE TEMA */
+        .theme-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 10000;
+            background: var(--card-glass); border: 1px solid var(--border);
+            color: var(--text); padding: 12px; border-radius: 50%; cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
         #splash {
-            position: fixed; inset: 0; background: #000; z-index: 9999;
+            position: fixed; inset: 0; background: var(--bg); z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: 1s ease-in-out;
         }
 
         #splash h1 {
             font-family: 'Permanent Marker', cursive; font-size: 3.5rem;
-            background: linear-gradient(90deg, #fff, var(--p), var(--a));
+            background: linear-gradient(90deg, var(--text), var(--p), var(--a));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: pulse 2s infinite alternate;
         }
 
-        /* FONDO DE LUCES Y NEBULOSA */
         .neon-glow {
             position: fixed; inset: 0; z-index: -2;
             background: 
@@ -59,7 +77,6 @@
 
         #bg-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
 
-        /* TARJETA ULTRA TRANSPARENTE */
         #content {
             opacity: 0; transform: translateY(50px);
             transition: 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -67,14 +84,14 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.01);
+            background: var(--card-glass);
             backdrop-filter: blur(50px);
             -webkit-backdrop-filter: blur(50px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
             border-radius: 50px;
             padding: 50px 30px;
             text-align: center;
-            box-shadow: 0 0 80px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.05);
+            box-shadow: 0 0 80px rgba(0,0,0,0.3);
             animation: float 6s infinite ease-in-out;
         }
 
@@ -85,65 +102,60 @@
 
         .name {
             font-family: 'Permanent Marker', cursive; font-size: 3.2rem;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
             margin-bottom: 15px;
         }
 
-        /* REPRODUCTOR MULTI-TRACK */
         .player {
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.1);
             border-radius: 30px; padding: 25px;
-            margin: 25px 0; border: 1px solid rgba(255,255,255,0.08);
+            margin: 25px 0; border: 1px solid var(--border);
         }
 
         .track-info { font-size: 0.6rem; letter-spacing: 2px; color: var(--p); margin-bottom: 15px; text-transform: uppercase; }
 
         .controls { display: flex; align-items: center; justify-content: center; gap: 20px; }
 
-        .nav-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 1.2rem; opacity: 0.5; transition: 0.3s; }
+        .nav-btn { background: none; border: none; color: var(--text); cursor: pointer; font-size: 1.2rem; opacity: 0.5; transition: 0.3s; }
         .nav-btn:hover { opacity: 1; transform: scale(1.2); }
 
         .play-btn {
             width: 60px; height: 60px; border-radius: 50%;
-            background: #fff; border: none; cursor: pointer;
-            font-size: 1.3rem; transition: 0.3s; box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            background: var(--text); color: var(--bg); border: none; cursor: pointer;
+            font-size: 1.3rem; transition: 0.3s;
         }
-        .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--p); }
 
-        /* BARRAS DE MÚSICA */
         .bars { display: flex; justify-content: center; gap: 4px; height: 20px; margin-top: 15px; }
-        .bar { width: 3px; height: 100%; background: var(--cyan); border-radius: 10px; opacity: 0.2; transition: 0.3s; }
+        .bar { width: 3px; height: 100%; background: var(--cyan); border-radius: 10px; opacity: 0.2; }
         .active .bar { animation: bounce 0.5s infinite alternate; }
         @keyframes bounce { from { height: 4px; opacity: 0.3; } to { height: 20px; opacity: 1; } }
 
-        /* INFO BOXES */
         .box {
             background: rgba(255,255,255,0.02); padding: 20px; border-radius: 25px;
-            margin-bottom: 15px; text-align: left; border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
+            margin-bottom: 15px; text-align: left; border: 1px solid var(--border);
         }
-        .box:hover { background: rgba(255,255,255,0.05); border-color: var(--p); transform: translateX(5px); }
         .box h4 { color: var(--p); font-size: 0.9rem; margin-bottom: 5px; }
-        .box p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+        .box p { font-size: 0.8rem; opacity: 0.6; }
 
         .links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .btn {
-            background: rgba(255,255,255,0.05); padding: 18px; border-radius: 20px;
-            text-decoration: none; color: #fff; font-size: 0.8rem; font-weight: 800;
-            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+            background: var(--card-glass); padding: 18px; border-radius: 20px;
+            text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 800;
+            border: 1px solid var(--border); transition: 0.3s;
         }
-        .btn:hover { background: #fff; color: #000; box-shadow: 0 0 20px #fff; }
+        .btn:hover { background: var(--text); color: var(--bg); }
 
-        footer { margin-top: 40px; font-size: 0.6rem; color: rgba(255,255,255,0.2); letter-spacing: 3px; }
+        footer { margin-top: 40px; font-size: 0.6rem; opacity: 0.3; letter-spacing: 3px; }
 
         @keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
+    <button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i></button>
+
     <div id="splash" onclick="entry()">
         <h1>ANDREY</h1>
-        <p style="letter-spacing: 5px; font-size: 0.7rem; color: #888;">TAP TO EXPLORE</p>
+        <p style="letter-spacing: 5px; font-size: 0.7rem; opacity: 0.5;">TAP TO EXPLORE</p>
     </div>
 
     <div class="neon-glow"></div>
@@ -154,11 +166,11 @@
             <h1 class="name">Andrey Mihai</h1>
             
             <div style="margin-bottom: 20px;">
-                <img src="https://count.getloli.com/get/@andrey828?theme=rule73" alt="Views" style="height: 20px; filter: invert(1) brightness(2) hue-rotate(180deg);">
+                <img src="https://count.getloli.com/get/@andrey828?theme=moebooru" alt="Views" style="height: 20px; filter: grayscale(1) invert(1) brightness(2);">
             </div>
 
             <div class="player">
-                <div class="track-info" id="track-name">Track 01 - Loading...</div>
+                <div class="track-info" id="track-name">Loading...</div>
                 <div class="controls">
                     <button class="nav-btn" onclick="prevTrack()"><i class="fa-solid fa-backward-step"></i></button>
                     <button class="play-btn" id="pBtn"><i class="fa-solid fa-play" id="icon"></i></button>
@@ -188,11 +200,9 @@
     </div>
 
     <script>
-        // LISTA DE CANCIONES
         const tracks = [
-            { name: "Lofi Study - Chill", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { name: "Night Drive - Synth", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { name: "Deep Focus - Ambient", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+            { name: "Coldplay - Yellow", url: "https://files.catbox.moe/0v2z88.mp3" },
+            { name: "Night Drive - Synth", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" }
         ];
 
         let currentTrack = 0;
@@ -206,7 +216,6 @@
             currentTrack = index;
             audio.src = tracks[currentTrack].url;
             trackTitle.innerText = tracks[currentTrack].name;
-            if (!audio.paused) audio.play();
         }
 
         function nextTrack() {
@@ -245,51 +254,36 @@
         }
 
         pBtn.onclick = () => {
-            if (audio.paused) {
-                audio.play();
-                updateUI(true);
-            } else {
-                audio.pause();
-                updateUI(false);
-            }
+            if (audio.paused) { audio.play(); updateUI(true); }
+            else { audio.pause(); updateUI(false); }
         };
 
-        // CANVAS PARTICULAS FLOTANTES
+        function toggleTheme() {
+            const h = document.documentElement;
+            h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        }
+
+        // CANVAS PARTICULAS
         const cvs = document.getElementById('bg-canvas');
         const ctx = cvs.getContext('2d');
         let pts = [];
-
-        function resize() {
-            cvs.width = window.innerWidth; cvs.height = window.innerHeight;
-        }
-
+        function resize() { cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
         function create() {
             pts = [];
             for(let i=0; i<50; i++) {
-                pts.push({ 
-                    x: Math.random()*cvs.width, 
-                    y: Math.random()*cvs.height, 
-                    v: Math.random()*0.2 + 0.1,
-                    s: Math.random()*2
-                });
+                pts.push({ x: Math.random()*cvs.width, y: Math.random()*cvs.height, v: Math.random()*0.2 + 0.1, s: Math.random()*2 });
             }
         }
-
         function anim() {
             ctx.clearRect(0,0,cvs.width,cvs.height);
             ctx.fillStyle = "rgba(255,255,255,0.3)";
             pts.forEach(p => {
-                p.y -= p.v;
-                if(p.y < 0) p.y = cvs.height;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.s, 0, Math.PI*2);
-                ctx.fill();
+                p.y -= p.v; if(p.y < 0) p.y = cvs.height;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
             });
             requestAnimationFrame(anim);
         }
-
-        window.onresize = resize;
-        resize(); create(); anim();
+        window.onresize = resize; resize(); create(); anim();
         trackTitle.innerText = tracks[0].name;
     </script>
 </body>
