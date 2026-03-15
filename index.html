@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,29 +9,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@300;600;800&display=swap');
 
         :root {
-            /* MODO OSCURO (Amatist Style) */
             --bg: #000000;
             --text: #ffffff;
             --accent: #4facfe; 
             --accent-glow: rgba(79, 172, 254, 0.4);
-            --nebula: rgba(241, 196, 15, 0.15);
-            --border: rgba(255, 255, 255, 0.1);
-            --card-glass: rgba(255, 255, 255, 0.03);
-            --blur: blur(50px);
+            --border: rgba(255, 255, 255, 0.08);
+            --card-glass: rgba(255, 255, 255, 0.02);
+            --blur: blur(40px);
             --btn-p: #4facfe;
-        }
-
-        [data-theme="light"] {
-            /* MODO CLARO CORREGIDO (Transparencias Visibles) */
-            --bg: #e0e6ed; /* Fondo gris-azulado suave, NO blanco puro */
-            --text: #1a2a3a;
-            --accent: #00a8ff;
-            --accent-glow: rgba(0, 168, 255, 0.3);
-            --nebula: rgba(255, 118, 117, 0.2);
-            --border: rgba(255, 255, 255, 0.5); /* Borde blanco para el cristal claro */
-            --card-glass: rgba(255, 255, 255, 0.3); /* Menos opacidad para ver el fondo */
-            --blur: blur(35px);
-            --btn-p: #00a8ff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -39,96 +24,100 @@
         body {
             background-color: var(--bg); color: var(--text);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden; min-height: 100vh;
+            overflow: hidden; height: 100vh; width: 100vw;
             display: flex; flex-direction: column; align-items: center;
-            transition: 0.5s ease;
         }
 
-        /* LUCES DINÁMICAS Y NEBULOSA */
+        /* EFECTOS DE FONDO */
         .neon-bg {
             position: fixed; inset: -50%; z-index: -2;
-            background: radial-gradient(circle at 30% 30%, var(--nebula) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 70%, rgba(114, 137, 218, 0.15) 0%, transparent 50%);
-            animation: move 20s infinite linear;
+            background: radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.1) 0%, transparent 40%);
+            animation: moveBg 15s infinite alternate ease-in-out;
         }
-        @keyframes move { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
+        @keyframes moveBg { from { transform: translate(-5%, -5%); } to { transform: translate(5%, 5%); } }
         #star-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.6; }
 
-        /* NAVEGACIÓN AMETHYST */
+        /* NAVEGACIÓN */
         nav {
-            position: sticky; top: 0; width: 100%; height: 75px;
-            background: rgba(0,0,0,0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            position: fixed; top: 0; width: 100%; height: 75px;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             display: flex; align-items: center; justify-content: center; gap: 8px;
             border-bottom: 1px solid var(--border); z-index: 1000;
         }
         nav a {
             color: var(--text); text-decoration: none; font-size: 0.75rem; font-weight: 800;
-            padding: 10px 22px; border-radius: 50px; opacity: 0.5; transition: 0.3s; cursor: pointer;
+            padding: 10px 22px; border-radius: 50px; opacity: 0.4; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;
         }
-        nav a.active { background: var(--btn-p); color: #fff; opacity: 1; box-shadow: 0 0 15px var(--accent-glow); }
+        nav a.active { background: var(--btn-p); color: #fff; opacity: 1; transform: scale(1.05); box-shadow: 0 0 20px var(--accent-glow); }
 
-        /* TEMA TOGGLE */
-        .theme-btn {
-            position: fixed; bottom: 25px; right: 25px; z-index: 2000;
-            background: var(--card-glass); border: 1px solid var(--border);
-            color: var(--text); padding: 15px; border-radius: 50%; cursor: pointer;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        /* CONTENEDOR PRINCIPAL */
+        .main-container {
+            flex: 1; width: 100%; display: flex; align-items: center; justify-content: center;
+            perspective: 1000px; padding-top: 75px;
         }
 
-        /* SECCIONES Y SPA */
         .page-content {
-            width: 92%; max-width: 440px; padding: 70px 0;
-            display: none; animation: fadeIn 0.6s ease forwards;
-            z-index: 10;
+            width: 90%; max-width: 420px;
+            display: none; animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
-        .page-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .page-content.active { display: flex; flex-direction: column; align-items: center; }
 
-        /* TARJETA CRISTAL PREMIUM */
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateY(30px) rotateX(-10deg); } 
+            to { opacity: 1; transform: translateY(0) rotateX(0deg); } 
+        }
+
+        /* TARJETA CRISTAL */
         .content-card {
             background: var(--card-glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
-            border: 1px solid var(--border); border-radius: 70px; padding: 60px 30px;
-            text-align: center; box-shadow: 0 40px 100px rgba(0,0,0,0.15);
-            animation: card-float 6s infinite ease-in-out;
+            border: 1px solid var(--border); border-radius: 60px; padding: 50px 30px;
+            text-align: center; width: 100%;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            animation: float 5s infinite ease-in-out;
         }
-        @keyframes card-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* INICIO */
-        .status-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 25px; }
-        .tag { padding: 6px 14px; background: rgba(79, 172, 254, 0.1); color: var(--accent); border-radius: 50px; font-size: 0.65rem; font-weight: 800; border: 1px solid var(--border); }
-        .creator { font-size: 0.8rem; opacity: 0.7; font-weight: 600; }
-        .creator span { color: var(--accent); }
+        /* ESTILOS INICIO */
+        .tag { display: inline-block; padding: 6px 14px; background: rgba(79, 172, 254, 0.1); color: var(--accent); border-radius: 50px; font-size: 0.6rem; font-weight: 800; border: 1px solid var(--border); margin-bottom: 20px; }
+        .creator { font-size: 0.8rem; opacity: 0.6; margin-bottom: 10px; }
+        .creator span { color: var(--accent); font-weight: 800; }
+        .name { font-family: 'Permanent Marker', cursive; font-size: 3.2rem; line-height: 1; margin-bottom: 20px; }
+        .name span { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+        .desc { font-size: 0.9rem; opacity: 0.5; line-height: 1.6; margin-bottom: 30px; }
 
-        .name { font-family: 'Permanent Marker', cursive; font-size: 3.5rem; line-height: 1; margin-bottom: 25px; }
-        .name span { color: var(--accent); }
-
-        .desc { font-size: 0.95rem; opacity: 0.6; line-height: 1.6; margin-bottom: 35px; }
-
-        .main-btn { display: block; width: 100%; background: var(--btn-p); color: #fff; text-align: center; padding: 22px; border-radius: 100px; text-decoration: none; font-weight: 800; font-size: 1rem; box-shadow: 0 10px 30px var(--accent-glow); margin-bottom: 15px; }
-        .main-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px var(--accent-glow); }
-
-        .socials { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .social-btn { background: rgba(0,0,0,0.05); border: 1px solid var(--border); color: var(--text); padding: 18px; border-radius: 25px; text-decoration: none; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .social-btn:hover { background: var(--text); color: var(--bg); }
-
-        /* MÓDULOS (Tarjeta de cristal) */
-        .modules-grid {
-            background: var(--card-glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
-            border: 1px solid var(--border); border-radius: 70px; padding: 60px 30px;
-            display: flex; flex-direction: column; gap: 20px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+        /* BOTONES */
+        .main-btn { 
+            display: block; width: 100%; background: var(--btn-p); color: #fff; text-align: center; 
+            padding: 20px; border-radius: 100px; text-decoration: none; font-weight: 800; 
+            font-size: 0.9rem; box-shadow: 0 10px 30px var(--accent-glow); transition: 0.3s;
         }
+        .main-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
 
-        .module-item { display: flex; align-items: flex-start; gap: 18px; text-align: left; }
-        .module-item span { font-size: 1.3rem; margin-top: 3px; }
-        .module-info h4 { font-size: 1rem; color: var(--accent); font-weight: 800; margin-bottom: 5px; }
-        .module-info h5 { font-size: 0.8rem; font-weight: 600; color: var(--text); opacity: 0.9; margin-bottom: 5px; }
-        .module-info p { font-size: 0.75rem; opacity: 0.5; line-height: 1.5; }
+        .socials { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; width: 100%; }
+        .social-btn { 
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; 
+            padding: 15px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; 
+            font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s;
+        }
+        .social-btn:hover { background: rgba(255,255,255,0.08); }
 
-        /* FOOTER */
-        footer { margin-top: auto; padding: 60px 0 40px; font-size: 0.65rem; opacity: 0.3; text-spacing: 2px; text-align: center; width: 90%; }
+        /* ESTILOS MÓDULOS */
+        .scroll-area { 
+            width: 100%; max-height: 60vh; overflow-y: auto; padding-right: 5px; 
+            scrollbar-width: none; -ms-overflow-style: none;
+        }
+        .scroll-area::-webkit-scrollbar { display: none; }
 
+        .module-item { 
+            display: flex; align-items: flex-start; gap: 15px; text-align: left; 
+            margin-bottom: 25px; padding: 15px; border-radius: 25px; transition: 0.3s;
+        }
+        .module-item:hover { background: rgba(79, 172, 254, 0.05); }
+        .module-item span { font-size: 1.2rem; }
+        .module-info h4 { font-size: 0.95rem; color: var(--accent); font-weight: 800; margin-bottom: 4px; }
+        .module-info p { font-size: 0.75rem; opacity: 0.4; line-height: 1.4; }
+
+        footer { position: fixed; bottom: 30px; font-size: 0.6rem; opacity: 0.2; letter-spacing: 2px; text-align: center; }
     </style>
 </head>
 <body>
@@ -139,123 +128,110 @@
         <a href="https://discord.gg/8ezp4sthqG" target="_blank">Discord</a>
     </nav>
 
-    <div class="theme-btn" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i></div>
     <div class="neon-bg"></div>
     <canvas id="star-canvas"></canvas>
 
-    <div id="inicio" class="page-content active">
-        <div class="content-card">
-            <div class="status-container">
-                <div class="tag">DEV • PREMIUM ACCESS</div>
+    <div class="main-container">
+        <div id="inicio" class="page-content active">
+            <div class="content-card">
+                <div class="tag">Dev Mihai</div>
                 <div class="creator">Creado por <span>Mihai</span></div>
-            </div>
-            <h1 class="name">xA <span>Addon</span></h1>
-            <p class="desc">Domina el campo de batalla con la suite de combate y optimización más avanzada. Diseñado para ofrecer la máxima eficiencia y dominación visual de nueva generación.</p>
-            
-            <a href="#" class="main-btn">DESCARGAR AHORA</a>
-
-            <div class="socials">
-                <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i> YouTube</a>
-                <a href="#" class="social-btn"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+                <h1 class="name">xA <span>Addon</span></h1>
+                <p class="desc">La suite definitiva de optimización y combate. Experimenta un rendimiento sin precedentes con tecnología de nueva generación.</p>
+                <a href="#" class="main-btn">DESCARGAR AHORA</a>
+                <div class="socials">
+                    <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i> YouTube</a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="modulos" class="page-content">
-        <div class="modules-grid">
-            <h2 style="text-align: center; margin-bottom: 25px; font-family: 'Permanent Marker', cursive; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));">Combat Modules</h2>
-            
-            <div class="module-item">
-                <span>🛡️</span>
-                <div class="module-info">
-                    <h4>xArmor</h4>
-                    <h5>Defensa inteligente en tiempo real.</h5>
-                    <p>Gestiona tu armadura automáticamente. Incluye Anti-Break para salvar tus piezas de Netherite antes de que se rompan.</p>
-                </div>
-            </div>
-            <div class="module-item">
-                <span>🔨</span>
-                <div class="module-info">
-                    <h4>xMace</h4>
-                    <h5>Poder de impacto devastador.</h5>
-                    <p>Exploit exclusivo para la Maza. Simula caídas de altura extrema mediante manipulación de paquetes para daño máximo sin saltar.</p>
-                </div>
-            </div>
-            <div class="module-item">
-                <span>💎</span>
-                <div class="module-info">
-                    <h4>xTotem</h4>
-                    <h5>Inmortalidad automatizada.</h5>
-                    <p>Repone tótems a la velocidad del rayo. Optimizado para evitar el "totem fail" y asegurar vida extra constante.</p>
-                </div>
-            </div>
-            <div class="module-item">
-                <span>🚫</span>
-                <div class="module-info">
-                    <h4>xNoPoP</h4>
-                    <h5>Gestión de tótems avanzada.</h5>
-                    <p>Evita que tus tótems se activen por daño innecesario. Controla tu inventario para gastar recursos solo cuando sea vital.</p>
-                </div>
-            </div>
-            <div class="module-item">
-                <span>⚔️</span>
-                <div class="module-info">
-                    <h4>xAura</h4>
-                    <h5>Dominación total del combate.</h5>
-                    <p>KillAura con selección inteligente. Asegura críticos constantes y maximiza el alcance ignorando obstáculos y aliados.</p>
-                </div>
-            </div>
-            <div class="module-item">
-                <span>🔄</span>
-                <div class="module-info">
-                    <h4>xSwap</h4>
-                    <h5>Movilidad aérea instantánea.</h5>
-                    <p>Intercambio automático entre Elytras y Pechera. Vuela para posicionarte y equipa tu armadura al instante al tocar el suelo.</p>
+        <div id="modulos" class="page-content">
+            <div class="content-card" style="padding: 40px 20px;">
+                <h2 style="margin-bottom: 25px; font-family: 'Permanent Marker'; font-size: 1.8rem; color: var(--accent);">Combat Suite</h2>
+                <div class="scroll-area">
+                    <div class="module-item">
+                        <span>🛡️</span>
+                        <div class="module-info">
+                            <h4>xArmor</h4>
+                            <p>Defensa inteligente. Anti-Break automático para Netherite y gestión de encantamientos premium.</p>
+                        </div>
+                    </div>
+                    <div class="module-item">
+                        <span>🔨</span>
+                        <div class="module-info">
+                            <h4>xMace</h4>
+                            <p>Impacto devastador. Simulación de altura mediante paquetes para daño máximo instantáneo.</p>
+                        </div>
+                    </div>
+                    <div class="module-item">
+                        <span>💎</span>
+                        <div class="module-info">
+                            <h4>xTotem</h4>
+                            <p>Inmortalidad. Reposición de tótems ultra veloz para evitar fallos en situaciones críticas.</p>
+                        </div>
+                    </div>
+                    <div class="module-item">
+                        <span>🚫</span>
+                        <div class="module-info">
+                            <h4>xNoPoP</h4>
+                            <p>Gestión inteligente. Evita el gasto de tótems innecesario optimizando tu inventario.</p>
+                        </div>
+                    </div>
+                    <div class="module-item">
+                        <span>⚔️</span>
+                        <div class="module-info">
+                            <h4>xAura</h4>
+                            <p>Dominación. KillAura optimizado para críticos y máximo alcance de ataque.</p>
+                        </div>
+                    </div>
+                    <div class="module-item">
+                        <span>🔄</span>
+                        <div class="module-info">
+                            <h4>xSwap</h4>
+                            <p>Movilidad. Intercambio automático entre Elytras y armadura según el entorno.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        © 2026 xA ADDON. TODOS LOS DERECHOS RESERVADOS.<br>
-        DESARROLLADO CON PRECISIÓN POR MIHAI.
-    </footer>
+    <footer>© 2026 xA ADDON • DESARROLLADO POR MIHAI</footer>
 
     <script>
-        // Lógica SPA (Single Page Application)
+        // Lógica de pestañas
         function showTab(tabId) {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            const tabs = document.querySelectorAll('.page-content');
+            const btns = document.querySelectorAll('nav a');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            btns.forEach(btn => btn.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active');
-            document.getElementById('btn-' + tabId).classList.add('active');
-            window.scrollTo(0,0);
+            const targetBtn = document.getElementById('btn-' + tabId);
+            if(targetBtn) targetBtn.classList.add('active');
         }
 
-        // Fondo dinámico y sistema de estrellas
+        // Sistema de estrellas
         const cvs = document.getElementById('star-canvas');
         const ctx = cvs.getContext('2d');
         let pts = [];
         function resize() { cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
         function create() {
             pts = [];
-            for(let i=0; i<80; i++) {
-                pts.push({ x: Math.random()*cvs.width, y: Math.random()*cvs.height, v: Math.random()*0.15 + 0.05, s: Math.random()*2 });
+            for(let i=0; i<70; i++) {
+                pts.push({ x: Math.random()*cvs.width, y: Math.random()*cvs.height, v: Math.random()*0.2 + 0.05, s: Math.random()*2 });
             }
         }
         function anim() {
             ctx.clearRect(0,0,cvs.width,cvs.height);
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            ctx.fillStyle = isDark ? "rgba(255,255,255,0.4)" : "rgba(0,168,255,0.2)";
+            ctx.fillStyle = "rgba(255,255,255,0.3)";
             pts.forEach(p => {
                 p.y -= p.v; if(p.y < 0) p.y = cvs.height;
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
             });
             requestAnimationFrame(anim);
-        }
-        function toggleTheme() {
-            const h = document.documentElement;
-            h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
         }
         window.onresize = resize;
         resize(); create(); anim();
