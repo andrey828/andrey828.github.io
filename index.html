@@ -19,7 +19,7 @@
             background: #0a0e17;
             color: #fff;
             padding: 20px;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -45,8 +45,8 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 40px 80px rgba(0,0,0,0.4);
             width: 100%;
-            max-width: 550px;
-            padding: 50px;
+            max-width: 600px;
+            padding: 60px 50px;
             animation: fadeInUp 1.5s ease-out;
             position: relative;
             transform-style: preserve-3d;
@@ -61,37 +61,39 @@
             background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             filter: drop-shadow(0 0 15px rgba(255,154,158,0.3));
         }
 
-        .tag {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 22px;
+        /* ESTILO DEL CONTADOR DE VISITAS */
+        .visitor-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 15px;
             border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .section-title {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 3px;
             color: rgba(255, 255, 255, 0.4);
-            margin: 35px 0 15px 0;
+            margin: 40px 0 20px 0;
             font-weight: 600;
         }
 
         .info-box {
             background: rgba(255, 255, 255, 0.05);
-            padding: 25px;
+            padding: 30px;
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             transition: 0.4s ease;
         }
 
@@ -103,7 +105,7 @@
         .social-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 20px;
         }
 
         .social-link {
@@ -111,26 +113,29 @@
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.07);
-            padding: 18px;
-            border-radius: 20px;
+            padding: 20px;
+            border-radius: 25px;
             text-decoration: none;
             color: #fff;
             font-weight: 600;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transition: 0.3s;
         }
 
         .social-link:hover {
-            background: #fff;
-            color: #0a0e17;
-            transform: translateY(-5px);
+            background: #fff; color: #0a0e17; transform: translateY(-5px);
         }
 
-        footer {
-            margin-top: 50px;
+        .tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.8);
         }
+
+        footer { margin-top: 60px; font-size: 0.85rem; color: rgba(255, 255, 255, 0.3); }
     </style>
 </head>
 <body>
@@ -140,27 +145,39 @@
     <div class="glass-card" id="card">
         <div class="header-section">
             <h1>Andrey Mihai</h1>
-            <span class="tag">Digital Creator</span>
+            <div class="visitor-counter">
+                <span>Vistas:</span>
+                <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fandrey828.github.io&count_bg=%2379C83D00&title_bg=%2355555500&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=true" alt="Views"/>
+            </div>
         </div>
 
-        <p class="section-title">Proyecto</p>
+        <p class="section-title">Enfoque & Proyecto</p>
         <div class="info-box">
-            <h3 style="color: #ff9a9e; margin-bottom: 8px;">xA Addon</h3>
-            <p style="font-size: 0.95rem; color: rgba(255, 255, 255, 0.7); line-height: 1.6;">
-                Enfocado en el desarrollo y mejora continua de <strong>xA Addon</strong>. Creando experiencias optimizadas y funcionales.
-            </p>
+            <h3 style="color: #ff9a9e; margin-bottom: 10px;">xA Addon</h3>
+            <p style="line-height: 1.8; color: rgba(255,255,255,0.8);">Espacio dedicado a la mejora de <strong>xA Addon</strong>. Buscando siempre optimización, estabilidad y nuevas funciones.</p>
         </div>
 
-        <p class="section-title">Comunidad & Social</p>
+        <p class="section-title">Sobre Mí</p>
+        <div class="info-box">
+            <p style="line-height: 1.8; color: rgba(255,255,255,0.8);">Apasionado de la exploración digital y el minimalismo. Aprendiendo y creando sobre la marcha para ofrecer lo mejor en cada proyecto.</p>
+        </div>
+
+        <p class="section-title">Comunidad</p>
         <div class="social-container">
             <a href="https://github.com/andrey828" target="_blank" class="social-link">GitHub</a>
             <a href="https://discord.gg/8ezp4sthqG" target="_blank" class="social-link">Discord</a>
         </div>
+
+        <p class="section-title">Stack</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <span class="tag">Creación</span>
+            <span class="tag">xA Addon</span>
+            <span class="tag">Optimización</span>
+            <span class="tag">Minimalismo</span>
+        </div>
     </div>
 
-    <footer>
-        &copy; 2026 Andrey Mihai
-    </footer>
+    <footer>&copy; 2026 Andrey Mihai</footer>
 
     <script>
         const canvas = document.getElementById('nebula-canvas');
@@ -170,11 +187,11 @@
         function init() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            particles = Array.from({length: 100}, () => ({
+            particles = Array.from({length: 120}, () => ({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.4,
-                vy: (Math.random() - 0.5) * 0.4,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
                 size: Math.random() * 2,
                 alpha: Math.random()
             }));
@@ -188,7 +205,7 @@
                 if(p.y < 0 || p.y > height) p.vy *= -1;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * 0.3})`;
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * 0.2})`;
                 ctx.fill();
             });
             requestAnimationFrame(draw);
@@ -196,8 +213,8 @@
 
         const card = document.getElementById('card');
         document.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.pageX) / 25;
-            let y = (window.innerHeight / 2 - e.pageY) / 25;
+            let x = (window.innerWidth / 2 - e.pageX) / 30;
+            let y = (window.innerHeight / 2 - e.pageY) / 30;
             card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
         });
 
