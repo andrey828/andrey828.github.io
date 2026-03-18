@@ -2,24 +2,37 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xA | Ascension Protocol</title>
     <link rel="stylesheet" href="style.css">
-    <title>xA | System Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono&family=Syne:wght@400;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <canvas id="bgCanvas"></canvas>
-    <div id="custom-cursor"></div>
+    <div class="bg-overlay"></div>
+    <canvas id="neural-canvas"></canvas>
 
-    <nav class="glass-nav">
+    <nav>
         <div class="logo">xA_PROT_2.0</div>
-        <div class="status">SYNC_ACTIVE</div>
+        <div class="status-blink">SYSTEM_ONLINE</div>
     </nav>
 
-    <section class="main-view">
-        <h1 class="glitch-text" data-text="ASCENSION">ASCENSION</h1>
-        <div class="module-container" id="moduleContainer"></div>
-        <button class="action-btn">INITIALIZE_CORE</button>
-    </section>
+    <main>
+        <section class="hero">
+            <h1 class="main-title">ASCENSION</h1>
+            <div class="glass-panel">
+                <p>// PROTOCOLO DE COMBATE ASÍNCRONO INICIALIZADO</p>
+                <div class="stats">
+                    <span>LATENCY: 0.01ms</span>
+                    <span>BYPASS: 100%</span>
+                </div>
+            </div>
+            <button class="glow-btn">INITIALIZE_CORE</button>
+        </section>
 
-    <script src="app.js"></script>
+        <div class="module-grid" id="grid">
+            </div>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
