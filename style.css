@@ -1,28 +1,52 @@
+:root {
+    --primary: #00ffc8;
+    --accent: #00aaff;
+}
+
 body {
-    background: #050508;
-    color: #00ffc8;
-    font-family: sans-serif;
+    background: radial-gradient(circle at center, #0a0a1a 0%, #050508 100%);
     margin: 0;
+    color: white;
+    font-family: 'Syne', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
 }
-.glow {
-    position: fixed; inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(0,255,200,0.1) 0%, transparent 80%);
-    z-index: -1;
-}
-nav { width: 100%; padding: 20px; display: flex; justify-content: space-around; border-bottom: 1px solid rgba(0,255,200,0.2); backdrop-filter: blur(10px); }
-.title { font-size: 15vw; margin-top: 50px; filter: drop-shadow(0 0 20px #00ffc8); animation: pulse 2s infinite; }
+
+/* Efecto de cristal para el panel */
 .glass-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(0,255,200,0.3);
-    padding: 20px; border-radius: 15px; margin: 20px;
+    border: 1px solid rgba(0, 255, 200, 0.2);
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    margin-top: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
+
+.title {
+    font-size: 4rem;
+    color: var(--primary);
+    text-shadow: 0 0 30px var(--primary);
+    margin-top: 80px;
+    font-weight: 800;
+}
+
 .btn {
-    padding: 15px 40px; background: #00ffc8; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; box-shadow: 0 0 20px #00ffc8;
+    margin-top: 30px;
+    background: var(--primary);
+    border: none;
+    padding: 15px 40px;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 0 20px var(--primary);
+    cursor: pointer;
+    transition: 0.3s;
 }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+.btn:hover {
+    transform: scale(1.1);
+    background: white;
+}
