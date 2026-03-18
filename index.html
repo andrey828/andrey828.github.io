@@ -2,138 +2,211 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xA Addon — Combat Suite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>xA_Addon | Tactical Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --ink: #020205;
-            --cyan: #00e5ff;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --cyan-glow: rgba(0, 229, 255, 0.3);
-            --discord: #5865F2;
+            --bg: #050508;
+            --accent: #00e5ff;
+            --accent-dim: rgba(0, 229, 255, 0.15);
+            --danger: #ff0055;
+            --glass: rgba(10, 10, 15, 0.7);
+            --border: rgba(0, 229, 255, 0.1);
+            --font-main: 'Space Grotesk', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
         
         body {
-            background: var(--ink);
+            background: var(--bg);
             color: white;
-            font-family: 'DM Sans', sans-serif;
+            font-family: var(--font-main);
             overflow-x: hidden;
-            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
+                linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
         }
 
-        /* --- EFECTOS DE FONDO --- */
-        .noise { position: fixed; inset: 0; z-index: -2; opacity: 0.03; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"); }
-        .grid-bg { position: fixed; inset: 0; z-index: -2; pointer-events: none; background-image: linear-gradient(rgba(0,229,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,.03) 1px, transparent 1px); background-size: 50px 50px; }
-        .orb { position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.25; animation: drift 20s infinite alternate; }
-        .orb1 { width: 400px; height: 400px; background: var(--cyan); top: -100px; right: -50px; }
-        .orb2 { width: 350px; height: 350px; background: var(--discord); bottom: -50px; left: -50px; animation-delay: -5s; }
-        @keyframes drift { from { transform: translate(0,0); } to { transform: translate(40px, 40px); } }
+        /* --- ESCÁNER Y RUIDO --- */
+        .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 10px; background: rgba(0, 229, 255, 0.03); z-index: 1000; pointer-events: none; animation: scan 4s linear infinite; }
+        @keyframes scan { from { top: -100px; } to { top: 100vh; } }
 
-        /* --- NAVEGACIÓN --- */
+        /* --- NAVEGACIÓN TÁCTICA --- */
         nav {
-            position: sticky; top: 0; z-index: 100;
+            position: fixed; top: 0; width: 100%; z-index: 100;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%; backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border);
+            padding: 25px 6%; background: rgba(5, 5, 8, 0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
         }
-        .logo { font-family: 'Bebas Neue'; font-size: 2rem; letter-spacing: 3px; cursor: pointer; }
-        .logo span { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); }
-        .nav-links a { text-decoration: none; color: rgba(255,255,255,0.5); font-family: 'JetBrains Mono'; font-size: 0.75rem; margin-left: 20px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--cyan); }
-        .nav-links a.discord-btn { color: var(--discord); font-weight: bold; }
+        .logo { font-family: 'Bebas Neue'; font-size: 2.2rem; letter-spacing: 4px; display: flex; align-items: center; gap: 10px; }
+        .logo i { font-size: 1.5rem; color: var(--accent); animation: rotate 4s infinite linear; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- HERO --- */
-        #hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
-        .hero-badge { background: rgba(0,229,255,0.1); border: 1px solid var(--cyan); padding: 5px 15px; border-radius: 20px; font-size: 0.7rem; font-family: 'JetBrains Mono'; color: var(--cyan); margin-bottom: 20px; }
-        h1 { font-family: 'Bebas Neue'; font-size: clamp(5rem, 15vw, 10rem); line-height: 0.8; color: var(--cyan); text-shadow: 0 0 40px var(--cyan-glow); }
-        h1 span { display: block; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.2); }
-        .hero-sub { margin: 30px 0; max-width: 500px; color: rgba(255,255,255,0.6); font-size: 1.1rem; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { 
+            text-decoration: none; color: rgba(255,255,255,0.4); 
+            font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;
+            transition: 0.3s; letter-spacing: 1px;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+
+        /* --- HERO SECTION --- */
+        .hero { 
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            text-align: center; padding: 0 20px; position: relative;
+        }
+        .hero-badge {
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent);
+            padding: 8px 16px; border: 1px solid var(--accent); border-radius: 4px;
+            margin-bottom: 25px; background: var(--accent-dim);
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .glitch-title {
+            font-family: 'Bebas Neue'; font-size: clamp(6rem, 20vw, 12rem);
+            line-height: 0.85; position: relative; color: white;
+        }
+        .glitch-title span { display: block; color: var(--accent); filter: drop-shadow(0 0 15px var(--accent)); }
+        
+        .hero-desc {
+            max-width: 600px; margin: 40px 0; color: rgba(255,255,255,0.5);
+            font-size: 1.1rem; line-height: 1.8; font-weight: 300;
+        }
 
         /* --- BOTONES --- */
-        .btn-group { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .btn-main { background: var(--cyan); color: var(--ink); border: none; padding: 15px 35px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: 'JetBrains Mono'; }
-        .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--cyan-glow); }
-        .btn-discord { background: rgba(88, 101, 242, 0.1); border: 1px solid var(--discord); color: white; padding: 15px 35px; border-radius: 5px; text-decoration: none; transition: 0.3s; font-family: 'JetBrains Mono'; }
-        .btn-discord:hover { background: var(--discord); box-shadow: 0 0 30px rgba(88, 101, 242, 0.4); }
-
-        /* --- MÓDULOS (GLASS) --- */
-        .sec-title { font-family: 'Bebas Neue'; font-size: 3rem; text-align: center; margin-bottom: 50px; letter-spacing: 5px; }
-        .mod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 0 5% 100px; }
-        .mod-card {
-            background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); border-radius: 15px; padding: 30px;
-            transition: 0.4s; position: relative; overflow: hidden;
+        .btn-container { display: flex; gap: 20px; }
+        .btn-primary {
+            background: var(--accent); color: var(--bg); text-decoration: none;
+            padding: 18px 45px; font-family: 'Bebas Neue'; font-size: 1.4rem;
+            letter-spacing: 2px; border-radius: 4px; transition: 0.3s;
+            box-shadow: 0 0 20px var(--accent-dim);
         }
-        .mod-card:hover { border-color: var(--cyan); transform: translateY(-10px); background: rgba(255,255,255,0.05); }
-        .mod-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); transform: translateX(-100%); transition: 0.5s; }
-        .mod-card:hover::before { transform: translateX(100%); }
-        .mod-card h3 { font-family: 'Bebas Neue'; font-size: 1.8rem; color: var(--cyan); margin-bottom: 10px; }
-        .mod-card p { font-size: 0.9rem; color: rgba(255,255,255,0.5); }
+        .btn-primary:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 30px var(--accent-dim); }
 
-        /* --- FOOTER --- */
-        footer { padding: 50px; border-top: 1px solid var(--glass-border); text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: rgba(255,255,255,0.3); }
+        /* --- MÓDULOS (DIAGNÓSTICO) --- */
+        .section-header { text-align: center; padding: 100px 0 50px; }
+        .section-header h2 { font-family: 'Bebas Neue'; font-size: 4rem; letter-spacing: 10px; color: rgba(255,255,255,0.1); }
+        
+        .grid-modules {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px; padding: 0 8% 150px;
+        }
+        .card {
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 40px 30px; border-radius: 4px; position: relative;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden;
+        }
+        .card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 0;
+            background: var(--accent); transition: 0.4s;
+        }
+        .card:hover { border-color: var(--accent-dim); background: rgba(0, 229, 255, 0.03); transform: translateY(-10px); }
+        .card:hover::before { height: 100%; }
+
+        .card-icon { font-size: 2rem; color: var(--accent); margin-bottom: 20px; display: block; }
+        .card h3 { font-family: 'Bebas Neue'; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 15px; color: var(--accent); }
+        .card p { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+        .card-status { font-family: var(--font-mono); font-size: 0.6rem; color: #00ff6a; margin-top: 20px; display: block; }
+
+        /* --- CONTADOR --- */
+        .vistas-tactical {
+            position: fixed; bottom: 30px; left: 30px;
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 10px 20px; border-radius: 4px; z-index: 100;
+            font-family: var(--font-mono); font-size: 0.7rem;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .vistas-tactical .dot { width: 8px; height: 8px; background: #00ff6a; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        footer { 
+            padding: 60px; text-align: center; border-top: 1px solid var(--border);
+            font-family: var(--font-mono); font-size: 0.7rem; color: rgba(255,255,255,0.2);
+            letter-spacing: 3px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .glitch-title { font-size: 5rem; }
+            nav { padding: 15px 5%; }
+            .nav-links { display: none; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="noise"></div>
-    <div class="grid-bg"></div>
-    <div class="orb orb1"></div>
-    <div class="orb orb2"></div>
+    <div class="scanline"></div>
 
     <nav>
-        <div class="logo"><span>x</span>A_SYSTEM</div>
+        <div class="logo"><i class="fa-solid fa-compact-disc"></i> xA_SYSTEM</div>
         <div class="nav-links">
-            <a href="#hero">INICIO</a>
-            <a href="#modulos">MÓDULOS</a>
-            <a href="https://discord.gg/TU_INVITACION" class="discord-btn" target="_blank">DISCORD</a>
+            <a href="#" class="active">01_CORE</a>
+            <a href="#modulos">02_ARSENAL</a>
+            <a href="https://discord.gg/TU_INVITACION" style="color: #5865F2;">03_DISCORD</a>
         </div>
     </nav>
 
-    <main id="hero">
-        <div class="hero-badge">PROTOCOLO ASCENSIÓN v2.0</div>
-        <h1>xA<span>ADDON</span></h1>
-        <p class="hero-sub">Inyecta potencia bruta a tu cliente. Módulos de combate optimizados con bypass de última generación.</p>
-        <div class="btn-group">
-            <button class="btn-main" onclick="location.href='#modulos'">VER ARSENAL</button>
-            <a href="https://discord.gg/TU_INVITACION" class="btn-discord" target="_blank">UNIRSE AL DISCORD</a>
+    <section class="hero">
+        <div class="hero-badge">OPERACIÓN: ANNIHILATION // V3.0</div>
+        <h1 class="glitch-title">xA<span>ADDON</span></h1>
+        <p class="hero-desc">
+            Sincronización neuronal completa. Inyecta protocolos de combate avanzados y domina el campo de batalla con una precisión del 99.9% en bypass.
+        </p>
+        <div class="btn-container">
+            <a href="#modulos" class="btn-primary">INICIAR PROTOCOLO</a>
         </div>
-    </main>
-
-    <section id="modulos">
-        <h2 class="sec-title">SISTEMAS_ACTIVOS</h2>
-        <div class="mod-grid" id="grid">
-            </div>
     </section>
 
+    <div class="section-header" id="modulos">
+        <h2>ARSENAL_MODULES</h2>
+    </div>
+
+    <section class="grid-modules" id="module-grid">
+        </section>
+
+    <div class="vistas-tactical">
+        <div class="dot"></div>
+        <span>TRAFFIC_MONITOR:</span>
+        <span id="hit-count" style="color: var(--accent);">...</span>
+    </div>
+
     <footer>
-        <p>© 2026 xA_DEVELOPMENT // NÚCLEO DE COMBATE ASEGURADO</p>
+        <p>SYSTEM_CORE_2026 // NO_TRACE_LOGS // DEVELOPED_BY_MIHAI</p>
     </footer>
 
     <script>
         const modules = [
-            { title: "KINETIC_AURA", desc: "Aura de combate con rotación predictiva y bypass para servidores con alta latencia." },
-            { title: "AUTO_TOTEM", desc: "Gestión inteligente de inventario para asegurar el uso de totems en menos de 0.1ms." },
-            { title: "VOID_FLY", desc: "Sistema de vuelo basado en exploits de paquetes de posición para bypass de Vanilla." },
-            { title: "VELOCITY_X", desc: "Anulación selectiva de retroceso (Knockback) para combate estático perfecto." },
-            { title: "CRYSTAL_SYNC", desc: "Sincronización de ataques con cristales de fin para daño masivo por segundo." },
-            { title: "PACKET_REACH", desc: "Extensión técnica del rango de ataque mediante manipulación de paquetes críticos." }
+            { icon: "fa-shield-halved", title: "xArmor", desc: "Gestión inteligente en tiempo real. Anti-Break automático para piezas de Netherite con prioridad de durabilidad." },
+            { icon: "fa-hammer", title: "xMace", desc: "Exploit de caída cinética. Manipula paquetes de movimiento para daño máximo instantáneo desde el suelo." },
+            { icon: "fa-gem", title: "xTotem", desc: "Supervivencia absoluta. Reposición de tótems en 0.05ms optimizada para evitar fallos por lag de red." },
+            { icon: "fa-crosshairs", title: "xAura", desc: "KillAura de predicción vectorial. Críticos automáticos con rotaciones indetectables por Anti-Cheats." },
+            { icon: "fa-arrows-rotate", title: "xSwap", desc: "Cambio táctico de equipo. Alterna entre Elytras y armadura completa mediante Hotkey inteligente." },
+            { icon: "fa-bolt", title: "xBackStep", desc: "Módulo de pánico. Teletransporte inverso al punto de origen para escapes imposibles o baiting extremo." }
         ];
 
-        const container = document.getElementById('grid');
-        modules.forEach(m => {
-            container.innerHTML += `
-                <div class="mod-card">
-                    <div style="font-family:'JetBrains Mono'; font-size:0.6rem; color:rgba(0,229,255,0.5); margin-bottom:5px;">[ ESTADO: ACTIVO ]</div>
+        const grid = document.getElementById('module-grid');
+        modules.forEach((m, index) => {
+            grid.innerHTML += `
+                <div class="card" style="animation: fadeIn 0.5s ${index * 0.1}s forwards; opacity: 0;">
+                    <i class="fa-solid ${m.icon} card-icon"></i>
+                    <span class="card-status">[ SYSTEM: READY ]</span>
                     <h3>${m.title}</h3>
                     <p>${m.desc}</p>
                 </div>
             `;
         });
+
+        // Simulación de contador (conecta con tu API de vistas si tienes)
+        document.getElementById('hit-count').innerText = Math.floor(Math.random() * (9999 - 1000) + 1000);
+
+        // Animación suave de aparición
+        const style = document.createElement('style');
+        style.innerHTML = `@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
