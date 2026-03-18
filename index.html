@@ -3,223 +3,582 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>xA Addon | Ultimate Pro</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<title>xA Addon — Combat Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@300;600;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-/* ROOT VARIABLES */
 :root{
---bg-dark:#0a0a0f;
---bg-light:#f5f5f5;
---text-dark:#fff;
---text-light:#111;
---accent:#4facfe;
---accent-glow:rgba(79,172,254,0.6);
---border:rgba(255,255,255,0.08);
---glass-dark:rgba(255,255,255,0.03);
---glass-light:rgba(255,255,255,0.15);
---transition:.4s ease;
+  --ink:#08080d;
+  --surface:#0e0e16;
+  --panel:rgba(255,255,255,0.032);
+  --border:rgba(255,255,255,0.07);
+  --border-hover:rgba(0,210,255,0.35);
+  --cyan:#00d2ff;
+  --cyan-dim:rgba(0,210,255,0.12);
+  --cyan-glow:rgba(0,210,255,0.45);
+  --red:#ff3c3c;
+  --red-dim:rgba(255,60,60,0.1);
+  --white:#eeeef2;
+  --muted:rgba(238,238,242,0.38);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'DM Sans',sans-serif;
+  --display:'Bebas Neue',sans-serif;
 }
 
-/* BODY */
+html{scroll-behavior:smooth}
+
 body{
-margin:0; font-family:'Plus Jakarta Sans',sans-serif;
-display:flex; flex-direction:column; align-items:center; justify-content:center;
-min-height:100vh; background:var(--bg-dark); color:var(--text-dark);
-overflow:hidden; transition:all var(--transition);
-perspective:1200px;
+  font-family:var(--sans);
+  background:var(--ink);
+  color:var(--white);
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:none;
 }
-body.light{background:var(--bg-light); color:var(--text-light);}
 
-/* NAV */
+/* ─── CUSTOM CURSOR ─── */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--cyan);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s,width 0.2s,height 0.2s,background 0.2s;
+  mix-blend-mode:difference;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(0,210,255,0.5);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.15s ease-out,width 0.3s,height 0.3s,opacity 0.3s;
+}
+body:hover #cursor-ring{opacity:1}
+
+/* ─── NOISE OVERLAY ─── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.55;pointer-events:none;
+}
+
+/* ─── GRID LINES ─── */
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(0,210,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,210,255,0.025) 1px,transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;
+}
+
+/* ─── CANVAS ─── */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ─── NAV ─── */
 nav{
-position:fixed; top:0; width:100%; height:70px;
-display:flex; align-items:center; justify-content:center; gap:12px;
-background:rgba(0,0,0,0.5); backdrop-filter:blur(20px); z-index:1000; border-bottom:1px solid var(--border);
-transition:all var(--transition);
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,8,13,0.82);
+  backdrop-filter:blur(24px);
 }
-nav a{
-padding:10px 22px; border-radius:40px; font-weight:800; font-size:13px;
-cursor:pointer; opacity:.5; transition:all var(--transition); text-decoration:none; color:inherit;
+.nav-logo{
+  font-family:var(--display);
+  font-size:26px;letter-spacing:2px;
+  color:var(--cyan);
+  text-shadow:0 0 24px var(--cyan-glow);
 }
-nav a.active{opacity:1; transform:scale(1.05); background:var(--accent); box-shadow:0 0 20px var(--accent-glow);}
-
-/* CARD */
-.card{
-width:420px; max-width:90%; background:var(--glass-dark);
-backdrop-filter:blur(50px); border-radius:40px; padding:50px 30px;
-margin:20px 0; text-align:center; position:relative;
-border:1px solid var(--border); box-shadow:0 20px 80px rgba(0,0,0,0.5);
-animation:float 6s ease-in-out infinite;
-transition:all var(--transition);
+.nav-logo span{color:var(--white)}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-btn{
+  padding:8px 20px;border-radius:6px;
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;border:none;
+  background:transparent;color:var(--muted);
+  transition:color 0.2s,background 0.2s;
+  text-decoration:none;
 }
-body.light .card{background:var(--glass-light);}
-.card:hover{transform:translateY(-8px) rotateX(2deg) rotateY(2deg); box-shadow:0 30px 100px var(--accent-glow);}
-
-/* FLOATING */
-@keyframes float{0%,100%{transform:translateY(0) rotateX(0deg) rotateY(0deg);}50%{transform:translateY(-12px) rotateX(1deg) rotateY(1deg);}}
-
-/* TITLE */
-.title{font-family:'Permanent Marker'; font-size:64px; text-shadow:0 0 20px var(--accent-glow); animation:glowText 2s infinite alternate;}
-.title span{color:var(--accent); text-shadow:0 0 30px var(--accent-glow);}
-@keyframes glowText{0%{text-shadow:0 0 15px var(--accent-glow);}100%{text-shadow:0 0 40px var(--accent-glow);}}
-
-/* DESCRIPTION */
-.desc{opacity:.7; margin:20px 0; font-size:15px; line-height:1.5;}
-
-/* BUTTON */
-.main-btn{
-background:var(--accent); color:#fff; border:none;
-padding:20px; width:100%; border-radius:100px;
-font-weight:800; font-size:16px; cursor:pointer;
-box-shadow:0 10px 40px var(--accent-glow); animation:btnPulse 2s infinite;
-transition:all 0.3s ease;
-position:relative; overflow:hidden;
+.nav-btn:hover,.nav-btn.active{color:var(--white);background:var(--panel)}
+.nav-btn.active{color:var(--cyan)}
+.nav-cta{
+  padding:9px 22px;border-radius:6px;
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1px;
+  background:var(--cyan);color:var(--ink);
+  border:none;cursor:pointer;
+  transition:box-shadow 0.2s,transform 0.15s;
 }
-.main-btn::after{
-content:""; position:absolute; top:0; left:-100%; width:100%; height:100%;
-background:linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0.6), rgba(255,255,255,0.2));
-transform:skewX(-20deg); transition:all 0.5s;
-}
-.main-btn:hover::after{left:100%;}
-.main-btn:hover{transform:scale(1.05); box-shadow:0 15px 60px var(--accent-glow); filter:brightness(1.1);}
-@keyframes btnPulse{0%,100%{box-shadow:0 10px 40px var(--accent-glow);}50%{box-shadow:0 10px 60px var(--accent-glow);}}
+.nav-cta:hover{box-shadow:0 0 28px var(--cyan-glow);transform:translateY(-1px)}
 
-/* MODULES */
-.scroll-area{max-height:50vh; overflow-y:auto; padding:5px; scrollbar-width:none;}
-.scroll-area::-webkit-scrollbar{display:none;}
-.module-item{
-display:flex; align-items:flex-start; gap:15px;
-margin-bottom:20px; padding:15px; border-radius:25px;
-background:rgba(255,255,255,0.02); opacity:0; transform:translateX(-20px);
-animation:fadeSlide 0.5s forwards; transition:all 0.3s; border:1px solid var(--border);
-position:relative;
-}
-.module-item:hover{background:rgba(255,255,255,0.05); transform:translateX(5px); box-shadow:0 0 15px var(--accent-glow);}
-.module-item span{font-size:1.5rem;}
-.module-info h4{font-size:1rem; color:var(--accent); font-weight:800; margin-bottom:5px;}
-.module-info p{font-size:0.78rem; opacity:0.5; line-height:1.4;}
-@keyframes fadeSlide{from{opacity:0; transform:translateX(-20px);} to{opacity:1; transform:translateX(0);}}
+/* ─── WRAPPER ─── */
+.page{position:relative;z-index:1}
 
-/* POPUP */
-.popup{
-position:fixed; top:0; left:0; width:100%; height:100%;
-display:none; align-items:center; justify-content:center;
-background:rgba(0,0,0,0.7); backdrop-filter:blur(30px); z-index:2000;
+/* ─── HERO ─── */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:120px 24px 80px;
 }
-.popup-content{
-background:rgba(255,255,255,0.05); border-radius:20px;
-padding:30px; display:flex; flex-direction:column; gap:10px;
-animation:pop 0.3s ease; border:1px solid var(--border);
+.hero-eyebrow{
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:28px;
+  display:flex;align-items:center;gap:12px;
+  opacity:0;animation:fadeUp 0.8s 0.2s forwards;
 }
-.popup-content button{
-padding:12px; border:none; border-radius:10px;
-background:var(--accent); color:#fff; font-weight:700; cursor:pointer;
-transition:all 0.3s;
+.hero-eyebrow::before,.hero-eyebrow::after{
+  content:'';display:block;height:1px;width:40px;
+  background:var(--cyan);opacity:0.5;
 }
-.popup-content button:hover{transform:scale(1.05); box-shadow:0 0 15px var(--accent-glow);}
-@keyframes pop{from{opacity:0; transform:scale(.8);} to{opacity:1; transform:scale(1);}}
+.hero-title{
+  font-family:var(--display);
+  font-size:clamp(90px,16vw,200px);
+  line-height:0.88;letter-spacing:-2px;
+  margin-bottom:32px;
+  opacity:0;animation:fadeUp 0.9s 0.35s forwards;
+}
+.hero-title .xa{
+  color:var(--cyan);
+  text-shadow:0 0 60px rgba(0,210,255,0.7),0 0 120px rgba(0,210,255,0.3);
+  display:block;
+}
+.hero-title .addon{
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,0.25);
+  display:block;
+}
+.hero-sub{
+  font-size:15px;line-height:1.7;color:var(--muted);
+  max-width:480px;margin:0 auto 48px;
+  opacity:0;animation:fadeUp 0.9s 0.5s forwards;
+}
+.hero-sub strong{color:var(--white);font-weight:500}
+.hero-actions{
+  display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+  opacity:0;animation:fadeUp 0.9s 0.65s forwards;
+}
+.btn-primary{
+  padding:16px 40px;
+  background:var(--cyan);color:var(--ink);
+  font-family:var(--mono);font-size:13px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  border:none;border-radius:4px;cursor:pointer;
+  transition:box-shadow 0.25s,transform 0.2s;
+  position:relative;overflow:hidden;
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,0.3) 50%,transparent 70%);
+  transform:translateX(-100%);transition:transform 0.5s;
+}
+.btn-primary:hover::before{transform:translateX(100%)}
+.btn-primary:hover{
+  box-shadow:0 0 40px var(--cyan-glow),0 8px 32px rgba(0,0,0,0.5);
+  transform:translateY(-2px);
+}
+.btn-secondary{
+  padding:16px 40px;
+  background:transparent;color:var(--white);
+  font-family:var(--mono);font-size:13px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  border:1px solid var(--border);border-radius:4px;cursor:pointer;
+  transition:border-color 0.25s,background 0.25s,transform 0.2s;
+}
+.btn-secondary:hover{
+  border-color:var(--cyan);background:var(--cyan-dim);
+  transform:translateY(-2px);
+}
+.hero-stats{
+  display:flex;gap:48px;justify-content:center;margin-top:80px;flex-wrap:wrap;
+  opacity:0;animation:fadeUp 0.9s 0.8s forwards;
+}
+.stat{text-align:left}
+.stat-num{
+  font-family:var(--display);font-size:42px;
+  color:var(--cyan);line-height:1;
+  text-shadow:0 0 20px var(--cyan-glow);
+}
+.stat-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
 
-/* FOOTER */
-footer{position:fixed; bottom:10px; font-size:10px; opacity:.3; text-align:center; width:100%;}
+/* ─── SECTION SHARED ─── */
+section{
+  padding:120px 40px;max-width:1100px;margin:0 auto;
+  position:relative;z-index:1;
+}
+.section-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--cyan);
+  margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.section-label::before{content:'//';opacity:0.5}
+.section-title{
+  font-family:var(--display);
+  font-size:clamp(42px,6vw,72px);
+  line-height:0.95;margin-bottom:60px;
+  letter-spacing:1px;
+}
 
-/* CANVAS */
-canvas{position:fixed; inset:0; z-index:-2;}
+/* ─── MODULES GRID ─── */
+.modules-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:2px;
+}
+.module-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:28px 24px;
+  transition:background 0.25s,border-color 0.25s,transform 0.25s;
+  position:relative;overflow:hidden;
+  cursor:default;
+}
+.module-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.module-card:hover{
+  background:rgba(0,210,255,0.04);
+  border-color:var(--border-hover);
+  transform:translateY(-2px);
+}
+.module-card:hover::before{opacity:1}
+.module-tag{
+  font-family:var(--mono);font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--cyan);
+  margin-bottom:16px;opacity:0.7;
+}
+.module-name{
+  font-family:var(--display);font-size:28px;letter-spacing:1px;
+  margin-bottom:10px;color:var(--white);
+}
+.module-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.module-icon{
+  position:absolute;right:20px;top:20px;
+  font-size:28px;opacity:0.12;
+  transition:opacity 0.3s,transform 0.3s;
+}
+.module-card:hover .module-icon{opacity:0.22;transform:scale(1.1) rotate(-5deg)}
+
+/* ─── DIVIDER ─── */
+.divider{
+  height:1px;background:var(--border);
+  max-width:1100px;margin:0 auto;
+  position:relative;z-index:1;
+}
+
+/* ─── DOWNLOAD SECTION ─── */
+#download-section{
+  text-align:center;
+}
+.version-grid{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  margin-bottom:48px;
+}
+.version-chip{
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  padding:10px 20px;border-radius:4px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--muted);cursor:pointer;
+  transition:all 0.2s;
+}
+.version-chip:hover,.version-chip.selected{
+  border-color:var(--cyan);color:var(--cyan);
+  background:var(--cyan-dim);
+}
+.download-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:20px 56px;
+  background:var(--cyan);color:var(--ink);
+  font-family:var(--mono);font-size:14px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  border:none;border-radius:4px;cursor:pointer;
+  transition:box-shadow 0.25s,transform 0.2s;
+  position:relative;overflow:hidden;
+}
+.download-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,0.3) 50%,transparent 70%);
+  transform:translateX(-100%);transition:transform 0.6s;
+}
+.download-btn:hover::before{transform:translateX(100%)}
+.download-btn:hover{
+  box-shadow:0 0 60px var(--cyan-glow),0 16px 48px rgba(0,0,0,0.6);
+  transform:translateY(-3px);
+}
+.dl-arrow{font-size:18px;transition:transform 0.2s}
+.download-btn:hover .dl-arrow{transform:translateY(3px)}
+.download-note{
+  margin-top:20px;font-family:var(--mono);
+  font-size:10px;color:var(--muted);letter-spacing:1px;
+}
+
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--border);
+  padding:32px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+  position:relative;z-index:1;
+}
+.footer-logo{font-family:var(--display);font-size:18px;letter-spacing:2px;color:var(--muted)}
+.footer-logo span{color:var(--cyan)}
+.footer-copy{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px}
+.footer-links{display:flex;gap:24px}
+.footer-links a{
+  font-family:var(--mono);font-size:10px;letter-spacing:1px;
+  color:var(--muted);text-decoration:none;text-transform:uppercase;
+  transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--cyan)}
+
+/* ─── TOAST ─── */
+#toast{
+  position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--surface);border:1px solid var(--cyan);border-radius:6px;
+  padding:14px 28px;font-family:var(--mono);font-size:12px;
+  color:var(--cyan);letter-spacing:1px;
+  opacity:0;transition:opacity 0.3s,transform 0.3s;
+  z-index:9999;pointer-events:none;
+  box-shadow:0 0 30px var(--cyan-glow);
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ─── SCROLL INDICATOR ─── */
+.scroll-indicator{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:9px;letter-spacing:2px;
+  color:var(--muted);text-transform:uppercase;
+  animation:fadeUp 1s 1.2s both;
+}
+.scroll-line{
+  width:1px;height:40px;background:linear-gradient(var(--cyan),transparent);
+  animation:scrollPulse 1.5s ease-in-out infinite;
+}
+@keyframes scrollPulse{0%,100%{opacity:0.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s,transform 0.7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ─── SCANLINE (subtle) ─── */
+.scanline{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.015) 2px,rgba(0,0,0,0.015) 4px);
+}
 </style>
 </head>
-<body class="dark">
+<body>
 
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div class="scanline"></div>
+<canvas id="bg-canvas"></canvas>
+<div id="toast"></div>
+
+<!-- NAV -->
 <nav>
-<a class="active" onclick="showTab('inicio')">Inicio</a>
-<a onclick="showTab('modulos')">Módulos</a>
-<a onclick="toggleTheme()" id="themeBtn">Modo Claro</a>
-<a href="https://discord.gg" target="_blank">Discord</a>
+  <div class="nav-logo"><span>x</span>A</div>
+  <div class="nav-links">
+    <a class="nav-btn active" href="#hero">Inicio</a>
+    <a class="nav-btn" href="#modulos">Módulos</a>
+    <a class="nav-btn" href="https://discord.gg" target="_blank">Discord</a>
+    <button class="nav-cta" onclick="scrollToDownload()">Descargar</button>
+  </div>
 </nav>
 
-<div class="card" id="inicio">
-<div style="font-size:12px;opacity:.6">Creado por Mihai</div>
-<div class="title">xA <span>Addon</span></div>
-<div class="desc">Domina tu servidor con la suite de combate más avanzada y profesional.</div>
-<button class="main-btn" onclick="openDownload()">DESCARGAR AHORA</button>
-</div>
+<div class="page">
 
-<div class="card" id="modulos" style="display:none;">
-<h2 style="color:var(--accent);margin-bottom:20px;">Combat Modules</h2>
-<div class="scroll-area">
-<div class="module-item" style="animation-delay:0.1s"><span>🔨</span><div class="module-info"><h4>xMace</h4><p>Exploit exclusivo para ataques precisos.</p></div></div>
-<div class="module-item" style="animation-delay:0.2s"><span>⚔️</span><div class="module-info"><h4>xAura</h4><p>KillAura avanzado con alcance máximo.</p></div></div>
-<div class="module-item" style="animation-delay:0.3s"><span>📍</span><div class="module-info"><h4>xBackStep</h4><p>Teletransporte instantáneo al punto de activación.</p></div></div>
-<div class="module-item" style="animation-delay:0.4s"><span>🎯</span><div class="module-info"><h4>xCustomFov</h4><p>Controla tu FOV personalizado para mayor ventaja.</p></div></div>
-<div class="module-item" style="animation-delay:0.5s"><span>💎</span><div class="module-info"><h4>xTotem</h4><p>Reposición instantánea de tótems evitando fails.</p></div></div>
-<div class="module-item" style="animation-delay:0.6s"><span>🚫</span><div class="module-info"><h4>xNoPoP</h4><p>Evita activaciones innecesarias por daño menor.</p></div></div>
-<div class="module-item" style="animation-delay:0.7s"><span>🛡️</span><div class="module-info"><h4>xArmor</h4><p>Gestión automática de armadura con anti-break.</p></div></div>
-<div class="module-item" style="animation-delay:0.8s"><span>✍️</span><div class="module-info"><h4>xAutoez</h4><p>Mensajes automáticos al eliminar oponentes.</p></div></div>
-</div>
-</div>
+  <!-- HERO -->
+  <section id="hero" style="max-width:none;padding-top:120px;padding-bottom:80px">
+    <div class="hero-eyebrow">Combat Suite · MeteorClient Addon · 2026</div>
+    <h1 class="hero-title">
+      <span class="xa">xA</span>
+      <span class="addon">Addon</span>
+    </h1>
+    <p class="hero-sub">
+      La suite de combate más precisa construida sobre MeteorClient.<br>
+      <strong>Domina cada server. Elimina cada oponente.</strong>
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollToDownload()">DESCARGAR AHORA</button>
+      <a class="btn-secondary" href="#modulos">VER MÓDULOS</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num" data-target="8">0</div>
+        <div class="stat-label">Módulos</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-target="4">0</div>
+        <div class="stat-label">Versiones MC</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-suffix="ms" data-target="1">0</div>
+        <div class="stat-label">Latencia de ataque</div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </section>
 
-<div id="downloadMenu" class="popup">
-<div class="popup-content">
-<h3>Selecciona Versión</h3>
-<button onclick="downloadVersion('1.21.4')">1.21.4</button>
-<button onclick="downloadVersion('1.21.5')">1.21.5</button>
-<button onclick="downloadVersion('1.21.6')">1.21.6</button>
-<button onclick="downloadVersion('1.21.7')">1.21.7</button>
-<button onclick="downloadVersion('1.21.8')">1.21.8</button>
-<button onclick="downloadVersion('1.21.9')">1.21.9</button>
-<button onclick="downloadVersion('1.21.10')">1.21.10</button>
-<button onclick="downloadVersion('1.21.11')">1.21.11</button>
-<button onclick="closeDownload()">Cerrar</button>
-</div>
-</div>
+  <div class="divider"></div>
 
-<canvas id="galaxy"></canvas>
-<footer>© 2026 xA ADDON • DESARROLLADO POR MIHAI</footer>
+  <!-- MÓDULOS -->
+  <section id="modulos">
+    <div class="reveal">
+      <div class="section-label">arsenal</div>
+      <h2 class="section-title">COMBAT<br>MODULES</h2>
+    </div>
+    <div class="modules-grid reveal">
+
+      <div class="module-card">
+        <div class="module-tag">Combat · 01</div>
+        <div class="module-icon">🔨</div>
+        <div class="module-name">xMACE</div>
+        <div class="module-desc">Exploit exclusivo para ataques de maza con timing perfecto. Maximiza el daño por caída.</div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-tag">Combat · 02</div>
+        <div class="module-icon">⚔️</div>
+        <div class="module-name">xAURA</div>
+        <div class="module-desc">KillAura con alcance infinito via teleport packets. Targeting por ángulo más cercano al crosshair.</div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-tag">Movement · 03</div>
+        <div class="module-icon">📍</div>
+        <div class="module-name">xBACKSTEP</div>
+        <div class="module-desc">Teletransporte instantáneo al punto exacto de activación. Escape garantizado post-ataque.</div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-tag">Visual · 04</div>
+        <div class="module-icon">🎯</div>
+        <div class="module-name">xCUSTOMFOV</div>
+        <div class="module-desc">Control preciso del campo de visión. Ajuste dinámico por situación de combate.</div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-tag">Survival · 05</div>
+        <div class="module-icon">💎</div>
+        <div class="module-name">xTOTEM</div>
+        <div class="module-desc">Reposición de tótem a 1 tick. Elimina fails por timing. Compatible con lag alto.</div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-tag">Survival · 06</div>
+        <div class="module-icon">🚫</div>
+        <div class="module-name">xNOPOP</div>
+        <div class="module-desc">Filtra activaciones de tótem por daño menor al umbral configurado. Ahorra tótems.</div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-tag">Gear · 07</div>
+        <div class="module-icon">🛡️</div>
+        <div class="module-name">xARMOR</div>
+        <div class="module-desc">Gestión automática de armadura. Detección de durabilidad crítica con swap instantáneo.</div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-tag">Utility · 08</div>
+        <div class="module-icon">✍️</div>
+        <div class="module-name">xAUTOEZ</div>
+        <div class="module-desc">Mensajes automáticos personalizados al eliminar oponentes. Configurable por servidor.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- DOWNLOAD -->
+  <section id="download-section">
+    <div class="reveal" style="text-align:center">
+      <div class="section-label" style="justify-content:center">release</div>
+      <h2 class="section-title" style="margin-bottom:20px">DESCARGA<br>TU VERSIÓN</h2>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:48px;font-family:var(--mono)">
+        Selecciona la versión de Minecraft y descarga el jar.
+      </p>
+    </div>
+    <div class="version-grid reveal">
+      <button class="version-chip selected" onclick="selectVersion(this,'1.21.4')">1.21.4</button>
+      <button class="version-chip" onclick="selectVersion(this,'1.21.5')">1.21.5</button>
+      <button class="version-chip" onclick="selectVersion(this,'1.21.6')">1.21.6</button>
+      <button class="version-chip" onclick="selectVersion(this,'1.21.7')">1.21.7</button>
+      <button class="version-chip" onclick="selectVersion(this,'1.21.8')">1.21.8</button>
+      <button class="version-chip" onclick="selectVersion(this,'1.21.9')">1.21.9</button>
+      <button class="version-chip" onclick="selectVersion(this,'1.21.10')">1.21.10</button>
+      <button class="version-chip" onclick="selectVersion(this,'1.21.11')">1.21.11</button>
+    </div>
+    <div style="text-align:center" class="reveal">
+      <button class="download-btn" onclick="doDownload()">
+        <span>DESCARGAR</span>
+        <span class="dl-arrow">↓</span>
+      </button>
+      <div class="download-note">xA-Addon-<span id="dl-version-label">1.21.4</span>.jar · Para usar con MeteorClient</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo"><span>x</span>A ADDON</div>
+    <div class="footer-copy">© 2026 DESARROLLADO POR MIHAI</div>
+    <div class="footer-links">
+      <a href="https://discord.gg" target="_blank">Discord</a>
+      <a href="#modulos">Módulos</a>
+      <a href="#download-section">Descargar</a>
+    </div>
+  </footer>
+
+</div><!-- /page -->
 
 <script>
-// SPA
-function showTab(id){
-document.querySelectorAll('.card').forEach(c=>c.style.display='none');
-document.getElementById(id).style.display='block';
-document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-event.target.classList.add('active');
-}
-
-// DOWNLOAD
-function openDownload(){document.getElementById("downloadMenu").style.display="flex";}
-function closeDownload(){document.getElementById("downloadMenu").style.display="none";}
-function downloadVersion(v){alert("Descargando versión "+v);}
-
-// THEME
-function toggleTheme(){
-if(document.body.classList.contains("dark")){
-document.body.classList.remove("dark");document.body.classList.add("light");localStorage.setItem("theme","light");document.getElementById("themeBtn").innerText="Modo Oscuro";}
-else{document.body.classList.remove("light");document.body.classList.add("dark");localStorage.setItem("theme","dark");document.getElementById("themeBtn").innerText="Modo Claro";}
-}
-window.addEventListener('load', ()=>{
-let theme = localStorage.getItem('theme');
-if(theme) document.body.classList.add(theme);
-else document.body.classList.add("dark");
-if(document.body.classList.contains("light")) document.getElementById("themeBtn").innerText="Modo Oscuro";
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+(function animRing(){
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('button,a,.module-card,.version-chip').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';cursor.style.background='var(--cyan)'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)'});
 });
 
-// GALAXY + PARTICLES
-const canvas=document.getElementById("galaxy");
-const ctx=canvas.getContext("2d");
-let stars=[],shooting=[];
-function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
-function createStars(){stars=[];for(let i=0;i<200;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.5,v:Math.random()*0.4+0.1});}}
-function animate(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-stars.forEach(s=>{s.y-=s.v;if(s.y<0)s.y=canvas.height;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle="rgba(255,255,255,0.8)";ctx.fill();});
-if(Math.random()<0.005){shooting.push({x:Math.random()*canvas.width,y:0,len:Math.random()*150+100,speed:Math.random()*10+4})}
-shooting.forEach((sh,i)=>{ctx.beginPath();ctx.moveTo(sh.x,sh.y);ctx.lineTo(sh.x-sh.len,sh.y+sh.len);ctx.strokeStyle="rgba(255,255,255,0.9)";ctx.lineWidth=2;ctx.stroke();sh.x+=sh.speed; sh.y+=sh.speed; if(sh.x>canvas.width||sh.y>canvas.height){shooting.splice(i,1)}});
+// ── CANVAS PARTICLES ──
+const canvas = document.getElementById('bg-canvas');
+const ctx    = canvas.getContext('2d');
+let W,H,particles=[];
 
-requestAnimationFrame(animate);
+function resize(){
+  W=canvas.width=window.innerWidth;
+  H=canvas.height=window.innerHeight;
 }
-window.onresize=()=>{resize();createStars();}
-resize();createStars();animate();
-</script>
 
-</body>
-</html>
+function spawnParticles(){
+  
