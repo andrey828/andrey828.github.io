@@ -21,36 +21,42 @@
 <div id="toast"></div>
 
 <nav>
-  <div class="nav-logo">
-    <span class="x">x</span><span class="a">A</span><span class="dot"></span>
-  </div>
-  <div class="nav-links">
-    <a class="nb active" href="#hero">Inicio</a>
-    <a class="nb" href="#modulos">Módulos</a>
-    <a class="nb" href="#download-section">Descargar</a>
-  </div>
-  <div style="display:flex;align-items:center;gap:12px">
-    <div class="nav-status"><div class="status-dot"></div>EN LÍNEA</div>
-    <button class="nav-dl">DESCARGAR</button>
-  </div>
+    <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <span class="x">x</span><span class="a">A</span><span class="dot"></span>
+    </div>
+    <div class="nav-links">
+        <a class="nb active" href="#hero">Inicio</a>
+        <a class="nb" href="#modulos">Módulos</a>
+        <a class="nb" href="#download-section">Descargar</a>
+    </div>
+    <div class="nav-extra">
+        <div class="nav-status"><div class="status-dot"></div>ONLINE</div>
+        <button class="nav-dl" onclick="document.getElementById('download-section').scrollIntoView({behavior:'smooth'})">GET ADDDON</button>
+    </div>
 </nav>
 
 <div class="page">
     <section id="hero">
-        <div class="hero-badge"><span class="badge-ping"></span>MeteorClient Addon · v2.0</div>
+        <div class="hero-badge"><span class="badge-ping"></span>MeteorClient Addon · v2.0 · 2026</div>
         <div class="hero-main">
-            <div class="glitch-wrap"><span class="hero-xa">xA</span></div>
+            <div class="glitch-wrap">
+                <span class="hero-xa">xA</span>
+            </div>
             <span class="hero-addon">Addon</span>
         </div>
-        <p class="hero-sub">La suite de combate más avanzada. <strong>Teleport exploit. Totem preciso. Kill instantáneo.</strong></p>
+        <p class="hero-sub">
+            La suite de combate más avanzada para <em>MeteorClient</em>.<br>
+            <strong>Teleport exploit. Totem preciso. Kill instantáneo.</strong>
+        </p>
         <div class="hero-btns">
-            <button class="btn-p">DESCARGAR AHORA</button>
+            <button class="btn-p" onclick="document.getElementById('download-section').scrollIntoView({behavior:'smooth'})">DESCARGAR AHORA</button>
             <a class="btn-s" href="#modulos">VER MÓDULOS</a>
         </div>
         <div class="hero-stats">
             <div class="stats-wrap">
                 <div class="stat"><div class="stat-n" data-target="12">0</div><div class="stat-l">Módulos</div></div>
                 <div class="stat"><div class="stat-n" data-target="100" data-suffix="%">0</div><div class="stat-l">Bypass</div></div>
+                <div class="stat"><div class="stat-n" data-target="0" data-suffix="ms">0</div><div class="stat-l">Delay</div></div>
             </div>
         </div>
     </section>
@@ -62,12 +68,21 @@
             </div>
     </section>
 
-    <footer id="download-section">
-        <button class="dl-btn" onclick="showToast()">
-            <span class="dl-icon">↓</span>
-            <span>Descargar xA_Suite.jar</span>
-        </button>
-        <div class="dl-meta">v2.0.4 | Build: 2026.03.18 | <span class="dl-badge">Verified</span></div>
+    <section id="download-section" class="sec">
+        <div class="dl-card">
+            <button class="dl-btn" onclick="triggerDownload()">
+                <span class="dl-icon">↓</span>
+                <span>DESCARGAR v2.0.4</span>
+            </button>
+            <div class="dl-meta">
+                SHA-256: 8f2a...c32 | <span class="dl-badge">Verified Secure</span>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="fl"><span class="x">x</span><span class="a">A</span></div>
+        <div class="fc">© 2026 xA_DEVELOPMENT. All rights reserved.</div>
     </footer>
 </div>
 
