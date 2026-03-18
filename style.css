@@ -1,0 +1,21 @@
+/* Efecto de Vidrio Esmerilado (Glassmorphism) */
+.glass-nav {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glitch-text {
+    font-size: 10vw;
+    font-family: 'Syne', sans-serif;
+    color: #00ffc8;
+    position: relative;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { text-shadow: 0 0 10px #00ffc8; }
+    50% { text-shadow: 0 0 30px #00aaff; }
+    100% { text-shadow: 0 0 10px #00ffc8; }
+}
+
