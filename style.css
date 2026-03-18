@@ -1,80 +1,11 @@
-:root {
-    --c: #00ffc8;
-    --c2: #00aaff;
-    --bg: #030305;
+body { 
+  background: #030305; 
+  color: #00ffc8; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+  margin: 0;
+  font-family: sans-serif;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-    background: var(--bg);
-    color: white;
-    font-family: 'Syne', sans-serif;
-    overflow-x: hidden;
-}
-
-#neural-canvas {
-    position: fixed; inset: 0; z-index: -1;
-}
-
-.bg-overlay {
-    position: fixed; inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(0,255,200,0.05) 0%, transparent 80%);
-    z-index: -1;
-}
-
-nav {
-    padding: 30px 10%; display: flex; justify-content: space-between;
-    backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.logo { font-family: 'Bebas Neue'; font-size: 2rem; color: var(--c); letter-spacing: 5px; }
-
-.main-title {
-    font-family: 'Bebas Neue'; font-size: clamp(5rem, 15vw, 12rem);
-    background: linear-gradient(to bottom, #fff, var(--c2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 30px rgba(0,255,200,0.3));
-    animation: slideIn 1s ease-out;
-}
-
-/* EFECTO DE TRANSPARENCIA (GLASS) */
-.glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 20px 40px; border-radius: 15px;
-    margin: 20px 0; font-family: 'JetBrains Mono';
-}
-
-.glow-btn {
-    padding: 15px 50px; background: var(--c); color: var(--bg);
-    border: none; font-family: 'JetBrains Mono'; font-weight: bold;
-    cursor: pointer; transition: 0.4s; border-radius: 5px;
-    box-shadow: 0 0 20px var(--c);
-}
-
-.glow-btn:hover { transform: scale(1.1); box-shadow: 0 0 50px var(--c); }
-
-.module-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px; padding: 50px 10%;
-}
-
-.card {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.05);
-    padding: 30px; border-radius: 10px;
-    transition: 0.3s;
-}
-
-.card:hover {
-    background: rgba(0,255,200,0.05);
-    border-color: var(--c);
-    transform: translateY(-10px);
-}
-
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(50px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+h1 { font-size: 5rem; text-shadow: 0 0 20px #00ffc8; }
