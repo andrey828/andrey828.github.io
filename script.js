@@ -1,58 +1,55 @@
-// Fondo de partículas interactivo
-const canvas = document.getElementById('canvas-bg');
-const ctx = canvas.getContext('2d');
+const DISCORD_ID = "500693951759155201"; 
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+async function updateMihaiStatus() {
+    try {
+        const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+        const { data } = await response.json();
 
-let particles = [];
+        // 1. Cargar tu foto de perfil de Discord
+        const avatarImg = document.getElementById('discord-avatar');
+        avatarImg.src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${data.discord_user.avatar}.png?size=512`;
 
-class Particle {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
-    }
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.y > canvas.height) this.y = 0;
-        if (this.y < 0) this.y = canvas.height;
-    }
-    draw() {
-        ctx.fillStyle = '#00f2fe';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
+        // 2. Color del anillo de estado
+        const statusColors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
+        const color = statusColors[data.discord_status] || statusColors.offline;
+        
+        document.getElementById('status-dot').style.background = color;
+        const border = document.getElementById('discord-status-border');
+        border.style.borderColor = color;
+        border.style.boxShadow = `0 0 20px ${color}`;
+
+        // 3. Frase personalizada
+        const customStatus = data.activities.find(a => a.type === 4);
+        document.getElementById('discord-custom-status').innerText = customStatus ? `> ${customStatus.state}` : "> xA Developer";
+
+        // 4. Mostrar qué estás jugando
+        const game = data.activities.find(a => a.type === 0);
+        const gamingCard = document.getElementById('gaming-card');
+
+        if (game) {
+            gamingCard.style.display = 'flex';
+            document.getElementById('game-name').innerText = game.name;
+            document.getElementById('game-details').innerText = game.details || "En partida";
+            
+            const iconBox = document.getElementById('game-icon-container');
+            if (game.assets && game.assets.large_image) {
+                const appId = game.application_id;
+                let assetId = game.assets.large_image;
+                let iconUrl = assetId.startsWith('mp:external') 
+                    ? assetId.replace(/mp:external\/.*\/https\//, 'https://')
+                    : `https://cdn.discordapp.com/app-assets/${appId}/${assetId}.png`;
+                iconBox.innerHTML = `<img src="${iconUrl}" style="width:60px; height:60px; border-radius:12px;">`;
+            } else {
+                iconBox.innerHTML = `<div style="width:60px; height:60px; background:var(--cyan); border-radius:12px; display:flex; align-items:center; justify-content:center;">🎮</div>`;
+            }
+        } else {
+            gamingCard.style.display = 'none';
+        }
+
+    } catch (error) {
+        console.error("Error cargando Discord:", error);
     }
 }
 
-function init() {
-    for (let i = 0; i < 100; i++) {
-        particles.push(new Particle());
-    }
-}
-
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        p.update();
-        p.draw();
-    });
-    requestAnimationFrame(animate);
-}
-
-// Actualizar año automáticamente en el footer
-document.getElementById('year').textContent = new Date().getFullYear();
-
-// Efecto simple de consola al cargar
-window.addEventListener('load', () => {
-    console.log("%cxA Labs Engine Loaded", "color: #00f2fe; font-size: 20px; font-weight: bold;");
-    init();
-    animate();
-});
-
+updateMihaiStatus();
+setInterval(updateMihaiStatus, 15000);
