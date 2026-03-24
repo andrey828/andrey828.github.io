@@ -1,25 +1,20 @@
 /* style.css */
 
-/* --- Importación de Google Fonts (Montserrat y Roboto Mono) --- */
+/* --- Importación de Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Roboto+Mono:wght@400;500&display=swap');
 
 :root {
-    --bg-dark: #050509;        /* Fondo ultra-oscuro */
+    --bg-dark: #030307;        /* Fondo ultra-oscuro */
     --accent-cyan: #00f2fe;   /* Cian neón principal */
-    --accent-pink: #ff33cc;   /* Rosa neón para toques (opcional) */
-    --glass-bg: rgba(15, 15, 25, 0.4); /* Glassmorphism sutil */
-    --border-subtle: rgba(255, 255, 255, 0.08); /* Borde de tarjeta casi invisible */
+    --accent-blue: #0984e3;   /* Azul para variaciones */
+    --glass-bg: rgba(20, 20, 30, 0.4); /* Glassmorphism más suave */
+    --glass-border: rgba(255, 255, 255, 0.05); /* Borde de tarjeta sutil */
     --text-white: #f5f5ff;
-    --text-gray: #b0b0c5;
+    --text-gray: #a0a0b5;
     
     /* Tipografía */
     --font-main: 'Montserrat', sans-serif;
     --font-mono: 'Roboto Mono', monospace;
-    
-    /* Efecto de resplandor para títulos */
-    --glow-text: 0 0 10px rgba(0, 242, 254, 0.8), 0 0 20px rgba(0, 242, 254, 0.4);
-    /* Efecto de resplandor para tarjetas */
-    --glow-card-hover: 0 5px 15px rgba(0, 242, 254, 0.15);
 }
 
 /* --- Reseteo básico --- */
@@ -34,16 +29,16 @@ body {
     color: var(--text-white);
     font-family: var(--font-main);
     line-height: 1.6;
-    overflow-x: hidden; /* Evita scrolls raros */
+    overflow-x: hidden;
 }
 
-/* --- Canvas para el fondo (mantenemos el JS) --- */
+/* --- Fondo de partículas interactivo (del JS) --- */
 #canvas-bg {
     position: fixed;
     top: 0;
     left: 0;
     z-index: -1;
-    opacity: 0.2; /* Un fondo muy sutil */
+    opacity: 0.15; /* Un fondo muy sutil */
 }
 
 /* --- Header / Navegación Elegante --- */
@@ -52,45 +47,44 @@ header {
     position: fixed;
     top: 0;
     z-index: 1000;
-    background-color: rgba(5, 5, 9, 0.85);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border-subtle);
+    background-color: rgba(3, 3, 7, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 15px 20px;
     display: flex;
-    justify-content: space-between; /* Logo a la izq, links a la der */
+    justify-content: space-between;
     align-items: center;
 }
 
 .logo {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: var(--accent-cyan);
     text-decoration: none;
     text-transform: uppercase;
-    letter-spacing: 2.5px;
-    text-shadow: var(--glow-text);
+    letter-spacing: 2px;
     transition: transform 0.3s;
 }
 
 .logo:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 30px;
+    gap: 25px;
 }
 
 .nav-links a {
     text-decoration: none;
     color: var(--text-gray);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     transition: color 0.3s, transform 0.2s;
 }
@@ -102,16 +96,17 @@ header {
 
 /* --- Contenedor Principal con espacio --- */
 main {
-    max-width: 900px;
-    margin: 140px auto 60px; /* Margen superior para el header fijo */
+    max-width: 1000px;
+    margin: 120px auto 60px; /* Margen superior para el header fijo */
     padding: 0 20px;
 }
 
 /* --- Sección BIO (Sobre Mí) --- */
 #about {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 40px;
+    text-align: center;
     margin-bottom: 80px;
 }
 
@@ -119,6 +114,7 @@ main {
     position: relative;
     width: 180px;
     height: 180px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,129 +145,155 @@ main {
 }
 
 .about-text h1 {
-    font-size: 2.8rem;
+    font-size: 3rem;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--accent-cyan), #ffffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     margin-bottom: 10px;
-    text-shadow: var(--glow-text);
+    line-height: 1.1;
+}
+
+.about-text h1 .accent {
+    color: var(--accent-cyan);
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.8), 0 0 20px rgba(0, 242, 254, 0.4);
 }
 
 .typewriter {
     font-family: var(--font-mono);
-    color: var(--text-gray);
-    font-size: 0.95rem;
-    margin-bottom: 15px;
+    color: var(--accent-blue);
+    font-size: 1rem;
+    margin-bottom: 20px;
 }
 
 .bio-p {
     color: var(--text-gray);
-    max-width: 500px;
+    max-width: 600px;
+    font-size: 0.95rem;
 }
 
-/* --- Estilo Generall para Tarjetas Tech (Proyecto, Discord) --- */
-.tech-card {
+/* --- Sección de Habilidades --- */
+#skills {
+    margin-bottom: 80px;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 20px;
+}
+
+.skill-card {
     background: var(--glass-bg);
-    border: 1px solid var(--border-subtle);
-    border-radius: 20px;
-    padding: 40px;
-    margin-bottom: 40px;
-    transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.skill-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-cyan);
+}
+
+.skill-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--accent-cyan);
+}
+
+.skill-card p {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-white);
+}
+
+/* --- Sección Proyectos --- */
+#projects {
+    margin-bottom: 80px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.project-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 25px;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
     position: relative;
     overflow: hidden;
 }
 
-/* Efecto de luz al pasar el ratón */
-.tech-card:hover {
+.project-card:hover {
     border-color: rgba(0, 242, 254, 0.4);
     transform: translateY(-5px);
-    box-shadow: var(--glow-card-hover);
+    box-shadow: 0 5px 15px rgba(0, 242, 254, 0.15);
 }
 
-/* Un destello de luz muy tenue dentro de la tarjeta al hover */
-.tech-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(135deg, rgba(0, 242, 254, 0.05), transparent);
-    opacity: 0;
-    transition: opacity 0.4s;
-}
-
-.tech-card:hover::before {
-    opacity: 1;
-}
-
-/* --- Sección Proyecto --- */
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    border-bottom: 1px solid var(--border-subtle);
-    padding-bottom: 15px;
-}
-
-.card-header h3 {
-    font-size: 1.8rem;
+.project-title {
+    font-size: 1.3rem;
     font-weight: 700;
-    color: #ffffff;
-}
-
-.status-badge {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--accent-cyan);
-    background-color: rgba(0, 242, 254, 0.1);
-    border: 1px solid var(--accent-cyan);
-    padding: 6px 14px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-}
-
-.card-content p {
-    color: var(--text-gray);
-    margin-bottom: 25px;
-}
-
-.feature-list {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.feature-list li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: var(--text-gray);
-    font-size: 0.95rem;
-}
-
-.feature-list li::before {
-    content: '✓';
-    color: var(--accent-cyan);
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-/* --- Sección Discord (Únete al HUB) --- */
-#connect {
-    text-align: center;
-}
-
-#connect h3 {
-    font-size: 2.2rem;
     color: #ffffff;
     margin-bottom: 10px;
 }
 
-#connect p {
+.project-desc {
     color: var(--text-gray);
-    margin-bottom: 30px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.tech-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tech-tags li {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    background-color: rgba(0, 242, 254, 0.1);
+    border: 1px solid var(--accent-cyan);
+    padding: 4px 10px;
+    border-radius: 15px;
+}
+
+/* --- Sección Contacto/Comunidad --- */
+#connect {
+    text-align: center;
+}
+
+.connect-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 30px;
+    display: inline-block;
+}
+
+.connect-card h3 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.connect-card p {
+    color: var(--text-gray);
+    margin-bottom: 25px;
 }
 
 .btn-discord {
@@ -279,11 +301,10 @@ main {
     background-color: #5865F2; /* Color corporativo */
     color: white;
     text-decoration: none;
-    padding: 18px 45px;
-    border-radius: 12px;
+    padding: 15px 40px;
+    border-radius: 10px;
     font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 1px;
+    font-size: 0.95rem;
     box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
@@ -300,9 +321,9 @@ footer {
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px 20px;
-    border-top: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--glass-border);
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.3);
 }
 
@@ -317,20 +338,11 @@ footer span {
         display: none; /* Ocultar links en móvil por simplicidad */
     }
     
-    #about {
-        flex-direction: column;
-        text-align: center;
-    }
-    
     .about-text h1 {
         font-size: 2.2rem;
     }
     
-    .tech-card {
-        padding: 30px;
+    .projects-grid {
+        grid-template-columns: 1fr;
     }
-    
-    .card-header h3 {
-        font-size: 1.4rem;
-    }
-    }
+}
