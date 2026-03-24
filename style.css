@@ -1,114 +1,336 @@
+/* style.css */
+
+/* --- Importación de Google Fonts (Montserrat y Roboto Mono) --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Roboto+Mono:wght@400;500&display=swap');
+
 :root {
-    --primary: #00f2fe;
-    --secondary: #ff33cc;
-    --dark: #08080c;
-    --glass: rgba(255, 255, 255, 0.05);
-    --border: rgba(255, 255, 255, 0.1);
+    --bg-dark: #050509;        /* Fondo ultra-oscuro */
+    --accent-cyan: #00f2fe;   /* Cian neón principal */
+    --accent-pink: #ff33cc;   /* Rosa neón para toques (opcional) */
+    --glass-bg: rgba(15, 15, 25, 0.4); /* Glassmorphism sutil */
+    --border-subtle: rgba(255, 255, 255, 0.08); /* Borde de tarjeta casi invisible */
+    --text-white: #f5f5ff;
+    --text-gray: #b0b0c5;
+    
+    /* Tipografía */
+    --font-main: 'Montserrat', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+    
+    /* Efecto de resplandor para títulos */
+    --glow-text: 0 0 10px rgba(0, 242, 254, 0.8), 0 0 20px rgba(0, 242, 254, 0.4);
+    /* Efecto de resplandor para tarjetas */
+    --glow-card-hover: 0 5px 15px rgba(0, 242, 254, 0.15);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* --- Reseteo básico --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    background-color: var(--dark);
-    color: white;
-    font-family: 'Montserrat', sans-serif;
-    overflow-x: hidden;
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    font-family: var(--font-main);
     line-height: 1.6;
+    overflow-x: hidden; /* Evita scrolls raros */
 }
 
+/* --- Canvas para el fondo (mantenemos el JS) --- */
 #canvas-bg {
     position: fixed;
-    top: 0; left: 0; z-index: -1;
-    opacity: 0.3;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.2; /* Un fondo muy sutil */
 }
 
-nav {
-    padding: 20px;
-    background: rgba(8, 8, 12, 0.8);
-    backdrop-filter: blur(10px);
-    position: fixed;
+/* --- Header / Navegación Elegante --- */
+header {
     width: 100%;
-    z-index: 100;
-    border-bottom: 1px solid var(--border);
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    background-color: rgba(5, 5, 9, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
-.nav-content {
-    max-width: 1100px;
+.nav-container {
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Logo a la izq, links a la der */
     align-items: center;
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--accent-cyan);
     text-decoration: none;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
+    text-shadow: var(--glow-text);
+    transition: transform 0.3s;
 }
 
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.nav-links a:hover {
+    color: var(--accent-cyan);
+    transform: translateY(-2px);
+}
+
+/* --- Contenedor Principal con espacio --- */
 main {
     max-width: 900px;
-    margin: 120px auto 50px;
+    margin: 140px auto 60px; /* Margen superior para el header fijo */
     padding: 0 20px;
 }
 
-.glass {
-    background: var(--glass);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 30px;
-    transition: 0.4s;
+/* --- Sección BIO (Sobre Mí) --- */
+#about {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 80px;
 }
 
-.glass:hover {
-    border-color: var(--primary);
-    transform: translateY(-5px);
-}
-
-.accent { color: var(--primary); }
-
-.profile-container {
+.profile-pic-container {
     position: relative;
-    width: 150px;
-    height: 150px;
-    margin-bottom: 30px;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.glow-ring {
+/* Anillo de neón animado alrededor del avatar */
+.neon-ring {
     position: absolute;
-    width: 100%; height: 100%;
+    width: 110%;
+    height: 110%;
     border-radius: 50%;
-    border: 2px solid var(--primary);
-    box-shadow: 0 0 20px var(--primary);
-    animation: pulse 2s infinite;
+    border: 3px solid var(--accent-cyan);
+    box-shadow: 0 0 20px var(--accent-cyan), 0 0 40px rgba(0, 242, 254, 0.2) inset;
+    animation: ringGlow 4s infinite linear;
 }
 
-#avatar {
+@keyframes ringGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.02); }
+}
+
+#about img {
     width: 100%;
     border-radius: 50%;
-    filter: grayscale(0.5);
+    border: 6px solid var(--glass-bg);
+    filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.3));
+    z-index: 1;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.5; }
-    100% { transform: scale(1); opacity: 1; }
+.about-text h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-cyan), #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+    text-shadow: var(--glow-text);
+}
+
+.typewriter {
+    font-family: var(--font-mono);
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+.bio-p {
+    color: var(--text-gray);
+    max-width: 500px;
+}
+
+/* --- Estilo Generall para Tarjetas Tech (Proyecto, Discord) --- */
+.tech-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 40px;
+    transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de luz al pasar el ratón */
+.tech-card:hover {
+    border-color: rgba(0, 242, 254, 0.4);
+    transform: translateY(-5px);
+    box-shadow: var(--glow-card-hover);
+}
+
+/* Un destello de luz muy tenue dentro de la tarjeta al hover */
+.tech-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.tech-card:hover::before {
+    opacity: 1;
+}
+
+/* --- Sección Proyecto --- */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 15px;
+}
+
+.card-header h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.status-badge {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    background-color: rgba(0, 242, 254, 0.1);
+    border: 1px solid var(--accent-cyan);
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+}
+
+.card-content p {
+    color: var(--text-gray);
+    margin-bottom: 25px;
+}
+
+.feature-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-gray);
+    font-size: 0.95rem;
+}
+
+.feature-list li::before {
+    content: '✓';
+    color: var(--accent-cyan);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* --- Sección Discord (Únete al HUB) --- */
+#connect {
+    text-align: center;
+}
+
+#connect h3 {
+    font-size: 2.2rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+#connect p {
+    color: var(--text-gray);
+    margin-bottom: 30px;
 }
 
 .btn-discord {
     display: inline-block;
-    background: #5865F2;
+    background-color: #5865F2; /* Color corporativo */
     color: white;
-    padding: 12px 30px;
-    border-radius: 8px;
     text-decoration: none;
-    font-weight: bold;
-    margin-top: 20px;
-    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
+    padding: 18px 45px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
-footer { text-align: center; padding: 40px; color: #444; }
+.btn-discord:hover {
+    background-color: #4752C4;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(88, 101, 242, 0.6);
+}
+
+/* --- Footer profesional --- */
+footer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+footer span {
+    color: var(--accent-cyan);
+    font-weight: 500;
+}
+
+/* --- RESPONSIVO (Ajustes para móvil) --- */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; /* Ocultar links en móvil por simplicidad */
+    }
+    
+    #about {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .about-text h1 {
+        font-size: 2.2rem;
+    }
+    
+    .tech-card {
+        padding: 30px;
+    }
+    
+    .card-header h3 {
+        font-size: 1.4rem;
+    }
+    }
