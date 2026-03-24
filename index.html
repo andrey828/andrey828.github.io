@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INDREY828 | Digital Solutions Developer</title>
+    <title>Mihai | Dev Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,86 +11,71 @@
     <canvas id="canvas-bg"></canvas>
 
     <header>
-        <div class="nav-container">
-            <a href="#" class="logo">INDREY828_DEV</a>
+        <nav class="nav-container">
+            <a href="#" class="logo">MIHAI_DEV</a>
             <ul class="nav-links">
                 <li><a href="#about">Bio</a></li>
-                <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Proyectos</a></li>
-                <li><a href="#connect">Contacto</a></li>
+                <li><a href="#connect">Discord</a></li>
             </ul>
-        </div>
+        </nav>
     </header>
 
     <main>
-        
         <section id="about">
-            <div class="profile-pic-container">
-                <div class="neon-ring"></div>
-                <img src="https://via.placeholder.com/180" alt="xA Founder Avatar">
+            <div class="avatar-wrapper">
+                <div class="neon-circle" id="discord-status-border"></div>
+                <div class="avatar-img">
+                    <img id="discord-avatar" src="26616.png" alt="Mihai Avatar">
+                    <div id="status-dot"></div>
+                </div>
             </div>
+            
             <div class="about-text">
-                <h1>Hola, soy <span class="accent">INDREY828</span></h1>
-                <p class="typewriter">> Full Stack Developer & Tech Enthusiast</p>
-                <p class="bio-p">Apasionado por crear experiencias digitales excepcionales. Me especializo en ingeniería digital de vanguardia, transformando ideas complejas en soluciones funcionales y escalables.</p>
-            </div>
-        </section>
+                <h1>Hola, soy <span class="accent">Mihai</span></h1>
+                <p id="discord-custom-status" style="font-family:'Roboto Mono'; color: #00f2fe; margin: 10px 0; font-size: 1rem;">
+                    > Conectando con Discord...
+                </p>
+                <p style="color: #888; max-width: 600px; margin: 0 auto 20px;">
+                    Desarrollador independiente enfocado en ingeniería digital y el ecosistema <strong>xA Addon</strong>.
+                </p>
 
-        <section id="skills">
-            <h2 class="section-title">Habilidades Técnicas</h2>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-icon">&#128187;</div> <p>Frontend Dev</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">&#127912;</div> <p>UI/UX Design</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">&#128161;</div> <p>Problem Solving</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">&#128203;</div> <p>Project Mgmt</p>
+                <div id="gaming-card">
+                    <div id="game-icon-container"></div>
+                    <div class="game-info">
+                        <span class="playing-label">Actividad actual</span>
+                        <h4 id="game-name">Cargando...</h4>
+                        <p id="game-details">...</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="projects">
-            <h2 class="section-title">Proyectos Destacados</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <h3 class="project-title">xA Addon</h3>
-                    <p class="project-desc">Extensión de vanguardia diseñada para integrarse profundamente en flujos de trabajo críticos, optimizando la eficiencia desde el núcleo.</p>
-                    <ul class="tech-tags">
-                        <li>v2.0 Beta</li>
-                        <li>Modular</li>
-                        <li>Optimizado</li>
-                    </ul>
-                </div>
-                <div class="project-card">
-                    <h3 class="project-title">Portfolio Personal</h3>
-                    <p class="project-desc">Diseño y desarrollo de este sitio web profesional para mostrar mi perfil, habilidades y proyectos.</p>
-                    <ul class="tech-tags">
-                        <li>HTML5</li>
-                        <li>CSS3</li>
-                        <li>JS</li>
-                        <li>Glassmorphism</li>
-                    </ul>
-                </div>
+        <h2 class="section-title">Mis Proyectos</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>xA Addon</h3>
+                <p>Extensión de vanguardia diseñada para optimizar flujos de trabajo críticos con rendimiento puro.</p>
+                <div class="tags"><span>v2.0 Beta</span><span>Optimized</span></div>
             </div>
-        </section>
+            <div class="card">
+                <h3>LifeSurvivial</h3>
+                <p>Parte del equipo técnico y Staff, gestionando la infraestructura y comunidad.</p>
+                <div class="tags"><span>Staff</span><span>Admin</span></div>
+            </div>
+        </div>
 
         <section id="connect">
-            <div class="connect-card">
-                <h3>Únete a mi HUB</h3>
-                <p>Forma parte de mi comunidad oficial. Soporte exclusivo, discusiones técnicas y Alpha leaks.</p>
-                <a href="https://discord.gg/TU_LINK_PERMANENTE" target="_blank" class="btn-discord">ENTRAR AL DISCORD</a>
+            <div class="discord-card">
+                <h2>¿Hablamos?</h2>
+                <p>Únete a mi comunidad oficial para soporte de xA Addon o colaboraciones.</p>
+                <a href="https://discord.gg/TU_INVITACION" class="btn-discord">ENTRAR AL DISCORD HUB</a>
             </div>
         </section>
-
     </main>
 
     <footer>
-        <p>&copy; 2024 INDREY828. Engineered with <span>&hearts;</span> and lot of code.</p>
+        <p>&copy; 2026 Mihai | Built with Code & Passion</p>
     </footer>
 
     <script src="script.js"></script>
