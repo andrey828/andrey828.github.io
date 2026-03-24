@@ -3,366 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xA Labs | Soluciones de Código Vanguardistas</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #050509;
-            --text-color: #f0f0f8;
-            --accent-primary: #00f2fe; /* Cian neón */
-            --accent-secondary: #ff33cc; /* Rosa neón */
-            --glass-bg: rgba(20, 20, 35, 0.6);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --discord-color: #5865F2;
-            --mono-font: 'Roboto Mono', monospace;
-            --main-font: 'Montserrat', sans-serif;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: var(--main-font);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* --- Fondo Animado Sutil (Puntos Conectados) --- */
-        #canvas-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.2; /* Muy sutil */
-        }
-
-        /* --- Barra de Navegación "Premium" --- */
-        nav {
-            width: 100%;
-            background: rgba(5, 5, 9, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            position: fixed;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: center;
-        }
-
-        .nav-content {
-            max-width: 1200px;
-            width: 90%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: var(--accent-primary);
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 0.9em;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-secondary);
-        }
-
-        /* --- Main Content Container --- */
-        main {
-            margin-top: 100px; /* Espacio para la nav bar */
-            max-width: 1200px;
-            width: 90%;
-            display: flex;
-            flex-direction: column;
-            gap: 60px; /* Espaciado entre secciones */
-            padding-bottom: 80px;
-        }
-
-        /* --- Hero Section (Sobre Mí) --- */
-        #about {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 40px;
-            align-items: center;
-            padding: 60px 0;
-        }
-
-        .profile-pic-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .profile-pic-container::after {
-            content: '';
-            position: absolute;
-            width: 110%;
-            height: 110%;
-            border-radius: 50%;
-            border: 2px dashed var(--accent-primary);
-            animation: rotateDashed 20s linear infinite;
-        }
-
-        @keyframes rotateDashed {
-            to { transform: rotate(360deg); }
-        }
-
-        #about img {
-            width: 100%;
-            max-width: 250px;
-            border-radius: 50%;
-            border: 5px solid var(--glass-bg);
-            z-index: 1;
-        }
-
-        .about-text h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .about-text h2 {
-            font-size: 1.5em;
-            font-weight: 400;
-            color: #ccc;
-            margin-bottom: 20px;
-        }
-
-        .tagline {
-            font-family: var(--mono-font);
-            font-size: 1em;
-            color: #888;
-            border-left: 3px solid var(--accent-primary);
-            padding-left: 15px;
-            margin-bottom: 30px;
-        }
-
-        /* --- Sección de Filosofía/Habilidades --- */
-        #philosophy {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .skill-card {
-            background: var(--glass-bg);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-primary);
-        }
-
-        .skill-card h3 {
-            color: var(--accent-primary);
-            margin-bottom: 15px;
-        }
-
-        .skill-card p {
-            font-size: 0.95em;
-            line-height: 1.6;
-            color: #ccc;
-        }
-
-        /* --- Sección de Proyectos (xA Addon) --- */
-        #projects {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.2em;
-            color: var(--text-color);
-            margin-bottom: 20px;
-        }
-
-        .project-detailed {
-            background: linear-gradient(135deg, rgba(20, 20, 35, 0.8) 0%, rgba(5, 5, 9, 0.8) 100%);
-            padding: 40px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-detailed::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 150px;
-            height: 150px;
-            background: var(--accent-primary);
-            filter: blur(100px);
-            opacity: 0.1;
-        }
-
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-        }
-
-        .project-header h3 {
-            font-size: 2em;
-            color: var(--accent-primary);
-            margin: 0;
-        }
-
-        .status {
-            font-family: var(--mono-font);
-            font-size: 0.8em;
-            padding: 5px 12px;
-            border-radius: 20px;
-            background: rgba(0, 242, 254, 0.1);
-            color: var(--accent-primary);
-            border: 1px solid var(--accent-primary);
-        }
-
-        .project-content p {
-            line-height: 1.7;
-            color: #ccc;
-            margin-bottom: 20px;
-        }
-
-        .feature-list {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .feature-list li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #aaa;
-        }
-
-        .feature-list li::before {
-            content: '✓';
-            color: var(--accent-secondary);
-            font-weight: bold;
-        }
-
-        /* --- Sección de Discord "Oficial" --- */
-        #connect {
-            background: var(--glass-bg);
-            padding: 40px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .discord-icon-large {
-            fill: var(--discord-color);
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
-        }
-
-        #connect h3 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        #connect p {
-            color: #ccc;
-            max-width: 600px;
-            margin-bottom: 30px;
-        }
-
-        .discord-btn {
-            display: inline-block;
-            background-color: var(--discord-color);
-            color: white;
-            text-decoration: none;
-            padding: 15px 35px;
-            border-radius: 8px;
-            font-weight: 700;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        .discord-btn:hover {
-            background-color: #4752C4;
-            transform: scale(1.03);
-        }
-
-        /* --- Footer --- */
-        footer {
-            width: 100%;
-            padding: 40px 0;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        footer span {
-            color: var(--accent-primary);
-        }
-
-        /* --- Media Queries (Responsivo) --- */
-        @media (max-width: 768px) {
-            #about {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .profile-pic-container {
-                margin-bottom: 20px;
-            }
-
-            .about-text h1 {
-                font-size: 2.2em;
-            }
-
-            .project-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-        }
-
-    </style>
+    <title>xA Labs | Developer Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -372,7 +15,7 @@
         <div class="nav-content">
             <a href="#" class="logo">xA Labs</a>
             <div class="nav-links">
-                <a href="#about">Nosotros</a>
+                <a href="#about">Bio</a>
                 <a href="#projects">xA Addon</a>
                 <a href="#connect">Comunidad</a>
             </div>
@@ -380,159 +23,46 @@
     </nav>
 
     <main>
-
-        <section id="about">
-            <div class="profile-pic-container">
-                <img src="https://via.placeholder.com/250" alt="xA Labs Founder">
+        <section id="about" class="fade-in">
+            <div class="profile-container">
+                <div class="glow-ring"></div>
+                <img src="https://via.placeholder.com/200" alt="Dev Avatar" id="avatar">
             </div>
             <div class="about-text">
-                <h1>Crafting Digital Alpha</h1>
-                <h2>Desarrollador Apasionado | Creador de Soluciones</h2>
-                <div class="tagline">
-                    <code>> rm -rf mediocrity; ./innovate.sh</code>
-                </div>
-                <p>Bienvenido a xA Labs. Soy un desarrollador independiente impulsado por la curiosidad y la ambición de crear software que marque la diferencia. No solo escribo código; esculpo experiencias digitales eficientes y vanguardistas, transformando ideas abstractas en herramientas funcionales.</p>
-            </div>
-        </section>
-
-        <section id="philosophy">
-            <div class="skill-card">
-                <h3>Pasión por el Código</h3>
-                <p>Lo que comenzó como afición se ha convertido en una vocación. Mi enfoque es la mejora continua, explorando constantemente nuevos lenguajes y arquitecturas.</p>
-            </div>
-            <div class="skill-card">
-                <h3>Desarrollo Full-Stack</h3>
-                <p>Cómodo tanto en el frontend moderno (HTML5, CSS3, JS/React) como en el backend robusto (Node.js, Python), construyendo soluciones de extremo a extremo.</p>
-            </div>
-            <div class="skill-card">
-                <h3>Arquitectura Limpia</h3>
-                <p>Defensor del código limpio, mantenible y escalable. Creo que la belleza del software reside tanto en su funcionamiento como en su estructura interna.</p>
+                <h1>Ingeniería Digital <span class="accent">xA</span></h1>
+                <p class="typewriter">> Desarrollador en busca de la perfección.</p>
+                <p>Especializado en la creación de ecosistemas digitales y el desarrollo del <strong>xA Addon</strong>. No solo programo, diseño experiencias.</p>
             </div>
         </section>
 
         <section id="projects">
-            <h2 class="section-title">Nuestras Creaciones</h2>
-            <div class="project-detailed">
-                <div class="project-header">
-                    <h3>xA Addon</h3>
-                    <span class="status">EN DESARROLLO ACTIVO</span>
+            <div class="card glass">
+                <div class="card-header">
+                    <h3>Proyecto Destacado: xA Addon</h3>
+                    <span class="badge">v2.0 Beta</span>
                 </div>
-                <div class="project-content">
-                    <p>xA Addon es nuestro proyecto insignia. Es más que un simple complemento; es una suite de herramientas diseñada para integrarse profundamente y potenciar flujos de trabajo específicos. Estamos redefiniendo la eficiencia del usuario final.</p>
-                    <p>Este proyecto representa la culminación de nuestra investigación en integración de software y optimización de interfaces. Cada línea de código está pensada para ofrecer rendimiento y una experiencia de usuario sin fricciones.</p>
-                    <p><strong>Características Clave:</strong></p>
-                    <ul class="feature-list">
-                        <li>Integración Profunda y Nativa</li>
-                        <li>Automatización de Tareas Repetitivas</li>
-                        <li>Interfaz de Usuario Intuitiva y Moderna</li>
-                        <li>Motor de Rendimiento Optimizado</li>
-                        <li>API Abierta para Desarrolladores (Próximamente)</li>
-                    </ul>
-                </div>
+                <p>Una extensión de vanguardia diseñada para optimizar flujos de trabajo críticos. Rendimiento puro, sin código innecesario.</p>
+                <ul class="features">
+                    <li>⚡ Latencia Cero</li>
+                    <li>🛠️ Arquitectura Modular</li>
+                    <li>🎨 Interfaz Adaptativa</li>
+                </ul>
             </div>
         </section>
 
         <section id="connect">
-            <svg class="discord-icon-large" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.069.069 0 0 0-.032.027C.533 9.048-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-            <h3>xA Labs Community</h3>
-            <p>Únete a nuestro cuartel general en Discord. Colabora, discute sobre desarrollo, obtén soporte exclusivo para xA Addon y conecta con otros entusiastas de la tecnología.</p>
-            <a href="https://discord.gg/TU_INVITACION" target="_blank" class="discord-btn">Conectarse HQ</a>
+            <div class="discord-card glass">
+                <h3>Únete al HUB</h3>
+                <p>Forma parte de la comunidad oficial de xA Labs.</p>
+                <a href="https://discord.gg/TU_LINK" target="_blank" class="btn-discord">ENTRAR AL DISCORD</a>
+            </div>
         </section>
-
     </main>
 
     <footer>
-        <div class="nav-content">
-            <p>&copy; 2023 xA Labs. Construido con <span>&hearts;</span> y mucho código.</p>
-        </div>
+        <p>&copy; 2024 xA Labs | <span id="year"></span></p>
     </footer>
 
-    <script>
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let particlesArray;
-
-        class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x;
-                this.y = y;
-                this.directionX = directionX;
-                this.directionY = directionY;
-                this.size = size;
-                this.color = color;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
-            update() {
-                if (this.x > canvas.width || this.x < 0) {
-                    this.directionX = -this.directionX;
-                }
-                if (this.y > canvas.height || this.y < 0) {
-                    this.directionY = -this.directionY;
-                }
-                this.x += this.directionX;
-                this.y += this.directionY;
-                this.draw();
-            }
-        }
-
-        function init() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = Math.random() * 2 + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * 1) - 0.5;
-                let directionY = (Math.random() * 1) - 0.5;
-                let color = '#fff';
-
-                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-            }
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, innerWidth, innerHeight);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-            }
-            connect();
-        }
-
-        function connect() {
-            let opacityValue = 1;
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                    if (distance < (canvas.width / 7) * (canvas.height / 7)) {
-                        opacityValue = 1 - (distance / 15000);
-                        ctx.strokeStyle = `rgba(255,255,255,${opacityValue / 5})`; // Líneas muy tenues
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        window.addEventListener('resize', function() {
-            canvas.width = innerWidth;
-            canvas.height = innerHeight;
-            init();
-        });
-
-        init();
-        animate();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
