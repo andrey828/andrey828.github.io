@@ -1,55 +1,99 @@
-const DISCORD_ID = "500693951759155201"; 
+const GITHUB_USER = "indrey828"; 
+const GITHUB_REPO = "indrey828.github.io";
+const DISCORD_ID = "500693951759155201";
 
-async function updateMihaiStatus() {
-    try {
-        const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-        const { data } = await response.json();
+const editBtn = document.getElementById('edit-btn');
+const tokenInput = document.getElementById('gh-token');
+const editableIds = ['edit-name', 'edit-role', 'edit-bio', 'edit-info1', 'edit-info2', 'edit-info3'];
 
-        // 1. Cargar tu foto de perfil de Discord
-        const avatarImg = document.getElementById('discord-avatar');
-        avatarImg.src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${data.discord_user.avatar}.png?size=512`;
-
-        // 2. Color del anillo de estado
-        const statusColors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
-        const color = statusColors[data.discord_status] || statusColors.offline;
+// 1. Lógica del Editor
+editBtn.addEventListener('click', async () => {
+    const isEditing = editBtn.innerText === "MODO EDITOR";
+    
+    if (isEditing) {
+        editableIds.forEach(id => {
+            const el = document.getElementById(id);
+            el.contentEditable = true;
+            el.style.border = "1px dashed #00f2fe";
+        });
+        editBtn.innerText = "SUBIR A GITHUB";
+        editBtn.style.background = "#2ea44f";
+    } else {
+        const token = tokenInput.value;
+        if (!token.startsWith("ghp_")) return alert("Primero pega tu Token de GitHub en el cuadro de la izquierda.");
         
-        document.getElementById('status-dot').style.background = color;
-        const border = document.getElementById('discord-status-border');
-        border.style.borderColor = color;
-        border.style.boxShadow = `0 0 20px ${color}`;
+        editBtn.innerText = "SUBIENDO...";
+        editBtn.disabled = true;
+        await pushUpdate(token);
+    }
+});
 
-        // 3. Frase personalizada
-        const customStatus = data.activities.find(a => a.type === 4);
-        document.getElementById('discord-custom-status').innerText = customStatus ? `> ${customStatus.state}` : "> xA Developer";
+async function pushUpdate(token) {
+    try {
+        const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/index.html`;
+        
+        // Obtener el archivo actual para el SHA
+        const res = await fetch(url, { headers: { "Authorization": `token ${token}` } });
+        const fileData = await res.json();
 
-        // 4. Mostrar qué estás jugando
-        const game = data.activities.find(a => a.type === 0);
-        const gamingCard = document.getElementById('gaming-card');
+        // Limpiar el HTML antes de subirlo
+        editableIds.forEach(id => {
+            const el = document.getElementById(id);
+            el.contentEditable = false;
+            el.style.border = "none";
+        });
 
-        if (game) {
-            gamingCard.style.display = 'flex';
-            document.getElementById('game-name').innerText = game.name;
-            document.getElementById('game-details').innerText = game.details || "En partida";
-            
-            const iconBox = document.getElementById('game-icon-container');
-            if (game.assets && game.assets.large_image) {
-                const appId = game.application_id;
-                let assetId = game.assets.large_image;
-                let iconUrl = assetId.startsWith('mp:external') 
-                    ? assetId.replace(/mp:external\/.*\/https\//, 'https://')
-                    : `https://cdn.discordapp.com/app-assets/${appId}/${assetId}.png`;
-                iconBox.innerHTML = `<img src="${iconUrl}" style="width:60px; height:60px; border-radius:12px;">`;
-            } else {
-                iconBox.innerHTML = `<div style="width:60px; height:60px; background:var(--cyan); border-radius:12px; display:flex; align-items:center; justify-content:center;">🎮</div>`;
-            }
+        const updatedContent = document.documentElement.outerHTML;
+
+        const updateRes = await fetch(url, {
+            method: "PUT",
+            headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+                message: "Actualización de perfil (Mihai Web Editor)",
+                content: btoa(unescape(encodeURIComponent(updatedContent))),
+                sha: fileData.sha
+            })
+        });
+
+        if (updateRes.ok) {
+            alert("✅ ¡Publicado! GitHub tardará unos 30-60 segundos en mostrar los cambios.");
+            location.reload();
         } else {
-            gamingCard.style.display = 'none';
+            alert("❌ Error de Token o Permisos. Verifica que tenga permiso 'repo'.");
+            editBtn.disabled = false;
+            editBtn.innerText = "SUBIR A GITHUB";
         }
-
-    } catch (error) {
-        console.error("Error cargando Discord:", error);
+    } catch (e) {
+        alert("Error de conexión con GitHub.");
+        editBtn.disabled = false;
     }
 }
 
-updateMihaiStatus();
-setInterval(updateMihaiStatus, 15000);
+// 2. Lógica de Discord (Lanyard)
+async function updateStatus() {
+    try {
+        const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+        const { data } = await response.json();
+        
+        // Foto
+        document.getElementById('discord-avatar').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${data.discord_user.avatar}.png?size=512`;
+        
+        // Color de estado
+        const colors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
+        const color = colors[data.discord_status] || '#747f8d';
+        document.getElementById('status-dot').style.background = color;
+        document.getElementById('discord-status-border').style.borderColor = color;
+
+        // Actividad
+        const game = data.activities.find(a => a.type === 0);
+        const card = document.getElementById('gaming-card');
+        if (game) {
+            card.style.display = 'flex';
+            document.getElementById('game-name').innerText = game.name;
+        } else {
+            card.style.display = 'none';
+        }
+    } catch (e) {}
+}
+setInterval(updateStatus, 15000);
+updateStatus();
