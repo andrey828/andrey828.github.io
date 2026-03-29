@@ -1,6 +1,6 @@
 AOS.init();
 
-// Visualizador de memoria
+// Inicializar nodos de memoria
 const heap = document.getElementById('heapMap');
 for(let i=0; i<45; i++) {
     const node = document.createElement('div');
@@ -8,47 +8,42 @@ for(let i=0; i<45; i++) {
     heap.appendChild(node);
 }
 
-function handleAuth(type) {
-    const user = document.getElementById('username').value;
-    const pass = document.getElementById('password').value;
-    const msg = document.getElementById('authMsg');
-
-    if(user.length > 3 && pass.length > 5) {
-        msg.style.color = "#0f6";
-        msg.innerText = type === 'login' ? "Acceso Concedido..." : "Usuario Registrado con Éxito.";
-        
-        setTimeout(() => {
-            document.getElementById('authOverlay').style.opacity = "0";
-            setTimeout(() => {
-                document.getElementById('authOverlay').style.display = "none";
-                document.getElementById('mainApp').classList.remove('blur');
-                document.getElementById('userTag').innerHTML = `<i class="fas fa-user-check"></i> ${user.toUpperCase()}`;
-                document.getElementById('console').innerText = "> Sesión iniciada. Núcleo listo.";
-            }, 600);
-        }, 1000);
-    } else {
-        msg.style.color = "#ff4444";
-        msg.innerText = "Error: Usuario > 3, Contraseña > 5";
-    }
-}
-
 document.getElementById('runBtn').addEventListener('click', async () => {
     const term = document.getElementById('console');
-    term.innerHTML = "<span style='color:#5382a1'>[JS] Iniciando Orquestador Políglota...</span><br>";
+    const runBtn = document.getElementById('runBtn');
+    
+    runBtn.disabled = true;
+    term.innerHTML = "<span style='color:#5382a1'>[SYSTEM] Iniciando Orquestador Políglota...</span><br>";
     
     const stack = [
-        { l: "JAVA", m: "Cifrando sesión con BCrypt en Spring Security...", c: "#f89820" },
-        { l: "C++", m: "Ejecutando algoritmos de optimización nativa...", c: "#00599c" },
-        { l: "C#", m: "Validando reglas de negocio corporativas...", c: "#178600" },
-        { l: "PYTHON", m: "Analizando patrones de seguridad con IA...", c: "#3776ab" }
+        { l: "JAVA", m: "Spring Boot Core: Desplegando API Rest...", c: "#f89820" },
+        { l: "C++", m: "Native Engine: Optimizando punteros de memoria...", c: "#00599c" },
+        { l: "C", m: "Kernel Module: Verificando integridad de hardware...", c: "#a8b9cc" },
+        { l: "C#", m: ".NET Service: Cargando lógica empresarial...", c: "#178600" },
+        { l: "PYTHON", m: "AI Agent: Analizando patrones de ejecución...", c: "#3776ab" }
     ];
 
     for (const step of stack) {
-        document.getElementById('cpuBar').style.width = Math.random() * 90 + "%";
-        document.getElementById('threadStatus').innerText = Math.floor(Math.random()*20) + " ACTIVE";
+        // Animación de CPU y Memoria
+        const load = Math.floor(Math.random() * 80 + 20);
+        document.getElementById('cpuBar').style.width = load + "%";
+        document.getElementById('cpuVal').innerText = load + "%";
+        document.getElementById('threadStatus').innerText = Math.floor(Math.random()*24 + 8) + " HILOS";
+        
+        // Log en consola
         term.innerHTML += `<span style="color:${step.c}">[${step.l}] ${step.m}</span><br>`;
-        document.querySelectorAll('.m-node').forEach(n => n.style.background = Math.random() > 0.4 ? step.c : '#222');
-        await new Promise(r => setTimeout(r, 700));
+        term.scrollTop = term.scrollHeight;
+
+        // Efecto visual en la rejilla de memoria
+        document.querySelectorAll('.m-node').forEach(n => {
+            if(Math.random() > 0.5) n.style.background = step.c;
+        });
+
+        await new Promise(r => setTimeout(r, 800));
     }
-    term.innerHTML += "<br><span style='color:#0f6'>[SUCCESS] Todo el stack respondió satisfactoriamente.</span>";
+
+    term.innerHTML += "<br><span style='color:#0f6'>[SUCCESS] Todo el ecosistema políglota está ONLINE.</span>";
+    runBtn.disabled = false;
+    document.getElementById('cpuBar').style.width = "5%";
+    document.getElementById('cpuVal').innerText = "5%";
 });
