@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  java-backend:
+    build: ./backend-java
+    ports:
+      - "8080:8080"
+  python-ai:
+    build: ./ai-python
+    ports:
+      - "8000:8000"
+  web-ui:
+    image: nginx:alpine
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    ports:
+      - "80:80"
+      
