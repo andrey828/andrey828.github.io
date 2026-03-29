@@ -1,41 +1,54 @@
-AOS.init({ duration: 800 });
+AOS.init();
 
-// Generar cuadricula de memoria
+// Visualizador de memoria
 const heap = document.getElementById('heapMap');
-for(let i = 0; i < 30; i++) {
+for(let i=0; i<45; i++) {
     const node = document.createElement('div');
-    node.className = 'mem-node';
+    node.className = 'm-node';
     heap.appendChild(node);
 }
 
+function handleAuth(type) {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    const msg = document.getElementById('authMsg');
+
+    if(user.length > 3 && pass.length > 5) {
+        msg.style.color = "#0f6";
+        msg.innerText = type === 'login' ? "Acceso Concedido..." : "Usuario Registrado con Éxito.";
+        
+        setTimeout(() => {
+            document.getElementById('authOverlay').style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById('authOverlay').style.display = "none";
+                document.getElementById('mainApp').classList.remove('blur');
+                document.getElementById('userTag').innerHTML = `<i class="fas fa-user-check"></i> ${user.toUpperCase()}`;
+                document.getElementById('console').innerText = "> Sesión iniciada. Núcleo listo.";
+            }, 600);
+        }, 1000);
+    } else {
+        msg.style.color = "#ff4444";
+        msg.innerText = "Error: Usuario > 3, Contraseña > 5";
+    }
+}
+
 document.getElementById('runBtn').addEventListener('click', async () => {
-    const consoleOut = document.getElementById('console');
-    consoleOut.innerHTML = "<span style='color:#5382a1'>[JS] Dispatching microservices...</span><br>";
+    const term = document.getElementById('console');
+    term.innerHTML = "<span style='color:#5382a1'>[JS] Iniciando Orquestador Políglota...</span><br>";
     
-    const processes = [
-        { lang: "JAVA", task: "Spring Boot Context Started. Sandboxing code.", color: "#f89820" },
-        { lang: "C++", task: "Native Vector Processing complete.", color: "#00599c" },
-        { lang: "C", task: "Memory Pointers Checked. No leaks detected.", color: "#a8b9cc" },
-        { lang: "C#", task: ".NET Core Business Rules Applied.", color: "#178600" },
-        { lang: "PYTHON", task: "AI Complexity Analysis: O(N).", color: "#3776ab" }
+    const stack = [
+        { l: "JAVA", m: "Cifrando sesión con BCrypt en Spring Security...", c: "#f89820" },
+        { l: "C++", m: "Ejecutando algoritmos de optimización nativa...", c: "#00599c" },
+        { l: "C#", m: "Validando reglas de negocio corporativas...", c: "#178600" },
+        { l: "PYTHON", m: "Analizando patrones de seguridad con IA...", c: "#3776ab" }
     ];
 
-    for (const p of processes) {
-        // Simular uso de recursos
-        document.getElementById('cpuBar').style.width = Math.floor(Math.random() * 85 + 10) + "%";
-        document.getElementById('threadCount').innerText = Math.floor(Math.random() * 16 + 4) + " ACTIVE";
-        document.querySelectorAll('.mem-node').forEach(n => {
-            n.style.background = Math.random() > 0.4 ? p.color : '#222';
-        });
-
-        consoleOut.innerHTML += `<span style="color:${p.color}">[${p.lang}] ${p.task}</span><br>`;
-        consoleOut.scrollTop = consoleOut.scrollHeight;
-        await new Promise(r => setTimeout(r, 800));
+    for (const step of stack) {
+        document.getElementById('cpuBar').style.width = Math.random() * 90 + "%";
+        document.getElementById('threadStatus').innerText = Math.floor(Math.random()*20) + " ACTIVE";
+        term.innerHTML += `<span style="color:${step.c}">[${step.l}] ${step.m}</span><br>`;
+        document.querySelectorAll('.m-node').forEach(n => n.style.background = Math.random() > 0.4 ? step.c : '#222');
+        await new Promise(r => setTimeout(r, 700));
     }
-
-    // Limpiar al terminar
-    consoleOut.innerHTML += "<br><span style='color:#0f6'>[SUCCESS] Ecosistema Políglota ejecutado sin errores.</span>";
-    document.getElementById('cpuBar').style.width = "0%";
-    document.getElementById('threadCount').innerText = "IDLE";
-    document.querySelectorAll('.mem-node').forEach(n => n.style.background = '#222');
+    term.innerHTML += "<br><span style='color:#0f6'>[SUCCESS] Todo el stack respondió satisfactoriamente.</span>";
 });
