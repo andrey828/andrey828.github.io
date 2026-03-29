@@ -2,14 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>JavaVerse | Interactive OS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaVerse | Hacker Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav class="glass-nav">
-        <div class="logo"><i class="fab fa-java"></i> JavaVerse<span>.os</span></div>
+        <div class="logo"><i class="fab fa-java"></i> Mihai <span>.os</span></div>
         <div class="nav-links">
             <a href="#hero">Inicio</a>
             <a href="#features">Potencia</a>
@@ -20,41 +21,41 @@
     <section id="hero" class="hero">
         <div class="hero-content" data-aos="zoom-in">
             <h1>The <span class="gradient-text">Java</span> Experience</h1>
-            <p>Un entorno de ejecución real, análisis con IA y arquitectura de microservicios en una sola web.</p>
+            <p>Arquitectura de Misión Crítica y Análisis Multihilo.</p>
             <a href="#playground" class="main-btn">Abrir Terminal</a>
         </div>
     </section>
 
     <section id="features" class="features">
-        <div class="card" data-aos="fade-up" data-aos-delay="100">
+        <div class="card" data-aos="fade-up">
             <i class="fas fa-microchip"></i>
             <h3>Multithreading</h3>
-            <p>Gestión de procesos paralelos optimizada por la JVM.</p>
+            <p>Gestión de procesos paralelos optimizada.</p>
         </div>
-        <div class="card" data-aos="fade-up" data-aos-delay="200">
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
             <i class="fas fa-brain"></i>
             <h3>IA Analysis</h3>
-            <p>Python procesa tu código para detectar errores lógicos.</p>
+            <p>Análisis de lógica por Python Engine.</p>
         </div>
-        <div class="card" data-aos="fade-up" data-aos-delay="300">
+        <div class="card" data-aos="fade-up" data-aos-delay="200">
             <i class="fas fa-shield-halved"></i>
             <h3>Safe Sandbox</h3>
-            <p>Ejecución aislada en contenedores para máxima seguridad.</p>
+            <p>Ejecución aislada en contenedores.</p>
         </div>
     </section>
 
     <section id="playground" class="playground">
-        <div class="terminal-window" data-aos="fade-right">
+        <div class="terminal-window" data-aos="fade-up">
             <div class="terminal-header">
                 <div class="dots"><span></span><span></span><span></span></div>
                 <span class="title">Main.java</span>
                 <button id="runBtn"><i class="fas fa-play"></i> Run</button>
             </div>
-            <textarea id="editor">public class Main {
+            <textarea id="editor" spellcheck="false">public class Main {
     public static void main(String[] args) {
-        System.out.println("Ejecutando en el servidor Java...");
+        System.out.println("Iniciando sistema...");
         int suma = 10 + 20;
-        System.out.println("Resultado: " + suma);
+        System.out.println("Resultado de la suma: " + suma);
     }
 }</textarea>
             <div id="output" class="output">> Listo para compilar...</div>
