@@ -2,54 +2,48 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>JavaVerse OS | Polyglot Architecture</title>
+    <title>Mihai Development</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="app-container">
-        <header data-aos="fade-down">
-            <div class="logo">JAVA<span>VERSE</span>.OS</div>
-            <div class="tech-stack">
-                <span class="badge">JAVA 21</span>
-                <span class="badge">C++ / C</span>
-                <span class="badge">C# .NET</span>
-                <span class="badge">PYTHON</span>
-                <span class="badge">JS / HTML / CSS</span>
+    <div id="authOverlay" class="glass-overlay">
+        <div class="auth-card" data-aos="zoom-in">
+            <h2><i class="fas fa-lock"></i> SECURE ACCESS</h2>
+            <input type="text" id="username" placeholder="Nombre de Usuario">
+            <input type="password" id="password" placeholder="Contraseña">
+            <div class="auth-buttons">
+                <button onclick="login()" class="btn-primary">LOGIN</button>
+                <button onclick="register()" class="btn-secondary">REGISTRAR</button>
             </div>
-        </header>
+            <p id="authMsg"></p>
+        </div>
+    </div>
 
-        <div class="system-monitors" data-aos="fade-up">
-            <div class="monitor-card">
-                <label>CPU CLUSTER LOAD</label>
+    <div id="mainApp" class="app-container blur">
+        <header>
+            <div class="logo">JAVA<span>VERSE</span>.OS</div>
+            <div id="userInfo" class="user-tag"></div>
+        </header>
+        
+        <div class="system-monitors">
+            <div class="monitor-card glass">
+                <label>ENCRYPTION STATUS</label>
+                <div class="status-active">AES-256 BIT ENABLED</div>
+            </div>
+            <div class="monitor-card glass">
+                <label>CPU CLUSTER</label>
                 <div class="bar-bg"><div id="cpuBar" class="bar-fill"></div></div>
-                <span id="cpuVal">0%</span>
-            </div>
-            <div class="monitor-card">
-                <label>ACTIVE THREADS</label>
-                <div id="threadCount" class="status-text">IDLE</div>
-            </div>
-            <div class="monitor-card">
-                <label>MEMORY MAP</label>
-                <div id="heapMap" class="memory-grid"></div>
             </div>
         </div>
 
-        <main class="ide-wrapper" data-aos="zoom-in">
-            <div class="ide-header">
-                <span><i class="fas fa-code"></i> Main.java</span>
-                <button id="runBtn"><i class="fas fa-play"></i> INICIAR CLUSTER</button>
-            </div>
-            <textarea id="editor" spellcheck="false">
-public class PolyglotSystem {
-    public static void main(String[] args) {
-        System.out.println("Enviando peticiones al ecosistema políglota...");
-    }
-}</textarea>
-            <div id="console" class="terminal-output">> Esperando ejecución del sistema...</div>
+        <main class="ide-wrapper glass">
+            <div class="ide-header"><span>KernelExecutor.java</span></div>
+            <textarea id="editor">public class SecureModule { ... }</textarea>
+            <div id="console" class="terminal-output">> Sistema Cifrado Listo.</div>
         </main>
     </div>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>
