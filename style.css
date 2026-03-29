@@ -1,96 +1,140 @@
 :root {
     --bg: #05070a;
-    --primary: #f89820;
+    --primary: #00ff41; /* Verde Hacker */
     --accent: #5382a1;
-    --glass: rgba(255, 255, 255, 0.05);
+    --glass: rgba(255, 255, 255, 0.03);
 }
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-    background: var(--bg);
+    background-color: var(--bg);
     color: white;
-    font-family: 'Inter', sans-serif;
-    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow-x: hidden;
 }
 
-.gradient-text {
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* Forzar transparencia en todas las secciones para ver el fondo */
+section, .hero, .features, .playground {
+    background: transparent !important;
 }
 
 .glass-nav {
     position: fixed;
     width: 100%;
-    padding: 20px;
+    padding: 20px 5%;
     display: flex;
     justify-content: space-between;
-    background: rgba(5, 7, 10, 0.8);
+    align-items: center;
+    background: rgba(5, 7, 10, 0.7);
     backdrop-filter: blur(10px);
-    z-index: 100;
+    z-index: 1000;
 }
+
+.logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
+.nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 0.9rem; }
 
 .hero {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at 50% 50%, #101a2d 0%, var(--bg) 80%);
+    text-align: center;
 }
+
+.gradient-text {
+    background: linear-gradient(90deg, #00ff41, #008f11);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 5rem;
+}
+
+.main-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 30px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    text-decoration: none;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.main-btn:hover { background: var(--primary); color: black; box-shadow: 0 0 20px var(--primary); }
 
 .features {
     display: flex;
-    gap: 30px;
-    padding: 100px 5%;
     justify-content: center;
+    gap: 20px;
+    padding: 100px 5%;
     flex-wrap: wrap;
 }
 
 .card {
     background: var(--glass);
-    padding: 30px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.1);
-    width: 280px;
+    border: 1px solid rgba(0, 255, 65, 0.1);
+    padding: 40px;
+    border-radius: 15px;
+    width: 300px;
     text-align: center;
-    transition: 0.3s;
+    backdrop-filter: blur(5px);
 }
 
-.card:hover { transform: translateY(-10px); border-color: var(--primary); }
+.card i { font-size: 2rem; color: var(--primary); margin-bottom: 20px; }
 
 .terminal-window {
-    max-width: 900px;
+    max-width: 800px;
     margin: 50px auto;
-    background: #1e1e1e;
-    border-radius: 12px;
+    background: rgba(20, 20, 20, 0.9);
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    border: 1px solid #333;
 }
 
 .terminal-header {
-    background: #333;
+    background: #252525;
     padding: 10px 20px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+}
+
+.dots span {
+    height: 12px; width: 12px; border-radius: 50%; display: inline-block; margin-right: 5px;
+}
+.dots span:nth-child(1) { background: #ff5f56; }
+.dots span:nth-child(2) { background: #ffbd2e; }
+.dots span:nth-child(3) { background: #27c93f; }
+
+#runBtn {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 5px 15px;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 #editor {
     width: 100%;
-    height: 300px;
-    background: #1e1e1e;
-    color: #cecece;
+    height: 350px;
+    background: transparent;
+    color: #00ff41;
     padding: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
     border: none;
-    font-family: monospace;
-    font-size: 16px;
     outline: none;
+    resize: none;
 }
 
 .output {
     background: #000;
-    padding: 15px;
-    color: #00ff00;
+    padding: 20px;
     font-family: monospace;
+    color: #00ff41;
     border-top: 1px solid #333;
+    min-height: 100px;
+    max-height: 300px;
+    overflow-y: auto;
 }
