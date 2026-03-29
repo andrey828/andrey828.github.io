@@ -1,84 +1,85 @@
 // 1. Inicializar animaciones de scroll
 AOS.init({ duration: 1000, once: true });
 
-// 2. EL MOTOR DE CONCURRENCIA (JAVA VIRTUAL MACHINE SIMULATOR)
+// 2. EL MOTOR DE CONCURRENCIA AVANZADO (HYPER-ENGINE)
 document.getElementById('runBtn').addEventListener('click', async function() {
     const code = document.getElementById('editor').value;
     const output = document.getElementById('output');
     
-    output.innerHTML = '<span style="color: #5382a1;">[JVM] Booting Concurrency Engine v2.4...</span><br>';
+    // Limpieza inicial
+    output.innerHTML = '<span style="color: #5382a1;">[JVM] Booting JavaVerse Concurrency Engine...</span><br>';
     output.style.color = "#00ff00";
 
-    // --- SIMULADOR DE LIBRERÍAS JAVA UTIL CONCURRENT ---
+    // --- VARIABLES DE ESTADO DEL SISTEMA ---
     const buffer = [];
     const CAPACIDAD = 5;
-    let contadorMensajes = 0;
-    let finalizado = 0;
-    const TOTAL_TAREAS = 10;
+    let contadorTotal = 0;
+    const META = 10;
 
-    // Función auxiliar para imprimir con colores de log
+    // Función de log estilizada
     const printLog = (msg, type = 'info') => {
         let color = "#cecece";
         if (type === 'prod') color = "#f89820"; // Naranja Productor
         if (type === 'cons') color = "#5382a1"; // Azul Consumidor
-        if (type === 'sys') color = "#28a745";  // Verde Éxito
-        output.innerHTML += `<span style="color: ${color}; font-size: 13px;">${msg}</span><br>`;
-        output.scrollTop = output.scrollHeight; // Auto-scroll
+        if (type === 'sys') color = "#28a745";  // Verde Sistema
+        output.innerHTML += `<span style="color: ${color}; font-family: monospace; font-size: 12px;">${msg}</span><br>`;
+        output.scrollTop = output.scrollHeight;
     };
 
-    // --- MÁQUINA DE ESTADOS ASÍNCRONA ---
-    // Simulamos hilos mediante funciones asíncronas paralelas
-    const ejecutarProductor = async (id) => {
+    // --- SIMULACIÓN DE TRABAJADORES (THREADS) ---
+    const workerProductor = async (id) => {
         for (let i = 0; i < 2; i++) {
-            while (buffer.length >= CAPACIDAD) await new Promise(r => setTimeout(r, 100)); // Simula bloqueo put()
+            // Simulación de buffer.put() bloqueante
+            while (buffer.length >= CAPACIDAD) await new Promise(r => setTimeout(r, 100));
             
             const dato = `PAQUETE-${id}-${i}`;
             buffer.push(dato);
             printLog(`[Productor ${id}] -> Inyectado: ${dato} | Buffer: ${buffer.length}/${CAPACIDAD}`, 'prod');
             
-            await new Promise(r => setTimeout(r, Math.random() * 800 + 200));
+            await new Promise(r => setTimeout(r, Math.random() * 1000 + 500));
         }
     };
 
-    const ejecutarConsumidor = async () => {
-        while (contadorMensajes < TOTAL_TAREAS) {
-            while (buffer.length === 0) await new Promise(r => setTimeout(r, 100)); // Simula bloqueo take()
+    const workerConsumidor = async () => {
+        while (contadorTotal < META) {
+            // Simulación de buffer.take() bloqueante
+            while (buffer.length === 0 && contadorTotal < META) await new Promise(r => setTimeout(r, 100));
             
-            const dato = buffer.shift();
-            contadorMensajes++;
-            finalizado++;
-            printLog(`[Consumidor] <- Procesado: ${dato} (Total: ${contadorMensajes})`, 'cons');
-            
-            await new Promise(r => setTimeout(r, Math.random() * 1200 + 400));
+            if (buffer.length > 0) {
+                const dato = buffer.shift();
+                contadorTotal++;
+                printLog(`[Consumidor] <- Procesado: ${dato} (Total: ${contadorTotal})`, 'cons');
+            }
+            await new Promise(r => setTimeout(r, Math.random() * 1500 + 500));
         }
     };
 
-    // --- ORQUESTADOR (SIMULACIÓN DE EXECUTORSERVICE) ---
+    // --- ORQUESTADOR ---
     try {
-        if (!code.includes('SistemaDeMisionCritica') && !code.includes('concurrent')) {
-            throw new Error("El motor requiere una estructura de Misión Crítica o Concurrencia válida.");
+        // Verificación básica de que es el código correcto
+        if (!code.includes('SistemaDeMisionCritica')) {
+            throw new Error("Estructura de clase no reconocida por el motor de concurrencia.");
         }
 
         printLog("=== INICIANDO MOTOR DE CONCURRENCIA AVANZADA ===", 'sys');
         
-        // Lanzamos el consumidor y los 5 productores en paralelo (Simulando Thread Pool)
-        const promesas = [
-            ejecutarConsumidor(),
-            ejecutarProductor(1),
-            ejecutarProductor(2),
-            ejecutarProductor(3),
-            ejecutarProductor(4),
-            ejecutarProductor(5)
+        // Ejecución en paralelo (Simulando ExecutorService)
+        const threads = [
+            workerConsumidor(),
+            workerProductor(1),
+            workerProductor(2),
+            workerProductor(3),
+            workerProductor(4),
+            workerProductor(5)
         ];
 
-        // Esperamos a que todo termine (Simulando CountDownLatch / await)
-        await Promise.all(promesas);
+        await Promise.all(threads);
 
         printLog("=== CIERRE DE SISTEMA LIMPIO (GRACEFUL SHUTDOWN) ===", 'sys');
         printLog("[SUCCESS] Process finished with exit code 0", 'sys');
 
     } catch (err) {
-        output.innerHTML += `<br><span style="color: #ff6b6b;">[JVM CRASH] ${err.message}</span>`;
+        output.innerHTML = `<span style="color: #ff6b6b;">[JVM CRASH] ${err.message}</span><br><span style="color: #94a3b8;">Asegúrate de incluir la clase 'SistemaDeMisionCritica'.</span>`;
     }
 });
 
