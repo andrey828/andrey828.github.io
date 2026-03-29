@@ -1,17 +1,22 @@
 version: '3.8'
+
 services:
-  java-backend:
-    build: ./backend-java
-    ports:
-      - "8080:8080"
-  python-ai:
-    build: ./ai-python
-    ports:
-      - "8000:8000"
-  web-ui:
+  frontend:
     image: nginx:alpine
-    volumes:
-      - ./frontend:/usr/share/nginx/html
-    ports:
-      - "80:80"
-      
+    ports: ["80:80"]
+    volumes: ["./:/usr/share/nginx/html"]
+
+  backend-java:
+    build: ./backend-java
+    ports: ["8080:8080"]
+
+  ai-python:
+    build: ./ai-python
+    ports: ["5000:5000"]
+
+  service-native:
+    build: ./service-native
+
+  service-csharp:
+    build: ./service-csharp
+    
