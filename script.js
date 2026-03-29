@@ -1,33 +1,41 @@
-AOS.init();
+AOS.init({ duration: 800 });
 
-// Inicializar Mapa de Memoria
+// Generar cuadricula de memoria
 const heap = document.getElementById('heapMap');
-for(let i=0; i<40; i++) {
-    const b = document.createElement('div');
-    b.className = 'm-block';
-    heap.appendChild(b);
+for(let i = 0; i < 30; i++) {
+    const node = document.createElement('div');
+    node.className = 'mem-node';
+    heap.appendChild(node);
 }
 
 document.getElementById('runBtn').addEventListener('click', async () => {
-    const term = document.getElementById('console');
-    term.innerHTML = "<span style='color:#5382a1'>[JS] Orquestando Microservicios...</span><br>";
+    const consoleOut = document.getElementById('console');
+    consoleOut.innerHTML = "<span style='color:#5382a1'>[JS] Dispatching microservices...</span><br>";
     
-    // Simulación de ejecución políglota
-    const steps = [
-        { l: "JAVA", m: "Levantando Spring Boot Core...", c: "#f89820" },
-        { l: "C++", m: "Optimizando cálculos de precisión...", c: "#00599c" },
-        { l: "C#", m: "Validando integridad en .NET...", c: "#178600" },
-        { l: "C", m: "Acceso directo a registros de memoria...", c: "#a8b9cc" },
-        { l: "PYTHON", m: "Análisis predictivo de salida (IA)...", c: "#3776ab" }
+    const processes = [
+        { lang: "JAVA", task: "Spring Boot Context Started. Sandboxing code.", color: "#f89820" },
+        { lang: "C++", task: "Native Vector Processing complete.", color: "#00599c" },
+        { lang: "C", task: "Memory Pointers Checked. No leaks detected.", color: "#a8b9cc" },
+        { lang: "C#", task: ".NET Core Business Rules Applied.", color: "#178600" },
+        { lang: "PYTHON", task: "AI Complexity Analysis: O(N).", color: "#3776ab" }
     ];
 
-    for (const s of steps) {
-        document.getElementById('cpuBar').style.width = Math.random() * 90 + "%";
-        term.innerHTML += `<span style="color:${s.c}">[${s.l}] ${s.m}</span><br>`;
-        document.querySelectorAll('.m-block').forEach(b => b.style.background = Math.random() > 0.5 ? s.c : '#222');
-        await new Promise(r => setTimeout(r, 700));
+    for (const p of processes) {
+        // Simular uso de recursos
+        document.getElementById('cpuBar').style.width = Math.floor(Math.random() * 85 + 10) + "%";
+        document.getElementById('threadCount').innerText = Math.floor(Math.random() * 16 + 4) + " ACTIVE";
+        document.querySelectorAll('.mem-node').forEach(n => {
+            n.style.background = Math.random() > 0.4 ? p.color : '#222';
+        });
+
+        consoleOut.innerHTML += `<span style="color:${p.color}">[${p.lang}] ${p.task}</span><br>`;
+        consoleOut.scrollTop = consoleOut.scrollHeight;
+        await new Promise(r => setTimeout(r, 800));
     }
 
-    term.innerHTML += "<br><span style='color:#28a745'>[SUCCESS] Todo el stack respondió al 100%.</span>";
+    // Limpiar al terminar
+    consoleOut.innerHTML += "<br><span style='color:#0f6'>[SUCCESS] Ecosistema Políglota ejecutado sin errores.</span>";
     document.getElementById('cpuBar').style.width = "0%";
+    document.getElementById('threadCount').innerText = "IDLE";
+    document.querySelectorAll('.mem-node').forEach(n => n.style.background = '#222');
 });
