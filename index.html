@@ -2,40 +2,53 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mihai</title>
+    <title>JavaVerse OS | Polyglot Architecture</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="app">
+    <div class="app-container">
         <header data-aos="fade-down">
-            <div class="logo">STACK<span>POLÍGLOTA</span></div>
-            <div class="badges">
-                <span class="badge java">Java 21</span>
-                <span class="badge cpp">C++</span>
-                <span class="badge cs">C#</span>
-                <span class="badge py">Python</span>
+            <div class="logo">JAVA<span>VERSE</span>.OS</div>
+            <div class="tech-stack">
+                <span class="badge">JAVA 21</span>
+                <span class="badge">C++ / C</span>
+                <span class="badge">C# .NET</span>
+                <span class="badge">PYTHON</span>
+                <span class="badge">JS / HTML / CSS</span>
             </div>
         </header>
 
-        <div class="metrics" data-aos="fade-up">
-            <div class="card">CPU: <span id="cpuVal">0%</span><div class="bar"><div id="cpuBar"></div></div></div>
-            <div class="card">THREADS: <span id="threadCount">IDLE</span></div>
-            <div class="card">SYSTEM: <span id="status">READY</span></div>
+        <div class="system-monitors" data-aos="fade-up">
+            <div class="monitor-card">
+                <label>CPU CLUSTER LOAD</label>
+                <div class="bar-bg"><div id="cpuBar" class="bar-fill"></div></div>
+                <span id="cpuVal">0%</span>
+            </div>
+            <div class="monitor-card">
+                <label>ACTIVE THREADS</label>
+                <div id="threadCount" class="status-text">IDLE</div>
+            </div>
+            <div class="monitor-card">
+                <label>MEMORY MAP</label>
+                <div id="heapMap" class="memory-grid"></div>
+            </div>
         </div>
 
-        <div class="ide" data-aos="zoom-in">
-            <div class="tabs"><span>Main.java</span><button id="runBtn"><i class="fas fa-play"></i> EXECUTE</button></div>
-            <textarea id="editor">
+        <main class="ide-wrapper" data-aos="zoom-in">
+            <div class="ide-header">
+                <span><i class="fas fa-code"></i> Main.java</span>
+                <button id="runBtn"><i class="fas fa-play"></i> INICIAR CLUSTER</button>
+            </div>
+            <textarea id="editor" spellcheck="false">
 public class PolyglotSystem {
     public static void main(String[] args) {
-        // Ejecución en múltiples núcleos (Java, C++, C#, Python)
-        System.out.println("Iniciando orquestación políglota...");
+        System.out.println("Enviando peticiones al ecosistema políglota...");
     }
 }</textarea>
-            <div id="console" class="console">> Terminal lista para comandos...</div>
-        </div>
+            <div id="console" class="terminal-output">> Esperando ejecución del sistema...</div>
+        </main>
     </div>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
