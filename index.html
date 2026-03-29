@@ -2,66 +2,41 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mihai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <nav class="glass-nav">
-        <div class="logo"><i class="fab fa-java"></i> Mihai <span>.os</span></div>
-        <div class="nav-links">
-            <a href="#hero">Inicio</a>
-            <a href="#features">Potencia</a>
-            <a href="#playground">Consola</a>
-        </div>
-    </nav>
-
-    <section id="hero" class="hero">
-        <div class="hero-content" data-aos="zoom-in">
-            <h1>The <span class="gradient-text">Java</span> Experience</h1>
-            <p>Arquitectura de Misión Crítica y Análisis Multihilo.</p>
-            <a href="#playground" class="main-btn">Abrir Terminal</a>
-        </div>
-    </section>
-
-    <section id="features" class="features">
-        <div class="card" data-aos="fade-up">
-            <i class="fas fa-microchip"></i>
-            <h3>Multithreading</h3>
-            <p>Gestión de procesos paralelos optimizada.</p>
-        </div>
-        <div class="card" data-aos="fade-up" data-aos-delay="100">
-            <i class="fas fa-brain"></i>
-            <h3>IA Analysis</h3>
-            <p>Análisis de lógica por Python Engine.</p>
-        </div>
-        <div class="card" data-aos="fade-up" data-aos-delay="200">
-            <i class="fas fa-shield-halved"></i>
-            <h3>Safe Sandbox</h3>
-            <p>Ejecución aislada en contenedores.</p>
-        </div>
-    </section>
-
-    <section id="playground" class="playground">
-        <div class="terminal-window" data-aos="fade-up">
-            <div class="terminal-header">
-                <div class="dots"><span></span><span></span><span></span></div>
-                <span class="title">Main.java</span>
-                <button id="runBtn"><i class="fas fa-play"></i> Run</button>
+    <div class="app">
+        <header data-aos="fade-down">
+            <div class="logo">STACK<span>POLÍGLOTA</span></div>
+            <div class="badges">
+                <span class="badge java">Java 21</span>
+                <span class="badge cpp">C++</span>
+                <span class="badge cs">C#</span>
+                <span class="badge py">Python</span>
             </div>
-            <textarea id="editor" spellcheck="false">public class Main {
-    public static void main(String[] args) {
-        System.out.println("Iniciando sistema...");
-        int suma = 10 + 20;
-        System.out.println("Resultado de la suma: " + suma);
-    }
-</textarea>
-            <div id="output" class="output">> Listo para compilar...</div>
-        </div>
-    </section>
+        </header>
 
+        <div class="metrics" data-aos="fade-up">
+            <div class="card">CPU: <span id="cpuVal">0%</span><div class="bar"><div id="cpuBar"></div></div></div>
+            <div class="card">THREADS: <span id="threadCount">IDLE</span></div>
+            <div class="card">SYSTEM: <span id="status">READY</span></div>
+        </div>
+
+        <div class="ide" data-aos="zoom-in">
+            <div class="tabs"><span>Main.java</span><button id="runBtn"><i class="fas fa-play"></i> EXECUTE</button></div>
+            <textarea id="editor">
+public class PolyglotSystem {
+    public static void main(String[] args) {
+        // Ejecución en múltiples núcleos (Java, C++, C#, Python)
+        System.out.println("Iniciando orquestación políglota...");
+    }
+}</textarea>
+            <div id="console" class="console">> Terminal lista para comandos...</div>
+        </div>
+    </div>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>
