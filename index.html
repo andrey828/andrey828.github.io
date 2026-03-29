@@ -2,45 +2,57 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mihai Development</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaVerse OS | Polyglot Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div id="authOverlay" class="glass-overlay">
-        <div class="auth-card" data-aos="zoom-in">
-            <h2><i class="fas fa-lock"></i> SECURE ACCESS</h2>
-            <input type="text" id="username" placeholder="Nombre de Usuario">
-            <input type="password" id="password" placeholder="Contraseña">
-            <div class="auth-buttons">
-                <button onclick="login()" class="btn-primary">LOGIN</button>
-                <button onclick="register()" class="btn-secondary">REGISTRAR</button>
-            </div>
-            <p id="authMsg"></p>
-        </div>
-    </div>
-
-    <div id="mainApp" class="app-container blur">
-        <header>
+    <div class="app-container">
+        <header class="glass" data-aos="fade-down">
             <div class="logo">JAVA<span>VERSE</span>.OS</div>
-            <div id="userInfo" class="user-tag"></div>
+            <div class="system-status">
+                <span class="badge"><i class="fas fa-circle"></i> SYSTEM READY</span>
+                <span class="badge">V 3.0.1</span>
+            </div>
         </header>
-        
-        <div class="system-monitors">
-            <div class="monitor-card glass">
-                <label>ENCRYPTION STATUS</label>
-                <div class="status-active">AES-256 BIT ENABLED</div>
-            </div>
-            <div class="monitor-card glass">
-                <label>CPU CLUSTER</label>
-                <div class="bar-bg"><div id="cpuBar" class="bar-fill"></div></div>
-            </div>
-        </div>
 
-        <main class="ide-wrapper glass">
-            <div class="ide-header"><span>KernelExecutor.java</span></div>
-            <textarea id="editor">public class SecureModule { ... }</textarea>
-            <div id="console" class="terminal-output">> Sistema Cifrado Listo.</div>
+        <section class="grid-layout">
+            <div class="panel glass" data-aos="fade-right">
+                <label><i class="fas fa-microchip"></i> RECURSOS DEL CLUSTER</label>
+                <div class="stat-item">
+                    <div class="stat-info">
+                        <span>CARGA DE CPU</span>
+                        <span id="cpuVal">0%</span>
+                    </div>
+                    <div class="progress-bg"><div id="cpuBar" class="progress-fill"></div></div>
+                </div>
+                <div class="stat-item">
+                    <span>HILOS ACTIVOS:</span>
+                    <span id="threadStatus" class="value">STANDBY</span>
+                </div>
+            </div>
+
+            <div class="panel glass" data-aos="fade-left">
+                <label><i class="fas fa-memory"></i> MAPA DE MEMORIA DINÁMICA</label>
+                <div id="heapMap" class="memory-blocks"></div>
+            </div>
+        </section>
+
+        <main class="terminal-box glass" data-aos="fade-up">
+            <div class="terminal-nav">
+                <span><i class="fas fa-file-code"></i> KernelExecutor.java</span>
+                <button id="runBtn" class="run-cmd"><i class="fas fa-play"></i> DESPLEGAR STACK</button>
+            </div>
+            <textarea id="editor" spellcheck="false">
+public class PolyglotEngine {
+    public static void main(String[] args) {
+        // Orquestando: Java, C++, C, C#, Python
+        System.out.println("Iniciando despliegue de microservicios...");
+    }
+}</textarea>
+            <div id="console" class="output-log">> Sistema listo. Presione 'DESPLEGAR STACK' para comenzar.</div>
         </main>
     </div>
 
