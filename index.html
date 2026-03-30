@@ -2,67 +2,56 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIHAI</title>
+    <title>JAVAVERSE | MULTI-KERNEL OS</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="scanline"></div>
-    <div class="noise"></div>
+    <div class="desktop">
+        <div class="bg-stats">
+            <div class="stat">CPU: <span id="cpu-load">0%</span></div>
+            <div class="stat">MEM: 1.5GB / 32GB</div>
+        </div>
 
-    <div class="app-shell">
-        <header class="neo-glass">
-            <div class="brand">
-                <i class="fas fa-atom fa-spin"></i>
-                <div class="logo-text">JAVA<span>VERSE</span><small>CORE v9.0</small></div>
-            </div>
-            <div class="system-leds">
-                <div class="led-group"><span class="led green"></span><small>DB</small></div>
-                <div class="led-group"><span class="led orange"></span><small>JVM</small></div>
-                <div class="led-group"><span class="led blue"></span><small>AI</small></div>
-            </div>
-        </header>
+        <div class="launcher" id="launcherBtn">
+            <div class="orbit"></div>
+            <button class="main-trigger">
+                <i class="fas fa-power-off"></i>
+                <span>OPEN MULTI-CORE GUI</span>
+            </button>
+        </div>
 
-        <section class="main-dashboard">
-            <div class="card neo-glass" data-aos="zoom-in">
-                <div class="card-head">
-                    <i class="fas fa-bolt"></i>
-                    <span>VOLTAJE DEL NÚCLEO</span>
+        <div id="guiWrapper" class="gui-overlay hidden">
+            <div class="gui-header">
+                <div class="title">POLYGLOT COMMAND CENTER</div>
+                <button class="close-gui" onclick="toggleGUI()">✕</button>
+            </div>
+            
+            <div class="terminal-grid">
+                <div class="term-window java-border">
+                    <div class="t-head"><span>JAVA_RUNTIME</span><i class="fab fa-java"></i></div>
+                    <div class="t-body" id="out-java"># system.ready();</div>
                 </div>
-                <div class="gauge-container">
-                    <svg viewBox="0 0 100 50">
-                        <path class="gauge-bg" d="M10,45 A40,40 0 0,1 90,45" />
-                        <path id="gaugeFill" class="gauge-fill" d="M10,45 A40,40 0 0,1 90,45" />
-                    </svg>
-                    <div id="vValue" class="v-read">1.21V</div>
+
+                <div class="term-window cpp-border">
+                    <div class="t-head"><span>CPP_NATIVE</span><i class="fas fa-microchip"></i></div>
+                    <div class="t-body" id="out-cpp"># std::init();</div>
+                </div>
+
+                <div class="term-window py-border">
+                    <div class="t-head"><span>PY_AI_MODEL</span><i class="fab fa-python"></i></div>
+                    <div class="t-body" id="out-py"># import neural_core</div>
+                </div>
+
+                <div class="term-window cs-border">
+                    <div class="t-head"><span>CS_DOTNET</span><i class="fas fa-code-branch"></i></div>
+                    <div class="t-body" id="out-cs"># dotnet.run();</div>
                 </div>
             </div>
 
-            <div class="card neo-glass" data-aos="zoom-in" data-aos-delay="100">
-                <div class="card-head"><i class="fas fa-microchip"></i> HILOS POLÍGLOTAS</div>
-                <div class="thread-visualizer" id="threadGrid"></div>
-            </div>
-
-            <div class="card neo-glass" data-aos="zoom-in" data-aos-delay="200">
-                <div class="card-head"><i class="fas fa-network-wired"></i> SINCRONIZACIÓN</div>
-                <ul class="sync-list">
-                    <li id="s-java"><i class="fab fa-java"></i> Spring Boot <span>WAIT</span></li>
-                    <li id="s-cpp"><i class="fas fa-code"></i> C++ Engine <span>WAIT</span></li>
-                    <li id="s-py"><i class="fab fa-python"></i> PyAI Model <span>WAIT</span></li>
-                </ul>
-            </div>
-        </section>
-
-        <div class="terminal-container neo-glass" data-aos="fade-up">
-            <div class="term-bar">
-                <div class="dots"><span></span><span></span><span></span></div>
-                <div class="term-title">hyper-terminal --root@javaverse</div>
-                <button id="deployBtn" class="hyper-btn">IGNITE STACK</button>
-            </div>
-            <div id="hyperConsole" class="hyper-output">
-                <span class="command-line"># root@javaverse: system status --ready</span>
+            <div class="gui-footer">
+                <button id="syncAllBtn" class="sync-btn">SYNC ALL CORES</button>
             </div>
         </div>
     </div>
