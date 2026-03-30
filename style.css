@@ -1,48 +1,45 @@
-:root { --p: #f89820; --blue: #00d2ff; --green: #00ff88; --bg: #050507; }
-body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; height: 100vh; margin: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+:root { --p: #f89820; --java: #ed8b00; --cpp: #00599c; --py: #3776ab; --cs: #178600; --bg: #0a0a0c; }
+body { background: var(--bg); color: #fff; font-family: 'Consolas', monospace; margin: 0; overflow: hidden; }
 
-/* Efectos de Pantalla CRT */
-.scanline { width: 100%; height: 2px; z-index: 100; background: rgba(0,0,0,0.1); position: absolute; top: 0; pointer-events: none; animation: scan 4s linear infinite; }
-@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+/* Escritorio y Launcher */
+.desktop { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
+.bg-stats { position: absolute; top: 20px; right: 20px; font-size: 0.8rem; color: #444; text-align: right; }
 
-/* Neo-Glassmorphism */
-.neo-glass { 
-    background: rgba(20, 20, 25, 0.7); 
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 10px 10px 20px rgba(0,0,0,0.5), -5px -5px 15px rgba(255,255,255,0.02);
-    border-radius: 16px;
+.launcher { position: relative; z-index: 10; }
+.main-trigger { 
+    background: transparent; border: 2px solid var(--p); color: var(--p); 
+    padding: 30px 50px; border-radius: 50px; font-size: 1.2rem; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    transition: 0.4s; box-shadow: 0 0 30px rgba(248,152,32,0.1);
 }
+.main-trigger:hover { background: var(--p); color: #000; box-shadow: 0 0 50px var(--p); }
 
-.app-shell { width: 90%; max-width: 1200px; display: flex; flex-direction: column; gap: 20px; }
-header { display: flex; justify-content: space-between; padding: 20px; align-items: center; }
-.logo-text { font-weight: 900; font-size: 1.4rem; letter-spacing: 1px; }
-.logo-text span { color: var(--p); text-shadow: 0 0 15px var(--p); }
-.logo-text small { font-size: 0.6rem; color: #555; display: block; margin-top: -5px; }
+/* GUI Overlay */
+.gui-overlay { 
+    position: fixed; inset: 20px; background: rgba(10, 10, 15, 0.95); 
+    backdrop-filter: blur(20px); border: 1px solid #333; z-index: 100;
+    display: flex; flex-direction: column; transform: translateY(100%); transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.gui-overlay.active { transform: translateY(0); }
+.hidden { display: none; }
 
-.main-dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.card { padding: 20px; height: 180px; }
-.card-head { font-size: 0.7rem; color: #555; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-.card-head i { color: var(--p); }
+.gui-header { padding: 15px 25px; display: flex; justify-content: space-between; border-bottom: 1px solid #222; }
+.close-gui { background: none; border: none; color: #ff5f56; font-size: 1.5rem; cursor: pointer; }
 
-/* Gauge & Threads */
-.gauge-bg { fill: none; stroke: #222; stroke-width: 10; }
-.gauge-fill { fill: none; stroke: var(--p); stroke-width: 10; stroke-dasharray: 126; stroke-dashoffset: 126; transition: 1s; }
-.v-read { text-align: center; font-size: 1.5rem; font-weight: bold; margin-top: -15px; }
+/* Grid de Terminales */
+.terminal-grid { 
+    flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; 
+    gap: 15px; padding: 20px; 
+}
+.term-window { background: rgba(0,0,0,0.7); border: 1px solid #222; display: flex; flex-direction: column; border-radius: 6px; overflow: hidden; }
+.t-head { padding: 8px 15px; font-size: 0.7rem; display: flex; justify-content: space-between; background: rgba(255,255,255,0.03); }
+.t-body { flex: 1; padding: 15px; font-size: 0.85rem; color: #aaa; overflow-y: auto; line-height: 1.4; }
 
-.thread-visualizer { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; }
-.t-node { height: 12px; background: #111; border-radius: 2px; transition: 0.2s; }
+/* Bordes de Colores */
+.java-border { border-left: 4px solid var(--java); }
+.cpp-border { border-left: 4px solid var(--cpp); }
+.py-border { border-left: 4px solid var(--py); }
+.cs-border { border-left: 4px solid var(--cs); }
 
-/* Terminal */
-.terminal-container { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; }
-.term-bar { background: rgba(0,0,0,0.4); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
-.dots span { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; background: #ff5f56; }
-.dots span:nth-child(2) { background: #ffbd2e; }
-.dots span:nth-child(3) { background: #27c93f; }
-.hyper-output { height: 250px; padding: 20px; background: rgba(0,0,0,0.8); font-family: 'Consolas', monospace; color: var(--green); overflow-y: auto; line-height: 1.4; font-size: 0.9rem; }
-.hyper-btn { background: var(--p); border: none; padding: 8px 20px; border-radius: 4px; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(248,152,32,0.4); }
-
-.led { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 10px currentColor; }
-.green { color: var(--green); background: currentColor; }
-.orange { color: var(--p); background: currentColor; }
-.blue { color: var(--blue); background: currentColor; }
+.gui-footer { padding: 20px; text-align: center; }
+.sync-btn { background: #fff; color: #000; border: none; padding: 12px 40px; font-weight: bold; cursor: pointer; }
