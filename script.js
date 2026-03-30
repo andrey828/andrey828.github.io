@@ -1,48 +1,39 @@
 AOS.init();
 
-// Inicializar Hilos
-const grid = document.getElementById('threadGrid');
-for(let i=0; i<32; i++) {
-    const node = document.createElement('div');
-    node.className = 't-node';
-    grid.appendChild(node);
+const igniteBtn = document.getElementById('igniteBtn');
+const gui = document.getElementById('guiWrapper');
+const launcher = document.getElementById('launcherScreen');
+
+igniteBtn.addEventListener('click', () => {
+    launcher.style.opacity = '0';
+    setTimeout(() => {
+        launcher.style.display = 'none';
+        gui.classList.remove('hidden');
+    }, 800);
+});
+
+function closeGUI() {
+    gui.classList.add('hidden');
+    setTimeout(() => location.reload(), 500);
 }
 
-document.getElementById('deployBtn').addEventListener('click', async function() {
-    const btn = this;
-    const term = document.getElementById('hyperConsole');
-    const gauge = document.getElementById('gaugeFill');
-    
-    btn.disabled = true;
-    btn.style.opacity = "0.5";
-    btn.innerText = "IGNITING...";
-
-    const steps = [
-        { l: "JVM", m: "Initializing Java 21 Virtual Machine...", c: "#f89820", id: "s-java" },
-        { l: "NATIVE", m: "C++ Memory Buffers Allocated at 0x7FFF...", c: "#00d2ff", id: "s-cpp" },
-        { l: "AI", m: "Python Tensor Engines Loading...", c: "#00ff88", id: "s-py" }
+document.getElementById('syncBtn').addEventListener('click', async function() {
+    this.disabled = true;
+    const kernels = [
+        { id: 'out-java', c: '#ed8b00', msg: ['Compiling Spring Beans...', 'JVM Heap Optimized'] },
+        { id: 'out-cpp', c: '#00599c', msg: ['Mapping V-Table...', 'Memory Locked at 0x00FF'] },
+        { id: 'out-py', c: '#3776ab', msg: ['Predicting Latency...', 'AI Weights Synced'] },
+        { id: 'out-cs', c: '#178600', msg: ['CLR Virtualization ON', 'Business Rules Verified'] }
     ];
 
-    for (const step of steps) {
-        // Animación Gauge y LEDS
-        gauge.style.strokeDashoffset = Math.random() * 100;
-        document.getElementById('vValue').innerText = (Math.random() + 1).toFixed(2) + "V";
-        
-        // Log con efecto máquina de escribir
-        term.innerHTML += `<br><span style="color:${step.c}">[${step.l}] ${step.m}</span>`;
-        document.getElementById(step.id).querySelector('span').innerText = "SYNCED";
-        document.getElementById(step.id).style.color = step.c;
-
-        // Animar hilos
-        document.querySelectorAll('.t-node').forEach(n => {
-            n.style.background = Math.random() > 0.3 ? step.c : '#111';
-            n.style.boxShadow = `0 0 8px ${step.c}`;
-        });
-
-        term.scrollTop = term.scrollHeight;
-        await new Promise(r => setTimeout(r, 900));
+    for(let i=0; i<4; i++) {
+        for(const k of kernels) {
+            const el = document.getElementById(k.id);
+            el.innerHTML += `<div style="color:${k.c}"># ${k.msg[Math.floor(Math.random()*k.msg.length)]}</div>`;
+            el.scrollTop = el.scrollHeight;
+            document.getElementById('globalCpu').innerText = `CPU: ${Math.floor(Math.random()*90 + 5)}%`;
+            await new Promise(r => setTimeout(r, 200));
+        }
     }
-
-    term.innerHTML += "<br><br><span style='color:white; background: #178600; padding: 2px 10px;'>STACK HEALTH: 100% - OPTIMAL PERFORMANCE</span>";
-    btn.innerText = "STACK ACTIVE";
+    this.disabled = false;
 });
