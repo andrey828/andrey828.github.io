@@ -1,8 +1,5 @@
 #include <iostream>
-#include <thread>
-
-// Simulación de procesamiento paralelo masivo
 int main() {
-    std::cout << "C++ Hyper-Processor Ready. Multi-threading enabled." << std::endl;
+    std::cout << "[CPP] Native performance layer active." << std::endl;
     return 0;
 }
