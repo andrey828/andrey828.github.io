@@ -3,57 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaVerse OS | Polyglot Dashboard</title>
+    <title>MIHAI</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="app-container">
-        <header class="glass" data-aos="fade-down">
-            <div class="logo">JAVA<span>VERSE</span>.OS</div>
-            <div class="system-status">
-                <span class="badge"><i class="fas fa-circle"></i> SYSTEM READY</span>
-                <span class="badge">V 3.0.1</span>
+    <div class="scanline"></div>
+    <div class="noise"></div>
+
+    <div class="app-shell">
+        <header class="neo-glass">
+            <div class="brand">
+                <i class="fas fa-atom fa-spin"></i>
+                <div class="logo-text">JAVA<span>VERSE</span><small>CORE v9.0</small></div>
+            </div>
+            <div class="system-leds">
+                <div class="led-group"><span class="led green"></span><small>DB</small></div>
+                <div class="led-group"><span class="led orange"></span><small>JVM</small></div>
+                <div class="led-group"><span class="led blue"></span><small>AI</small></div>
             </div>
         </header>
 
-        <section class="grid-layout">
-            <div class="panel glass" data-aos="fade-right">
-                <label><i class="fas fa-microchip"></i> RECURSOS DEL CLUSTER</label>
-                <div class="stat-item">
-                    <div class="stat-info">
-                        <span>CARGA DE CPU</span>
-                        <span id="cpuVal">0%</span>
-                    </div>
-                    <div class="progress-bg"><div id="cpuBar" class="progress-fill"></div></div>
+        <section class="main-dashboard">
+            <div class="card neo-glass" data-aos="zoom-in">
+                <div class="card-head">
+                    <i class="fas fa-bolt"></i>
+                    <span>VOLTAJE DEL NÚCLEO</span>
                 </div>
-                <div class="stat-item">
-                    <span>HILOS ACTIVOS:</span>
-                    <span id="threadStatus" class="value">STANDBY</span>
+                <div class="gauge-container">
+                    <svg viewBox="0 0 100 50">
+                        <path class="gauge-bg" d="M10,45 A40,40 0 0,1 90,45" />
+                        <path id="gaugeFill" class="gauge-fill" d="M10,45 A40,40 0 0,1 90,45" />
+                    </svg>
+                    <div id="vValue" class="v-read">1.21V</div>
                 </div>
             </div>
 
-            <div class="panel glass" data-aos="fade-left">
-                <label><i class="fas fa-memory"></i> MAPA DE MEMORIA DINÁMICA</label>
-                <div id="heapMap" class="memory-blocks"></div>
+            <div class="card neo-glass" data-aos="zoom-in" data-aos-delay="100">
+                <div class="card-head"><i class="fas fa-microchip"></i> HILOS POLÍGLOTAS</div>
+                <div class="thread-visualizer" id="threadGrid"></div>
+            </div>
+
+            <div class="card neo-glass" data-aos="zoom-in" data-aos-delay="200">
+                <div class="card-head"><i class="fas fa-network-wired"></i> SINCRONIZACIÓN</div>
+                <ul class="sync-list">
+                    <li id="s-java"><i class="fab fa-java"></i> Spring Boot <span>WAIT</span></li>
+                    <li id="s-cpp"><i class="fas fa-code"></i> C++ Engine <span>WAIT</span></li>
+                    <li id="s-py"><i class="fab fa-python"></i> PyAI Model <span>WAIT</span></li>
+                </ul>
             </div>
         </section>
 
-        <main class="terminal-box glass" data-aos="fade-up">
-            <div class="terminal-nav">
-                <span><i class="fas fa-file-code"></i> KernelExecutor.java</span>
-                <button id="runBtn" class="run-cmd"><i class="fas fa-play"></i> DESPLEGAR STACK</button>
+        <div class="terminal-container neo-glass" data-aos="fade-up">
+            <div class="term-bar">
+                <div class="dots"><span></span><span></span><span></span></div>
+                <div class="term-title">hyper-terminal --root@javaverse</div>
+                <button id="deployBtn" class="hyper-btn">IGNITE STACK</button>
             </div>
-            <textarea id="editor" spellcheck="false">
-public class PolyglotEngine {
-    public static void main(String[] args) {
-        // Orquestando: Java, C++, C, C#, Python
-        System.out.println("Iniciando despliegue de microservicios...");
-    }
-}</textarea>
-            <div id="console" class="output-log">> Sistema listo. Presione 'DESPLEGAR STACK' para comenzar.</div>
-        </main>
+            <div id="hyperConsole" class="hyper-output">
+                <span class="command-line"># root@javaverse: system status --ready</span>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
