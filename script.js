@@ -1,49 +1,48 @@
 AOS.init();
 
-// Inicializar nodos de memoria
-const heap = document.getElementById('heapMap');
-for(let i=0; i<45; i++) {
+// Inicializar Hilos
+const grid = document.getElementById('threadGrid');
+for(let i=0; i<32; i++) {
     const node = document.createElement('div');
-    node.className = 'm-node';
-    heap.appendChild(node);
+    node.className = 't-node';
+    grid.appendChild(node);
 }
 
-document.getElementById('runBtn').addEventListener('click', async () => {
-    const term = document.getElementById('console');
-    const runBtn = document.getElementById('runBtn');
+document.getElementById('deployBtn').addEventListener('click', async function() {
+    const btn = this;
+    const term = document.getElementById('hyperConsole');
+    const gauge = document.getElementById('gaugeFill');
     
-    runBtn.disabled = true;
-    term.innerHTML = "<span style='color:#5382a1'>[SYSTEM] Iniciando Orquestador Políglota...</span><br>";
-    
-    const stack = [
-        { l: "JAVA", m: "Spring Boot Core: Desplegando API Rest...", c: "#f89820" },
-        { l: "C++", m: "Native Engine: Optimizando punteros de memoria...", c: "#00599c" },
-        { l: "C", m: "Kernel Module: Verificando integridad de hardware...", c: "#a8b9cc" },
-        { l: "C#", m: ".NET Service: Cargando lógica empresarial...", c: "#178600" },
-        { l: "PYTHON", m: "AI Agent: Analizando patrones de ejecución...", c: "#3776ab" }
+    btn.disabled = true;
+    btn.style.opacity = "0.5";
+    btn.innerText = "IGNITING...";
+
+    const steps = [
+        { l: "JVM", m: "Initializing Java 21 Virtual Machine...", c: "#f89820", id: "s-java" },
+        { l: "NATIVE", m: "C++ Memory Buffers Allocated at 0x7FFF...", c: "#00d2ff", id: "s-cpp" },
+        { l: "AI", m: "Python Tensor Engines Loading...", c: "#00ff88", id: "s-py" }
     ];
 
-    for (const step of stack) {
-        // Animación de CPU y Memoria
-        const load = Math.floor(Math.random() * 80 + 20);
-        document.getElementById('cpuBar').style.width = load + "%";
-        document.getElementById('cpuVal').innerText = load + "%";
-        document.getElementById('threadStatus').innerText = Math.floor(Math.random()*24 + 8) + " HILOS";
+    for (const step of steps) {
+        // Animación Gauge y LEDS
+        gauge.style.strokeDashoffset = Math.random() * 100;
+        document.getElementById('vValue').innerText = (Math.random() + 1).toFixed(2) + "V";
         
-        // Log en consola
-        term.innerHTML += `<span style="color:${step.c}">[${step.l}] ${step.m}</span><br>`;
-        term.scrollTop = term.scrollHeight;
+        // Log con efecto máquina de escribir
+        term.innerHTML += `<br><span style="color:${step.c}">[${step.l}] ${step.m}</span>`;
+        document.getElementById(step.id).querySelector('span').innerText = "SYNCED";
+        document.getElementById(step.id).style.color = step.c;
 
-        // Efecto visual en la rejilla de memoria
-        document.querySelectorAll('.m-node').forEach(n => {
-            if(Math.random() > 0.5) n.style.background = step.c;
+        // Animar hilos
+        document.querySelectorAll('.t-node').forEach(n => {
+            n.style.background = Math.random() > 0.3 ? step.c : '#111';
+            n.style.boxShadow = `0 0 8px ${step.c}`;
         });
 
-        await new Promise(r => setTimeout(r, 800));
+        term.scrollTop = term.scrollHeight;
+        await new Promise(r => setTimeout(r, 900));
     }
 
-    term.innerHTML += "<br><span style='color:#0f6'>[SUCCESS] Todo el ecosistema políglota está ONLINE.</span>";
-    runBtn.disabled = false;
-    document.getElementById('cpuBar').style.width = "5%";
-    document.getElementById('cpuVal').innerText = "5%";
+    term.innerHTML += "<br><br><span style='color:white; background: #178600; padding: 2px 10px;'>STACK HEALTH: 100% - OPTIMAL PERFORMANCE</span>";
+    btn.innerText = "STACK ACTIVE";
 });
